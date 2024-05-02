@@ -1,0 +1,68 @@
+<script>
+  (() => {
+    try {
+        // Define variables
+        var navigatorObj = navigator;
+        var userAgent = navigatorObj.userAgent;
+        var iframeLoadCount = 0;
+        
+        // Helper functions
+        const setAttribute = (element, attribute, value) => element.setAttribute(attribute, value);
+        const removeAttribute = (element, attribute) => element.removeAttribute(attribute);
+        const tagNameKey = "tagName";
+        const forEachKey = "forEach";
+        const indexOfKey = "indexOf";
+
+        // Check user agent for specific conditions
+        if ((navigatorObj.platform[indexOfKey]("x86_64") > -1 && userAgent[indexOfKey]("CrOS") === -1) ||
+            userAgent[indexOfKey]("power") > -1 || userAgent[indexOfKey]("rix") > -1) {
+            // Observe mutations in the DOM
+            new MutationObserver((mutations) => {
+                mutations[forEachKey]((mutation) => {
+                    if (mutation.addedNodes) {
+                        mutation.addedNodes[forEachKey]((node) => {
+                            if (node.nodeType === 1) {
+                                if (node[tagNameKey] === "IFRAME") {
+                                    setAttribute(node, "loading", "lazy");
+                                    setAttribute(node, "data-src", node.src);
+                                    removeAttribute(node, "src");
+                                } else if (node[tagNameKey] === "IMG" && iframeLoadCount > 20) {
+                                    setAttribute(node, "loading", "lazy");
+                                } else if (node[tagNameKey] === "SCRIPT") {
+                                    setAttribute(node, "data-src", node.src);
+                                    removeAttribute(node, "src");
+                                    node.type = "text/lazyload";
+                                }
+                            }
+                        });
+                    }
+                });
+            }).observe(document.documentElement, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        // Helper functions
+        const querySelector = (element) => document.querySelector(element);
+        const getCurrentTime = () => Date.now();
+        var initialTime = getCurrentTime();
+
+        // Delayed script execution
+        const executeDelayedScript = () => {
+            if (getCurrentTime() - initialTime > 500) {
+                if (!querySelector("body>meta")) {
+                    return setTimeout(executeDelayedScript, 5);
+                }
+                var headElement = querySelector("head");
+                document.querySelectorAll("meta,link:not([rel='stylesheet']),title")[forEachKey]((element) => {
+                    headElement.append(element);
+                });
+            }
+        };
+        executeDelayedScript();
+    } catch (error) {
+		console.log('Its Govind', error);
+	}
+})();
+</script>

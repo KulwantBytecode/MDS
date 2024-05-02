@@ -1,0 +1,59 @@
+<section class="giveaway-banner" style="background: #056839;">
+  <div class="giveaway-banner-row">
+    <div class="giveaway-banner-col">
+      <div class="giveaway-banner-media">
+        <img
+          src="{{ section.settings.giveaway_section_image | img_url:'master'  }}"
+          alt=""
+        >
+      </div>
+    </div>
+    <div class="giveaway-banner-col">
+      <div class="giveaway-banner-content">
+        <h3>{{ section.settings.giveaway_heading }}</h3>
+        <h2>{{ section.settings.giveaway_subheading }}</h2>
+        <a href="{{ section.settings.giveaway_button_url }}" style="background: #fff;color: #056839;">
+          {{ section.settings.giveaway_button_name | upcase }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Giveaway Home Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "label": "Giveaway Section Image",
+      "id": "giveaway_section_image"
+    },
+     {
+      "type": "text",
+      "label": "Giveaway Heading",
+      "id": "giveaway_heading"
+    },
+    {
+      "type": "text",
+      "label": "Giveaway Subheading",
+      "id": "giveaway_subheading"
+    },
+    {
+      "type": "text",
+      "label": "Giveaway Button Name",
+      "id": "giveaway_button_name"
+    },
+    {
+      "type": "url",
+      "label": "Giveaway Button URL",
+      "id": "giveaway_button_url"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Giveaway Home Banner"
+    }
+  ]
+}
+{% endschema %}

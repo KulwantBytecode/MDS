@@ -1,0 +1,62 @@
+<div class="page-width rich-text">
+  <div class="grid">
+    <div class="grid__item medium-up--two-quarters medium-up--push-one-sixth rich-text--text">
+      {% if section.settings.section_title != blank %}
+        <div class="rich-text__heading--medium text-center">
+          <h2 class="hide-mobile text-normal lg_text {% if section.settings.underline %} margin-none {%endif%}  text-black">{{ section.settings.section_title | escape }}</h2>
+          <h2 class="hide-desktop text-normal bold lg_text {% if section.settings.underline %} margin-none {%endif%}  text-black">{{ section.settings.section_title | escape }}</h2>
+         {% if section.settings.underline %}
+          <span class="line horizontal large"></span>
+         {%endif%}
+        </div>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <div class="rte text-center text-grey sm_text">{{ section.settings.text | strip_html }}</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<style>
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg-color }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "class": "index-section no-pb",
+  "settings": [
+   {
+      "type": "checkbox",
+      "id": "underline",
+      "label": "Heading Underline"
+    },
+    {
+      "type": "color",
+      "id": "bg-color",
+      "label": "Background",
+      "default": "#d9d9d9"
+    },
+   
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich text",
+      "category": "Maison"
+    }
+  ]
+}
+{% endschema %}

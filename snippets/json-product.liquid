@@ -1,0 +1,117 @@
+{% comment %} @info
+This module renders a JSON object that represents
+product data in a consistent way. Primarily, it is
+used to pass product data to Vue.js components.
+
+API:
+@param {String} mod_item The Shopify product to represent
+@param {Boolean} mod_encode Should the JSON string be filtered via "url_encode"?
+
+Example:
+<div
+  is="product-card"
+  product="{% render 'json-product', mod_item: mod_product %}"
+  decode="true"
+  inline-template></div>
+
+{% endcomment %}
+
+{%- assign mod_item = mod_item | default: false -%}
+{%- assign mod_encode = mod_encode | default: false -%}
+{%- assign mod_size_collection = mod_size_collection | default: false -%}
+{%- capture mod_tags -%}
+{%- for tag in mod_item.tags -%}
+{%- if tag contains '-' -%}
+{%- assign mod_split_tags = tag | split: '-' -%}
+,"{{mod_split_tags[0]}}:{{mod_split_tags | join: '-' | remove: mod_split_tags[0] | remove_first: '-'}}"
+{%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+
+{%- if mod_size_collection and mod_item.metafields.global.size_collection -%}
+{%- assign size_collection = collections[mod_item.metafields.global.size_collection] -%}
+{%- if size_collection != blank -%}
+{%- capture collectionProducts -%}
+[{%- render 'collection-json', mod_collection: size_collection, mod_encode: false, mod_limit: 50 -%}]
+{%- endcapture -%}
+{%- endif -%}
+{%- endif -%}
+
+{%- capture mod_json -%}
+{
+  "id": "{{ mod_item.id }}",
+  "selected_variant_id": "{{ mod_item.selected_variant.id }}",
+  "body_html": "{{ mod_item.content | url_encode }}",
+  "product_type": "{{ mod_item.type }}",
+  "images": [
+  {%- for image in mod_item.images -%}
+  {
+    "src": "{{ image.src | img_url: 'master' }}",
+    "alt": "{{ image.alt }}",
+    "attached_to_variant": "{{ image.attached_to_variant? }}",
+    "width": "{{ image.width }}",
+    "height": "{{ image.height }}"
+  }{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}],
+  "variants": [
+    {%- for mod_variant in mod_item.variants -%}
+      {
+        "available": "{{ mod_variant.available }}",
+        "current": {%- if mod_item.selected_or_first_available_variant.id == mod_variant.id -%}true{%- else -%}false{%- endif -%},
+        "title": "{{ mod_variant.title }}",
+        "id": "{{ mod_variant.id }}",
+        "image": {
+          "src": "{{ mod_variant.image.src | img_url: 'master' }}",
+          "alt": "{{ mod_variant.image.alt }}"
+        },
+        "price": "{{ mod_variant.price }}",
+        "compare_at_price": "{{ mod_variant.compare_at_price }}",
+        "option1": "{{ mod_variant.option1 | default: false }}",
+        "option2": "{{ mod_variant.option2 | default: false }}",
+        "option3": "{{ mod_variant.option3 | default: false }}",
+		"option1_handle": "{{ mod_variant.option1 | handleize  | default: false }}",
+		"option2_handle": "{{ mod_variant.option2 | handleize  | default: false }}",
+		"option3_handle": "{{ mod_variant.option3 | handleize  | default: false }}",
+        "metafields": {
+          "global": {
+            "preorder_date": {{ mod_variant.metafields.global.preorder_date | json}}
+          }
+        }
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+    ],
+  "available": {%- if mod_item.available -%}true{%- else -%}false{%- endif -%},
+  "handle": "{{ mod_item.handle }}",
+  "title": "{% if mod_prefix == true and mod_item.type == "Airpods" %}The {% endif %}{{ mod_item.title }}",
+  "featuredImage": "{{ mod_item.featured_image | img_url: 'master' }}",
+  "tags": [{%- for tag in mod_item.tags -%}"{{ tag }}"{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "price": "{{ mod_item.price }}",
+  "compare_at_price": "{{ mod_item.compare_at_price }}",
+  "optionNames": [{%- for option_name in mod_item.options -%}"{{ option_name }}"{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "optionsWithValues": {
+    {%- for option in mod_item.options_with_values -%}
+      "{{ option.name }}": [{%- for value in option.values -%}"{{ value }}"{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  },
+  "metafields": {
+    "global": {
+      "size_collection": "{{- mod_item.metafields.global.size_collection -}}"
+    },
+    "accordion": {
+      "title": {{- mod_item.metafields.accordion.title | json -}},
+      "text": {{- mod_item.metafields.accordion.text | json -}},
+      "icon": {{- mod_item.metafields.accordion.icon | json -}}
+    },
+    "recommended": {
+      "products": {{- mod_item.metafields.recommended.products | json -}}
+    }
+  }{%- if size_collection -%},
+  "sizeCollection": {
+    "title": "{{ size_collection.title }}",
+    "handle": "{{ size_collection.handle }}",
+    "products": {{- collectionProducts | strip_newlines -}}
+  }
+  {%- endif -%}
+}
+{%- endcapture -%}
+{%- if mod_encode -%}{{ mod_json | url_encode }}{%- else -%}{{ mod_json }}{%- endif -%}

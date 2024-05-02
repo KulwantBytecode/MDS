@@ -1,0 +1,69 @@
+<div class="our_founder_sec">
+  <div class="page-width">
+    <div class="page_title_block">
+       <div class="page_sub_title" data-aos="fade-up">{{ section.settings.sub_title }}</div>
+       <h2 data-aos="fade-up" data-aos-delay="300">{{ section.settings.title }}</h2>
+       <p  data-aos="fade-up"  data-aos-delay="400">{{ section.settings.description }}</p>
+    </div>
+
+    <div class="founders_info">
+      <figure  data-aos="fade-up"  data-aos-delay="400">
+        {{ section.settings.image | img_url: 'master' | img_tag }}
+      </figure>
+      <div class="founders_name"  data-aos="fade-up"  data-aos-delay="400">
+        <figure>
+          {{ section.settings.sign_image_zane | img_url: 'master' | img_tag }}
+        </figure>
+        <figure>
+           {{ section.settings.sign_image_omar | img_url: 'master' | img_tag }}
+        </figure>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Section Founders",
+    "settings": [
+        {
+          "type": "text",
+          "id": "sub_title",
+          "label": "Sub Title"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },   
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        },  
+        {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Founder Image"
+        }, 
+        {
+           "type": "image_picker",
+           "id": "sign_image_zane",
+           "label": "Zane Signature Image"
+        },
+        {
+           "type": "image_picker",
+           "id": "sign_image_omar",
+           "label": "Omar Signature Image"
+        }      
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

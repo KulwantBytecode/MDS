@@ -1,0 +1,208 @@
+<div class="c_what_we_offer">
+  <div class="page-width">
+    
+    <h2>{{ section.settings.title }}</h2>
+    <div class="cww_offer_list">
+      <div class="cww_offer_item">
+        {% if section.settings.gifttitle != blank %}
+        <div class="cww_offer_item_inner">
+          <figure>
+        <img src="{{ section.settings.image1 | img_url:'master' }}" />
+          </figure>
+          <h4>{{ section.settings.gifttitle }}</h4>
+          <p>{{ section.settings.info }}</p>
+        </div>
+          {% endif %}
+      </div>
+      {% if section.settings.gifttitle2 != blank %}
+      <div class="cww_offer_item">
+        <div class="cww_offer_item_inner">
+          <figure>
+          <img src="{{ section.settings.image2 | img_url:'master' }}" />
+          </figure>
+          <h4>{{ section.settings.gifttitle2 }}</h4>
+          <p>{{ section.settings.info2 }}</p>
+        </div>
+      </div>
+      {% endif %}
+      {% if section.settings.gifttitle3 != blank %}
+      <div class="cww_offer_item">
+        <div class="cww_offer_item_inner">
+          <figure>
+      <img src="{{ section.settings.image3 | img_url:'master' }}" />  
+          </figure>
+          <h4>{{ section.settings.gifttitle3 }}</h4>
+          <p>{{ section.settings.info3 }}</p>
+        </div>
+      </div>
+        {% endif %}
+    </div>
+  </div>
+</div>
+
+
+<!-- HOW IT WORKS SECTION -->
+
+<div class="c_how_it_works">
+  <div class="page-width">
+    {% if section.settings.works != blank %}
+    <h2>{{ section.settings.works }}</h2>
+      {% endif %}
+    <div class="c_how_it_works_list">
+      {% if section.settings.workgifttitle1 %}
+      <div class="c_how_it_works_item">
+        <div class="c_how_it_works_item_inner">
+        {% if section.settings.workimage1 != blank %}
+          <figure>
+          <img src="{{ section.settings.workimage1 | img_url:'master' }}"/>
+          </figure>
+          {% endif %}
+          <h4>{{ section.settings.workgifttitle1 }}</h4>
+          <p>{{ section.settings.workinfo1 }}</p>
+        </div>
+      </div>
+      {% endif %}
+       {% if section.settings.workgifttitle2 != blank %}
+      <div class="c_how_it_works_item">
+      <div class="c_how_it_works_item_inner">
+          {% if section.settings.workimage2 != blank %}
+            <figure>
+          <img src="{{ section.settings.workimage2 | img_url:'master' }}"/>
+            </figure>
+          {% endif %}
+          <h4>{{ section.settings.workgifttitle2 }}</h4>
+          <p>{{ section.settings.workinfo2 }}</p>
+      </div>
+      </div>
+          {% endif %}
+          {% if section.settings.workgifttitle3 != blank %}
+      <div class="c_how_it_works_item">
+        <div class="c_how_it_works_item_inner">
+          {% if section.settings.workimage3 != blank %}
+            <figure>
+        <img src="{{ section.settings.workimage3 | img_url:'master' }}"/>
+            </figure>
+            {% endif %}
+          <h4>{{ section.settings.workgifttitle3 }}</h4>
+          <p>{{ section.settings.workinfo3 }}</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <div class="klaviyo-form-QTjm6g"></div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "gift-corperatepage",
+    "settings": [
+      {
+        "type" : "text",
+        "id" : "title",
+        "label" : "Heading"
+      },
+      {
+        "type" : "image_picker",
+        "id" : "image1",
+        "label" : "Select Image"
+      },
+      {
+        "type" : "text",
+        "id" : "gifttitle",
+        "label": "Gift title"
+      },
+      {
+        "type" : "richtext",
+        "id" : "info",
+        "label":"Gift Info"
+      },
+      {
+        "type" : "image_picker",
+        "id" : "image2",
+        "label" : "Select Image"
+      },
+      {
+        "type" : "text",
+        "id" : "gifttitle2",
+        "label": "Gift title"
+      },
+      {
+        "type" : "richtext",
+        "id" : "info2",
+        "label":"Gift Info"
+      },
+      {
+        "type" : "image_picker",
+        "id" : "image3",
+        "label" : "Select Image"
+      },
+      {
+        "type" : "text",
+        "id" : "gifttitle3",
+        "label": "Gift title"
+      },
+      {
+        "type" : "richtext",
+        "id" : "info3",
+        "label":"Gift Info"
+      },
+      {
+        "type": "text",
+        "id" : "works",
+        "label": "Work Title"
+      },
+       {
+        "type" : "image_picker",
+        "id" : "workimage1",
+        "label" : "Select Image"
+      },
+      {
+        "type" : "text",
+        "id" : "workgifttitle1",
+        "label": "Gift title"
+      },
+      {
+        "type" : "richtext",
+        "id" : "workinfo1",
+        "label":"Gift Info"
+      },
+       {
+        "type" : "image_picker",
+        "id" : "workimage2",
+        "label" : "Select Image"
+      },
+      {
+        "type" : "text",
+        "id" : "workgifttitle2",
+        "label": "Gift title"
+      },
+      {
+        "type" : "richtext",
+        "id" : "workinfo2",
+        "label":"Gift Info"
+      },
+       {
+        "type" : "image_picker",
+        "id" : "workimage3",
+        "label" : "Select Image"
+      },
+      {
+        "type" : "text",
+        "id" : "workgifttitle3",
+        "label": "Gift title"
+      },
+      {
+        "type" : "richtext",
+        "id" : "workinfo3",
+        "label":"Gift Info"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

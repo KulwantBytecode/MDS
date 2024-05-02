@@ -1,0 +1,75 @@
+<section class="home-ourstory-section">
+   <div class="page-width">
+     <div class="grid grid--gapless grid--1-col grid--2-col-tablet">
+       <div class="grid__item">
+          <div class="our-story-content-nav">
+            <p class="tagline-text"> THE MICRO CROSS BODY </p>
+            <h2> A Micro Bag Made For Maxed Out Glam </h2>
+            
+            <div class="container">
+               
+              <div class="accordion-container">
+                <div class="set"><a href="javascript:void(0);" data-toggle-content="story1"  class="">
+                  <h3> <i class="fas accr fa-plus" id="icon-toggle1"></i> Made From Premium Pebbled Leather </h3>
+                  </a>
+
+                  <div class="content" style="display: none;">
+                    <p>Perfected in a premium pebbled leather with a sleek silhouette, The Phone Case wraps all four device corners with its distinctive look, feel and smell.</p>
+
+                  </div>
+                </div>
+              </div>
+              
+              
+              <div class="accordion-container">
+                <div class="set"><a href="javascript:void(0);" data-toggle-content="story2"class="active">
+                  <h3> <i class="fas accr fa-minus" id="icon-toggle2"></i> Handcrafted With Care </h3>
+                  </a>
+
+                  <div class="content" style="display: block;">
+                    <p> Thoughtful hand-construction ensures functionality with button access, speaker, port cutouts and wireless charging compatibility. </p>
+
+                  </div>
+                </div>
+              </div>
+              
+
+              <div class="accordion-container">
+                <div class="set"><a href="javascript:void(0);" data-toggle-content="story3">
+                  <h3> <i class="fas fa-plus accr" id="icon-toggle3"></i> Monogrammed For You </h3>
+                  </a>
+
+                  <div class="content">
+                    <p> Select from gold or silver foil monogram detailing that’s hand-pressed to perfection for a piece that’s uniquely yours.</p>
+                  </div>
+                </div>
+              </div>
+              
+              
+            </div>
+         
+         </div>
+       </div>
+       
+       <div class="grid__item">
+          <div class="accrodian-change-images-product">
+             <img src="{{ 'MCB_1340x.webp' | asset_url }}" alt="" class="ourwork_feafult">
+         </div>
+       </div>
+     </div>
+  </div>
+</section>
+
+
+{% schema %}
+ {
+   "name": "Product-accrodian-section",
+   "settings": [],
+    "presets":[
+      {
+        "name": "Product-accrodian-section",
+        "category": "Custom Content"
+      }
+	]
+ }
+{% endschema %}

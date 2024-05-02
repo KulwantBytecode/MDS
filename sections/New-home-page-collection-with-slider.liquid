@@ -1,0 +1,458 @@
+<section class="new_home_page_collection_with _slider">
+  <section class="mds-collection-grid-sec">
+    <div class="mds-collection-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'image_with_button_block' %}
+          {% if block.settings.image != blank
+            and block.settings.heading != blank
+            and block.settings.button_url != blank
+            and block.settings.button_text != blank
+          %}
+            <div class="mds-collection-grid-col  grid-col-{{ forloop.index }}">
+              <div class="mds-collection-grid-col-in">
+                <div class="mds-collection-grid-media">
+                  <a href="{{ block.settings.button_url }}">
+                    <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.alt_text }}"
+                  ></a>
+                </div>
+                <div class="mds-collection-grid-content">
+                  <h2>{{ block.settings.heading }}</h2>
+                  <a href="{{ block.settings.button_url }}" class="">{{ block.settings.button_text }}</a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+  {{ 'facets.js' | asset_url | script_tag }}
+  <style>
+    .product-grid3 .product-image3 img:nth-child(n+3) {
+      display: unset;
+    }
+    .list_product-colors {
+      display: block;
+    }
+    .container_product-colors {
+      display: block;
+      width:100%;
+      max-width: 235px;
+      padding-right: 35px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .swiper-button-next {
+      position: absolute;
+      display: block !important;
+      top: 93%;
+      left: 66%;
+    }
+    .container_product-colors .swiper-slide {
+      max-width: 40px;
+    }
+    .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+      content: 'next';
+      font-size: 15px;
+    }
+    .icon-next,.icon-prev {
+      position: absolute;
+      transform: translate(-50%,-50%);
+      width: 50px;
+      height: 60px;
+      cursor: pointer;
+      top: 44%;
+      left: 100%;
+      right: 0%;
+      z-index: 9;
+    }
+    .icon-prev {
+      display: none;
+    }
+    .icon-prev {
+      position: absolute;
+      transform: translate(-50%, -50%) rotate(-180deg);
+      width: 50px;
+      height: 60px;
+      cursor: pointer;
+      top: 50%;
+      left: 90%;
+      right: 0%;
+      z-index: 9;
+    }
+    .arrow {
+      top: 25px;
+      display: block !important;
+      position: absolute;
+      top: 50%;
+      width: 22px;
+      height: 2.5px;
+      background-color: #000;
+    }
+    .arrow::after, .arrow::before {
+      content: '';
+      position: absolute;
+      width: 54%;
+      height: 2.5px;
+      right: -2px;
+      background-color: #000;
+    }
+    .arrow::after {
+      top: -4px;
+      transform: rotate(45deg);
+    }
+    .arrow::before {
+      top: 4px;
+      transform: rotate(-45deg);
+    }
+    .badge--bottom-left.badge {
+      color: #000;
+      background-color: #fff;
+      padding: 7px 11px !important;
+      margin-left: 8px;
+      border-color: #fff;
+      border-radius: 3px;
+      box-shadow: 0px 0px 10px 0px #ece9e9;
+    }
+    span.badge.price__badge-sale, span.badge.badge--bottom-left.color-accent-1 {
+      background: #fff;
+      border-radius: 3px;
+      color: #b03034;
+    }
+    .card-information__wrapper>*:not(.visually-hidden:first-child)+*:not(.rating) {
+      margin-top: 0;
+    }
+    .card-information+.card {
+      margin-bottom: 1.7rem;
+      background: #f4f4f4;
+      width: calc(100% + 30px);
+      margin-left: -15px;
+    }
+    .card-wrapper {
+        background: #ffffff;
+    }
+    .product-recommendations .card-wrapper {
+        background: #ffffff;
+
+    }
+    .full-unstyled-link{
+      display: block;
+      position: relative;
+    }
+
+    @media(max-width: 991px) {
+      .color-option {
+
+        width: 18px;
+        height: 18px;
+    }
+    .card.card--product.card--outline {
+        background: #f4f4f4;
+        width: calc(100% + 20px);
+        margin-left: -10px;
+    }
+    .arrow {
+        top: 25px;
+        top: 50%;
+        width: 16px;
+        height: 2.5px;
+
+    }
+    .icon-prev {
+
+        left: 75%;
+
+    }
+    .arrow::after, .arrow::before {
+        content: '';
+        position: absolute;
+        width: 55%;
+        height: 2.5px;
+        right: 0px;
+        background-color: #000;
+    }
+    }
+  </style>
+
+  <section class="play-pause-slider">
+    <div id="splide" class="newarrival-wrapper splide">
+      <div class="play-pause-slider swiper-container collection splide__track">
+        {% assign newcollection = collections[section.settings.collection] %}
+        <ul
+          id="newarrival_slider_cst"
+          class="newarrival_slider_custom swiper-wrapper splide__list"
+          data-id="{{ section.id }}"
+          class="
+            grid grid--2-col negative-margin product-grid {% if similarcollection.products_count < 4 %} grid--{{ similarcollection.products_count }}-col-tablet{% else %}
+              {% if similarcollection.products_count == 4 %} grid--4-col-desktop{% else %} grid--3-col-tablet grid--one-third-max grid--4-col-desktop grid--quarter-max{% endif %}
+            {% endif %}
+          "
+        >
+          {%- for product in newcollection.products %}
+            <li
+              class="newarrival_slide newarrival_slide_cst grid__item swiper-slide splide__slide"
+              data-swiper-autoplay="0"
+            >
+              {% render 'play-pause-slider-snnipet',
+                collection: newcollection,
+                variant: variant,
+                product_card_product: product,
+                media_size: section.settings.image_ratio,
+                show_secondary_image: section.settings.show_secondary_image,
+                add_image_padding: section.settings.add_image_padding,
+                show_vendor: section.settings.show_vendor,
+                show_image_outline: section.settings.show_image_outline,
+                show_rating: section.settings.show_rating
+              %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <!--
+        <div class="splide__optional-button-container">
+         <button class="splide__play-pause" aria-controls="splide-track">Pause</button>
+        </div>
+      -->
+      <div class="splide__optional-button-container">
+        <button
+          class="splide__play-pause"
+          aria-controls="splide-track"
+          id="splide_buttoonnn"
+          onclick="togglePlayPause()"
+        >
+          <svg
+            class="play_btn"
+            height="14"
+            id="play-btn"
+            version="1.1"
+            viewBox="0 0 512 512"
+            width="14"
+            xml:space="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path d="M405.2,232.9L126.8,67.2c-3.4-2-6.9-3.2-10.9-3.2c-10.9,0-19.8,9-19.8,20H96v344h0.1c0,11,8.9,20,19.8,20  c4.1,0,7.5-1.4,11.2-3.4l278.1-165.5c6.6-5.5,10.8-13.8,10.8-23.1C416,246.7,411.8,238.5,405.2,232.9z"></path>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            class="pause_btn"
+          >
+            <g clip-path="url(#clip0_309_2261)">
+              <mask id="mask0_309_2261" style="mask-type: luminance;" maskUnits="userSpaceOnUse" x="0" y="0" width="14" height="14">
+                <path d="M13.6599 0.730042H0.659912V13.73H13.6599V0.730042Z" fill="white"></path>
+              </mask>
+              <g mask="url(#mask0_309_2261)">
+                <path d="M5.71549 0.730042H3.54883V13.73H5.71549V0.730042Z" fill="black"></path>
+                <path d="M10.7712 0.730042H8.60449V13.73H10.7712V0.730042Z" fill="black"></path>
+              </g>
+            </g>
+            <defs>
+              <clipPath id="clip0_309_2261">
+                <rect width="13" height="13" fill="white" transform="translate(0.659912 0.730042)"></rect>
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="flickity_controls">
+      <div class="news__pagination">
+        <div class="slick_slider_control">
+          <div class="news__arrows"></div>
+          <div class="splide__optional-button-container"></div>
+          <div class="play_pause">
+            <svg
+              class="play_btn"
+              height="14"
+              id="play-btn"
+              style="display: none;"
+              version="1.1"
+              viewBox="0 0 512 512"
+              width="14"
+              xml:space="preserve"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path d="M405.2,232.9L126.8,67.2c-3.4-2-6.9-3.2-10.9-3.2c-10.9,0-19.8,9-19.8,20H96v344h0.1c0,11,8.9,20,19.8,20  c4.1,0,7.5-1.4,11.2-3.4l278.1-165.5c6.6-5.5,10.8-13.8,10.8-23.1C416,246.7,411.8,238.5,405.2,232.9z"></path>
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              class="pause_btn"
+            >
+              <g clip-path="url(#clip0_309_2261)">
+                <mask id="mask0_309_2261" style="mask-type: luminance;" maskUnits="userSpaceOnUse" x="0" y="0" width="14" height="14">
+                  <path d="M13.6599 0.730042H0.659912V13.73H13.6599V0.730042Z" fill="white"></path>
+                </mask>
+                <g mask="url(#mask0_309_2261)">
+                  <path d="M5.71549 0.730042H3.54883V13.73H5.71549V0.730042Z" fill="black"></path>
+                  <path d="M10.7712 0.730042H8.60449V13.73H10.7712V0.730042Z" fill="black"></path>
+                </g>
+              </g>
+              <defs>
+                <clipPath id="clip0_309_2261">
+                  <rect width="13" height="13" fill="white" transform="translate(0.659912 0.730042)"></rect>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <div class="slider-dots-box"></div>
+        <div class="news__counter"><span>1</span>/<span>11</span></div>
+      </div>
+    </div>
+  </section>
+  <script>
+      // Play toggle
+    $("body").on("click", function () {
+      // Remove class "pause-active" from pauseBtn
+      var button = document.getElementById("splide-track");
+
+
+      var attr = button.getAttribute("aria-live");
+      var pauseBtn = document.querySelector(
+        "#splide .splide__optional-button-container"
+      );
+      if (attr == "polite") {
+        console.log("Pause if");
+        pauseBtn.classList.add("pause-active");
+      } else {
+        console.log("Pause else");
+        pauseBtn.classList.remove("pause-active");
+      }
+    });
+    function togglePlayPause() {
+       var button = document.querySelector("#splide .splide__play-pause");
+      var splidess = document.querySelector("#splide .splide__optional-button-container");
+
+      // Check if the button has the class 'playing'
+      if (splidess.classList.contains("pause-active")) {
+        // If it has, remove the class and change the text to 'Play'
+        splidess.classList.remove("pause-active");
+        // button.textContent = 'Play';
+        // Add code to pause the slideshow or any other action you want
+      } else {
+        // If it doesn't have the class, add it and change the text to 'Pause'
+        splidess.classList.add("pause-active");
+        // button.textContent = 'Pause';
+        // Add code to play the slideshow or any other action you want
+      }
+    }
+  </script>
+</section>
+{% schema %}
+{
+  "name": "Collection With Slider",
+  "settings": [
+   {
+      "type" : "collection",
+      "id" : "collection",
+      "label" : "Select Collection"
+    },
+
+    {
+    "type": "select",
+    "id": "image_ratio",
+    "options": [
+      {
+        "value": "adapt",
+        "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+      },
+      {
+        "value": "portrait",
+        "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+      },
+      {
+        "value": "square",
+        "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+      }
+    ],
+    "default": "adapt",
+    "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_secondary_image",
+    "default": false,
+    "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+  },
+  {
+    "type": "checkbox",
+    "id": "add_image_padding",
+    "default": false,
+    "label": "t:sections.main-collection-product-grid.settings.add_image_padding.label"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_image_outline",
+    "default": true,
+    "label": "t:sections.main-collection-product-grid.settings.show_image_outline.label"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_vendor",
+    "default": false,
+    "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+  },
+    {
+    "type": "checkbox",
+    "id": "show_rating",
+    "default": false,
+    "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+    "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+  }
+  ],
+  "blocks": [
+    {
+      "type": "image_with_button_block",
+      "name": "Image with Button",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection With Slider"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,2625 @@
+@font-face {
+  font-family: "Arbesco-DT";
+  src: url('{{ "ArbescoDTBook.eot" | asset_url }}');
+  src: url('{{ "ArbescoDTBook.eot" | asset_url }} ?#iefix') format("embedded-opentype"),
+       url('{{ "ArbescoDTBook.otf" | asset_url }}');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+ font-family: 'fontello';
+ src: url('{{ "fontello.eot" | asset_url }} ?60529492 ');
+ src: url('{{ "fontello.eot" | asset_url }} ?60529492#iefix') format('embedded-opentype'),
+ url('{{ "fontello.ttf" | asset_url }} ?60529492') format('truetype');
+ font-weight: normal;
+ font-style: normal;
+ }
+.customizer {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  transition: visibility .1s, opacity .2s;
+
+  @media(min-width:992px) {
+    padding: 5vw;
+  }
+
+  @media(min-width:1600px) {
+    padding: 10vh 12.5vw;
+  }
+}
+.customizer.open {
+  opacity: 1;
+  visibility: visible;
+}
+.customizer_mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-color: rgba(0,0,0,.3);
+}
+.customizer_wrap {
+  display: flex;
+  height: 100%;
+  max-height: 100vh;
+  max-width: 1440px;
+  margin: auto;
+  overflow: auto;
+      top: 50%;
+    transform: translateY(-50%);
+  position: relative;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  background: linear-gradient(90deg, #f4f4f4 0%, #f4f4f4 50%, #FFF 50%, #FFF 100%);
+  
+  @media(max-width:991px) {
+    flex-direction: column;
+    background: #FFF;
+  }
+  @media(min-width:992px) {
+
+  }
+}
+.customizer_close {
+  display: block;
+  position: absolute;
+  top: 3rem;
+  right: 3rem;
+  z-index: 99;
+  font-size: 2.4rem;
+  line-height: 0.4;
+  width: 0.5em;
+  height: 0.5em;
+  color:#000;
+  @media(min-width:992px) {
+    top: 1rem;
+    right: 1rem;
+    font-size: 3rem;
+  }
+}
+.customizer_product, .customizer_form {
+  padding: 1rem;
+
+  @media(min-width:992px) {
+    width: 50%;
+    padding: 4.5rem 3rem;
+  }
+}
+
+.customizer_product {
+  text-align: center;
+  background: #f4f4f4;
+}
+.container_product-images {
+  position: relative;
+  font-size: 1.3rem;
+  max-width: 100%;
+  margin: 0 auto 1rem;
+  background: none !important;
+  transition: all .2s;
+
+  @media(min-width:375px) {
+    font-size: 1.4rem;
+  }
+  @media(min-width:425px) {
+    font-size: 1.475rem;
+  }
+  @media(min-width:575px) {
+    font-size: 1.55rem;
+  }
+  @media(min-width:992px) {
+    font-size: 2.5rem;
+    max-width: 480px;
+    margin: 0 auto 3rem;
+  }
+  @media(min-width:1600px) {
+    margin-bottom: 4.5rem;
+  }
+
+  .customizer.open & {
+    font-size: 1.3rem;
+    max-width: 270px;
+
+    @media(min-width:375px) {
+      font-size: 1.35rem;
+    }
+    @media(min-width:425px) {
+      font-size: 1.425rem;
+    }
+    @media(min-width:575px) {
+      font-size: 1.5rem;
+    }
+    @media(min-width:992px) {
+      font-size: 2.4rem;
+      max-width: 480px;
+    }
+  }
+}
+.list_product-images li {
+  position: relative;
+  padding-top: 100%;
+}
+.list_product-images li:not(.active) {
+  display: none;
+}
+.list_product-images img {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.container_product-colors {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem 0;
+}
+.label_product-colors {
+  padding-right: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 0;
+  border-right: 1px solid;
+}
+.customizer-color-labels {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+}
+.label_current-color {
+  width: auto;
+  text-align: left;
+}
+a.customizer_mask {
+    display: block;
+}
+.list_product-colors {
+  display: flex;
+  flex-wrap: wrap;
+}
+.list_product-colors input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  visibility: hidden;
+}
+
+.customizer_form {
+  display: flex;
+  flex-grow: 1;
+margin-bottom:2rem;
+  @media(max-width:991px) {
+    padding: 1rem 2rem;
+  }
+}
+.customizer_form-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  @media(min-width:992px) {
+    h1 {
+      margin-bottom: 1rem;
+    }
+  }
+  @media(min-width:1200px) {
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+  }
+  @media(min-width:1400px) {
+    h1 {
+      margin-bottom: 3rem;
+    }
+  }
+}
+.customizer_form-content *:last-child {
+  margin-bottom: 0;
+}
+.customizer_tabs-container {
+  position: relative;
+  padding-bottom: .25em;
+  margin-bottom: 1em;
+  color: #6f6f6f;
+  display:none;
+
+  @media(min-width:992px) {
+    margin-bottom: 1.5em;
+  }
+  @media(max-width:991px) {
+    font-size: .875em;
+  }
+}
+.customizer_tabs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.customizer_tabs li:not(:last-of-type) {
+  margin-right: 1em;
+
+  @media(min-width:992px) {
+    margin-right: 3em;
+  }
+}
+.customizer_tab {
+  &.active {
+    color: #000;
+  }
+  a {
+    display: block;
+    color: inherit;
+  }
+}
+
+.customizer_panels {
+  margin-bottom: .75rem;
+
+  @media(min-width:992px) {
+    margin-bottom: 1rem;
+  }
+}
+.customizer_panel:not(.active) {
+  display: none;
+}
+.customizer_spacer {
+  flex-grow: 1;
+}
+.btn-customizer {
+  cursor: pointer;
+  display: block;
+  z-index: 5;
+  position: relative;
+  -webkit-appearance: none;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  font-size: 0.80em; //product page changes
+  line-height: 1.4;
+  min-height: 3.2rem; //product page changes
+  padding: .5rem 0rem;
+  border: 1px transparent solid;
+
+  color: #FFF;
+  background: transparent;
+
+
+  @media(min-width:992px) {
+    font-size: 1rem;
+    min-height: 3.5em;
+    padding: 1rem;
+  }
+
+  &[disabled],
+  &[aria-disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+.btn-customizer.btn-blue:hover {
+  background: #1b1b1b;
+}
+.btn-customizer.btn-blue:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #1b1b1b, #1b1b1b);
+  transition: background-color .2s;
+}
+.btn-customizer.btn-blue:hover:before {
+  opacity: 0;
+}
+.btn-customizer.btn-clear {
+  color: #297bc7;
+  outline: none;
+}
+.btn-customizer.btn-border {
+  margin-left: auto;
+  margin-right: auto;
+  text-transform: none;
+  color: #297bc7;
+
+}
+.btn-customizer.btn-border:hover {
+  color: #42a1ec;
+}
+.btn-customizer.customizer_edit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 450px;
+  padding: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-transform: none;
+  color: inherit;
+  @media(min-width:992px) {
+    padding: .75rem 1rem;
+  }
+  @media(max-width:991px) { //product page changes
+    border: 1px solid;
+    max-height: 3.2rem;
+    justify-content: space-around;
+    min-height: 3.2rem;
+  }
+}
+.customizer_choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.4rem;
+  min-width: 1.4rem;
+  margin-left: -1rem;
+  @media(min-width:991px){ //product page changes
+    color:#000;
+  }
+
+  &.double {
+    min-width: 3.6rem;
+
+    img {
+      max-width: 32px;
+      margin-left: .5rem;
+    }
+  }
+  
+  @media(min-width:992px) {
+    height: 2rem;
+    min-width: 2rem;
+    margin-left: 1rem;
+
+    &.double {
+      min-width: 4rem;
+    }
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+.customizer_split {
+  display: block;
+  margin: 0 .5rem;
+  height: 1.4rem;
+
+
+  @media(min-width:992px) {
+    margin: 0 1rem;
+    height: 2rem;
+  }
+}
+.customizer_edit-text {
+  color: #297bc7;
+  @media(max-width:991px) {
+    color: #000;
+  }
+}
+
+.initials_wrap {
+  position: relative;
+}
+.initials_field {
+  position: relative;
+  z-index: 0;
+
+  @media(max-width:991px) {
+    margin-right: 3rem;
+  }
+  
+  &.has-value, &.has-focus {
+    .initials-label {
+      z-index: 0;
+      top: .5rem;
+      font-size: 16px;
+      transform: translate(0, 0);
+
+      @media(max-width:991px) {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
+}
+@media(max-width:991px) {
+  .initials_clear {
+    display: block;
+    position: absolute;
+    top: .65rem;
+    right: 1.5rem;
+    width: 1em;
+    height: 1em;
+    font-size: 1.4rem;
+    line-height: 0.6;
+    padding-top: 3px;
+    padding-bottom: 12px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 50%;
+    text-align: center;
+    color: #FFF !important;
+    background-color: #6f6f6f;
+    transform: translate(50%, 0%);
+  }
+  .customizer_save {
+    margin: 0;
+  }
+}
+.customizer .initials_clear {
+    display: none;
+}
+.customizer.open .initials_clear {
+    display: block;
+}
+.initials-label, .initials-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.initials-label {
+  z-index: -1;
+  left: 1rem;
+  color: #6f6f6f;
+  transition: all .2s;
+  pointer-events: none;
+
+  @media(max-width:991px) {
+    font-size: .875em;
+  }
+}
+.initials {
+  width: 100%;
+  background: none;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  color: inherit;
+
+  @media(min-width:992px) {
+    padding: 1.5rem 1rem .5rem;
+    font-size: 1.6rem;
+  }
+
+  &.invalid {
+    outline: none;
+  
+  
+    background-color: #fde3e5;
+
+    &, & ~ *, & ~ * * {
+      color: red !important;
+    }
+  }
+}
+.initials_text {
+  position: relative;
+  font-size: 1.2rem;
+  padding: .5rem 0;
+  color:green;
+
+  @media(min-width:992px) {
+    padding: .75rem 0;
+  }
+
+  .normal, .error {
+    display: block;
+    transition: all .3s;
+  }
+  .normal {
+    position: absolute;
+    top: .5rem;
+    bottom: .5rem;
+    left: 0;
+    right: 0;
+  
+    @media(min-width:992px) {
+      top: .75rem;
+      bottom: .75rem;
+    }
+  }
+  .error {
+    position: relative;
+    padding-left: 1.125em;
+    color: red;
+  
+    &:before {
+      content: 'i';
+      position: absolute;
+      top: 3px;
+      left: 0;
+      display: block;
+      width: 9px;
+      height: 9px;
+      font-size: 5px;
+      text-align: center;
+    
+      border-radius: 50%;
+    }
+  }
+  &.invalid .normal, &:not(.invalid) .error {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.initials-right {
+  z-index: 1;
+  display: flex;
+  align-items:center;
+  right: 1rem;
+  color: #6f6f6f;
+}
+.initials-heart , .initials-chess  {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  margin-left: 1rem !important;
+  cursor:pointer;
+
+  @media(min-width:992px) {
+    font-size: 2.4rem;
+   
+  }
+
+  svg {
+    display: block;
+    max-width: 1.3rem;
+    height: 2rem;
+
+    @media(min-width:992px) {
+      height: 0.6em;
+      max-width: 1.75rem;
+    }
+  }
+}
+.initials-chess  svg {
+  height: 1em;
+}
+
+.initials-limit {
+  pointer-events: none;
+}
+.product-form__item.product-form__item--initials {
+  margin-bottom: 1rem;
+}
+.foil-list label {
+  cursor: pointer;
+}
+input[type="radio"].checked + .foil-option {
+  border-color: #000;
+}
+
+@media(max-width:991px) {
+  .customizations_initials {
+    position: relative;
+    padding: 0 2rem;
+    margin: 0 -2rem;
+  }
+}
+.customizer-grid {
+  display: flex;
+  margin-left: -.5rem;
+  margin-right: -.5rem;
+
+  @media(max-width:991px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+    
+    margin-left: -2rem;
+    margin-right: -2rem;
+    margin-bottom: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    &:after {
+      content: '';
+      display: block;
+      z-index: 2;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 1.5rem;
+      background: -webkit-linear-gradient(0deg,rgba(255, 255, 255, 0),rgba(255, 255, 255, 1));
+    }
+  }
+  @media(min-width:992px) {
+    flex-wrap: wrap;
+  }
+  @media(min-width:1600px) {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+
+  .customizer-grid_item {
+    width: 100%;
+
+    @media(max-width:991px) {
+      position: relative;
+      flex-shrink: 0;
+      width: calc(100% / 7);
+      min-width: 60px;
+    
+      &:not(:last-of-type) {
+        margin-right: .5rem;
+      }
+      &:last-of-type {
+        padding-right: 2rem;
+        width: calc((100% / 7) + 2rem);
+        min-width: 92px;
+      }
+    }
+    @media(min-width:992px) {
+      flex: 0 0 10%;
+      max-width: 10%;
+      padding: 0 .20rem;
+      margin-bottom: 0rem;
+    }
+    @media(min-width:1600px) {
+      padding: 0 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+}
+.customizer_tip {
+  font-size: .75rem;
+  padding: .5rem 0;
+
+  @media(min-width:992px) {
+    padding: .75rem 0;
+  }
+
+  span {
+    display: block;
+    position: relative;
+    padding-left: 1.25em;
+    color: #6f6f6f;
+
+    &:before {
+      content: 'i';
+      font-size: 8px;
+      text-align: center;
+      position: absolute;
+      top: 2px;
+      left: 0;
+      display: block;
+      width: 12px;
+      height: 12px;
+   
+      border-radius: 50%;
+    }
+  }
+}
+.item-icon {
+  display: block;
+  text-align: center;
+}
+.item-icon img {
+  display: block;
+  margin-bottom: .25rem;
+  border: 1px #d9d9d9 solid;
+  border-radius: 50%;
+  transition: all .2s;
+
+  @media(min-width:992px) {
+    margin-bottom: .5rem;
+  }
+}
+.item-icon.active img {
+  border-color: #000;
+}
+.item-name {
+  display: block;
+  font-size: 0.8rem;
+
+  @media(min-width:1400px) {
+    font-size: 1rem;
+  }
+}
+
+/* DROP DOWN */
+.drop-down-wrapper {
+  display: block;
+}
+.drop-down-btn {
+  width: 100%;
+  text-align: left;
+  padding: .75rem 1rem;
+  border-radius: 0;
+  position: relative;
+  z-index: 31;
+  background-color: transparent !important;
+  color: #000 !important;
+
+  &:after {
+    float: right;
+    width: .75em;
+    height: .75em;
+    transform: rotate(45deg);
+    transform-origin: 75% 75%;
+    border: none;
+
+    margin: 0;
+  }
+  &.active:after {
+    transform: rotate(-135deg);
+  }
+}
+.drop-down {
+  bottom: 0;
+  min-width: 100%;
+  transform: translate(-50%, 100%);
+
+  li {
+    position: relative;
+
+    a {
+      padding: 1rem;
+    }
+    &:not(:last-child):after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 1rem;
+      right: 1rem;
+      height: 1px;
+      background-color: #f4f4f4;
+    }
+  }
+}
+
+.btn-customizer, .customizer_edit-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.icon_pencil {
+  display: inline-block;
+  height: 1.125em;
+  width: 1.125em;
+  margin: 0 .25rem;
+
+
+  @media(min-width:992px) {
+    margin: 0 .5rem;
+  }
+}
+@media(max-width:991px) {
+  .product-right .product-form {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .product-form__item--size {
+    margin-bottom: 1rem;
+  }
+  .product-sizes-mob, #Amount {
+    width: 100%;
+    border-radius: 3px;
+    padding: .75rem;
+  }
+}
+@media(min-width:992px) and (max-height:900px) {
+  .customizer_wrap {
+    width: 100%;
+  }
+  .customizer.open .container_product-images {
+    font-size: 1.6rem;
+    max-width: 320px;
+  }
+  .customizer_form-content h1 {
+    margin-bottom: .75rem;
+  }
+  .item-icon img {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: .25rem;
+  }
+}
+html.c-open .template-product {
+  height: 100vh !important;
+
+  @media(max-width:991px) {
+    background: #FFF;
+  }
+}
+@media(max-width:991px) {
+  .foil-option {
+    width: 3.5rem;
+    height: 1rem;
+  }
+}
+
+@media(max-width:991px) {
+  .initials_field {
+    margin-right: 0;
+    transition: all .2s;
+  }
+  .initials_field.has-value {
+    margin-right: 3rem;
+  }
+  .initials_clear {
+    opacity: 0;
+    visibility: hidden;
+    transition: all .2s;
+  }
+  .initials_field.has-value ~ .initials_clear {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .product-sizes-mob, #Amount {
+    font-size: .875em;
+  }
+
+  .newsletter-wrap form .input-group {
+    align-items: flex-start;
+  }
+
+  .filter-dropdowns a:last-child {
+    color: #000000;
+    background-color: #F5F5F5;
+  }
+}
+
+.menu {
+  position: fixed;
+}
+.customizer {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+}
+.customizer_wrap {
+  height: 65vh;
+  max-height: 100%;
+
+  @media(max-width:991px) {
+    overflow-y: scroll;
+  }
+}
+
+/* .CUSTOMIZER */
+.color-list, .foil-list, .color-list-slider  {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  margin-bottom: -.5rem;
+  border: none;
+  .color-filter-list & {
+    margin: 1.5rem 0rem 2.5rem;
+    justify-content: center;
+    @media(max-width: 991px) {
+      justify-content: start;
+    }
+  }
+
+  label {
+display: block;
+    margin: 0 .3rem .5rem 0;
+
+    &:hover {
+      @media(min-width: 992px) {
+      	opacity: .7;
+      }
+    }
+  }
+  input[type="radio"] {
+    visibility: hidden;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    z-index: -1;
+  }
+  & a {
+   line-height: 2;
+  }
+}
+
+.color-list-slider label{
+  margin-bottom: 0rem;
+}
+
+.color-option {
+  display: block;
+  border-radius: 50%;
+  border: 1px transparent solid;
+  width: 26px; 
+  height: 26px;
+    cursor: pointer;
+  padding: 0.25rem !important;
+
+  input[type="radio"]:checked + & {
+    border-color: #000;
+ 
+  }
+  span {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+    
+   
+  }
+}
+
+
+
+
+.foil-option {
+  display: block;
+  position:relative;
+  border: 2px #f4f4f4 solid;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  background: linear-gradient(-45deg, #fffbd4, #c1a963, #fffbd4, #c1a963, #fffbd4);
+
+
+  input[type="radio"]:checked + & {
+    border-color: #000;
+  }
+  &.gold {
+    background: linear-gradient(-45deg, #fffbd4, #c1a963, #fffbd4, #c1a963, #fffbd4);
+  }
+  &.silver {
+    background: linear-gradient(-45deg, #f4f4f4, #616161, #f4f4f4, #616161, #f4f4f4);
+  }
+   &.rose {
+    background: linear-gradient(-45deg, #ffc9aa, #eaac88, #f5e7de, #eaac88, #ddc2b3);
+  }
+  &.Gold {
+    background: linear-gradient(-45deg, #fffbd4, #c1a963, #fffbd4, #c1a963, #fffbd4);
+  }
+  &.Silver {
+    background: linear-gradient(-45deg, #f4f4f4, #616161, #f4f4f4, #616161, #f4f4f4);
+  }
+   &.Rose {
+    background: linear-gradient(-45deg, #ffc9aa, #eaac88, #f5e7de, #eaac88, #ddc2b3);
+  }
+}
+.prsnlizer_color {
+  display: inline-block;
+  width: 3em;
+  height: 1em;
+  border-radius: 1em;
+}
+.btn.product-form__cart-submit, .btn.btn--payment {
+  border-radius:5px;
+  background: linear-gradient(90deg, #1b1b1b, #1b1b1b);
+  background: #1b1b1b;
+  text-transform: uppercase;
+  max-width: 100%;
+  width: 350px;
+  font-size: 13px;
+  padding: 1.25rem 1rem;
+  padding: 1rem;
+  border: 0;
+  max-height:49px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    border-radius: inherit;
+    background: linear-gradient(180deg, #1b1b1b, #1b1b1b);
+    transition: all .2s;
+  }
+  span {
+    position: relative;
+    z-index: 10;
+  }
+  &:hover, &:focus {
+    color: #FFF;
+  }
+}
+
+
+//pieces
+
+li {
+    list-style: none;
+}
+ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 992px) {
+.container_product-images {
+    font-size: 2.5rem;
+    max-width: 480px;
+    margin: 0 auto 3rem;
+}
+}
+.personailze_heading {
+	font-size:32px;
+}
+.initials {
+    padding: 24px 16px 8px;
+    font-size: 24px;
+}
+.customizer-color-labels,.customizer-color-text {
+    font-size: 14px;
+  margin-bottom:0.5rem;
+}
+input, textarea, select {
+    border: 1px solid #949494;
+    background-color: #fff;
+    color: #5e5e5e;
+    max-width: 100%;
+    line-height: 1.2;
+    border-radius: 3px;
+}
+.initials-label {
+    font-size: 16px;
+}
+
+@media(min-width:992px) {
+  .hide-desktop {
+  	display:none !important;
+  }
+}
+@media(max-width:992px) {
+  .hide-mobile {
+  	display:none !important;
+  }
+}
+
+.engrave {
+  position: absolute;
+  text-transform: uppercase;
+  font-family: "Arbesco-DT" , 'serif' !important;
+  color: #bf9b30;
+  color: #eaac88;
+  font-size: 1.75em;
+}
+.engrave.gold, .engrave.Gold,
+.cart_popup_wrap .engrave.gold,
+.cart_popup_wrap .engrave.Gold,
+.cart_popup_wrap .engrave {
+  color: #d9c277;
+  background: -webkit-linear-gradient(transparent, transparent),url('{{ "nude-color.jpg" | asset_url }}') no-repeat;
+  background-size: cover;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /*background-position: 78% 80%; */
+  background-position: 78% 80%;
+}
+
+.engrave.silver, .engrave.Silver,
+.cart_popup_wrap .engrave.Silver {
+  color: #f4f4f4;
+  background: -webkit-linear-gradient(transparent, transparent),url('{{ "Silver-new.jpg" | asset_url }}') repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-position: 100% 30%; 
+}
+
+.engrave.phone-case,.engrave.phone-case-bundle {
+  top: 30%;
+  left: 0%;
+  right: 0%;
+  text-align: center;
+  font-size: 1.75em;
+  &.cart-engrave {
+    font-size: 0.8em;
+  }
+}
+
+.feautred-product-image .engrave.phone-case , .feautred-product-image .engrave.phone-case-bundle { // pp + ms changes
+    font-size: 1.20em;
+}
+
+
+
+.engrave.card-case,.engrave.card-case-bundle {
+  bottom: 33.75%;
+  left: 0%;
+  right: 0%;
+  text-align: center;
+
+  &.cart-engrave {
+
+  }
+}
+
+.customizer_product .engrave.card-case,.customizer_product .engrave.card-case-bundle{
+}
+
+.engrave.card-holder,.engrave.card-holder-bundle {
+  bottom: 32%;
+  left: 0%;
+  right: 0%;
+  text-align: center;
+  &.cart-engrave {
+
+  }
+}
+
+.customizer_product .engrave.card-holder,.customizer_product .engrave.card-holder-bundle{
+
+}
+
+.engrave.zipped-wallet {
+  top: 30%;
+  left: 2.5%;
+  font-size: 1.4em;
+  right: 0%;
+  text-align: center;
+
+   &.cart-engrave {
+
+    @media(min-width:991px){
+
+    }
+  }
+}
+
+.customizer_product .engrave.zipped-wallet{
+}
+
+.engrave.clutch {
+  bottom: 25.5%;
+  right: 16.5%;
+
+  &.cart-engrave {
+ 
+  }
+}
+
+.customizer_product .engrave.clutch{
+
+}
+
+.product-image-fix .engrave.clutch {
+  
+}
+.engrave.bifold-wallet {
+  right: 10%;
+  bottom: 22.5%;
+}
+.pomegranate-red .engrave.bifold-wallet ,.moss-green .engrave.bifold-wallet, .mercury-grey .engrave.bifold-wallet, .sandstone-brown .engrave.bifold-wallet {
+   bottom: 24% !important;
+ }
+ .cust.engrave.bifold-wallet {
+  right: 7%;
+  bottom: 22.5%;
+}
+
+.customizer_product .bifold-wallet{
+
+}
+
+/* for airpods */
+.engrave.airpods,.engrave.airpods-bundle-set {
+    top: 50%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+
+    &.cart-engrave {
+ 
+  }
+}
+
+.customizer_product .airpods,.customizer_product .airpods-bundle-set{
+
+}
+.customizer_product .airpods-pro.airpods  {
+
+}
+.cart-engrave.engrave.airpods,.cart-engrave.engrave.airpods-bundle-set {
+    top: 48%;
+}
+
+.engrave.airpods-pro {
+  font-size:1.5em;
+    top: 50%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+
+    &.cart-engrave {
+
+     letter-spacing:0.05rem;
+  }
+}
+
+.customizer_product .airpods{
+
+}
+.engrave.pocket-bifold {
+    bottom: 27%;
+  font-size: 1.2em;
+    text-align: center;
+    left: 48%;
+    transform: translateX(0%);
+    width: 50%;
+
+    @media (max-width: 991px) {
+      font-size: 1.1em;
+    bottom: 26%;
+    }
+}
+.engrave.pocket-bifold.cart-engrave , .color-filter-slider .engrave.pocket-bifold {
+      display:none;
+}
+#product-matching-desktop .engrave.pocket-bifold {
+  display:none;
+}
+#product-matching-mobile .engrave.pocket-bifold {
+  display:none;
+}
+.engrave.engrave-collection {
+    &.mini-tote {
+
+    }
+}
+.engrave.engrave-collection.clutches.mini-clutch {
+    right: 25%;
+}
+
+
+.matching-engrave.pocket-bifold {
+  display:none;
+}
+.customizer_product .engrave.pocket-bifold {
+    text-align: center;
+    left: 48%;
+    transform: translateX(0%);
+    width: 50%;
+  }
+@media only screen and (max-width: 991px) {
+.engrave.airpods , .cart-engrave.engrave.airpods {
+    top: 48%;
+  }
+  .engrave.airpods-bundle-set , .cart-engrave.engrave.airpods-bundle-set {
+    top: 48%;
+  }
+  .customizer_product .engrave.airpods {
+    top:50%;
+   }
+   .customizer_product .engrave.airpods-bundle-set {
+    top:50%;
+   }
+  .cart-engrave.engrave.airpods {
+   top: 51%;
+  }
+  .cart-engrave.engrave.airpods-bundle-set {
+   top: 51%;
+  }
+  .customizer_product .engrave.pocket-bifold {
+    text-align: center;
+    left: 48%;
+    transform: translateX(0%);
+    width: 50%;
+  }
+
+}
+
+@media only screen and (max-width: 991px) {
+ .engrave.airpods-pro {
+    top: 50%;
+  }
+  .customizer_product .engrave.airpods-pro{
+    top:50%;
+
+  }
+}
+
+
+
+.engrave.clutches {
+    bottom: 31%;
+    right: 23%;
+  font-size:1.25em;
+    @media(max-width:991px) {
+          right: 20%;
+    font-size: 1.1em;
+   
+    }
+}
+.cust.engrave.icon-chess-piece.clutch.clutches.gold {
+    font-size: 1.1em;
+    right: 20%;
+    bottom: 29%;
+}
+.engrave.mini-clutch {
+    bottom: 29%;
+    right: 25%;
+   
+    @media(max-width:991px) {
+      right: 27%;
+
+      &.engrave-collection {
+        right: 25%;
+      }
+    }
+}
+.cart-engrave.engrave.clutches {
+  right: 26%;
+
+}
+.engrave.clutches[alt_engrave="Mini Clutch"] {
+    right: 28%;
+  @media(max-width:991px){
+        right: 27%;
+    bottom: 28%;
+  } 
+    /* font-size: 1.2em; */
+}
+/*  collection page changes for airpods*/
+.engrave-collection {
+  	&.airpods {
+    top: 47.5%
+	}
+  	&.airpods-pro {
+    top: 47.5%
+	}
+}
+.engrave.collection-gird {
+  	&.airpods {
+    top: 46%
+	}
+  	&.airpods-pro {
+    top: 45.5%
+	}
+}
+.engrave.collection-gird {
+  	&.pocket-bifold {
+      display:none;
+    }
+}
+.slider-container .engrave.pocket-bifold {
+	display:none;
+}
+.engrave.collection-gird.clutches {
+  bottom:31%;
+  @media(max-width:991px){
+    bottom:32%;
+    right: 20%;
+  }
+}
+
+.engrave.collection-gird.clutches.mini-clutch {
+
+  @media(max-width:991px){
+    right: 25%;
+  }
+}
+
+
+@media only screen and (max-width: 991px) {
+.engrave.collection-gird, .engrave.engrave-collection {
+  	&.airpods {
+ 
+	}
+  	&.airpods {
+    top: 48%
+	}
+  	&.airpods-pro {
+    top: 45.5%
+	}
+ }
+ .product__media {
+
+    & .engrave.card-case {
+
+  }
+    & .engrave.card-holder {
+    
+  }
+    & .engrave.zipped-wallet {
+    
+  }
+    & .engrave.clutch {
+    
+      right: 25%;
+  }
+  
+  & .pomegranate-red .engrave.bifold-wallet ,& .moss-green .engrave.bifold-wallet, & .mercury-grey .engrave.bifold-wallet , .sandstone-brown .engrave.bifold-wallet {
+   		bottom: 25% !important;
+   }
+   
+    & .engrave.airpods {
+       
+  }
+    & .engrave.airpods-pro {
+      
+  }
+ }
+}
+.engrave.laptop-case {
+
+    top: 8.5%;
+    width: 50%;
+    left: 24.5%;
+    text-align: center;
+    font-size:1em;
+    @media(max-width: 991px){
+
+      top: 4%;
+      left: 24%;
+
+    }
+}
+.customizer .engrave.laptop-case{
+
+    top: 4%;
+    width: 50%;
+    left: 24.5%;
+  font-size:0.9em;
+
+}
+ul.customizations li:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top:1rem;
+}
+p.setting-custom-subtitle.p1 {
+    padding: 30px 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.customization-input__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.customization-input__wrapper .customization-input {
+    text-align: center;
+text-transform : uppercase;
+    padding-bottom: 5px;
+    width: 60px;
+    margin: 0 5px;
+    font-family: fontello,GT America,sans-serif;
+  border:none;
+  border-radius: 0px;
+    border-bottom: 1px solid #d2d2d2;
+ 
+}
+h1.personailze_heading {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0;
+}
+button.has-tooltip {
+    display: none;
+}
+span.more_characters {
+    text-align: center;
+    font-size: 14px;
+    border-bottom:1px solid;
+        cursor: pointer;
+}
+@font-face {
+ font-family: 'fontello';
+ src: url('{{ "fontello.eot" | asset_url }} ?91988256 ');
+ src: url('{{ "fontello.eot" | asset_url }} ?91988256#iefix') format('embedded-opentype'),
+ url('https://cdn.shopify.com/s/files/1/0242/7060/2321/files/fontello_74cf0bad-ed03-4e48-8515-c650443d85ab.ttf?v=1660013681') format('truetype');
+ font-weight: normal;
+ font-style: normal;
+ }
+[class^="icon-chess"], [class*="icon-chess"] {
+  font-family: 'fontello' !important;
+}
+.customizer_choice.icon-chess-piece, .chess_text {
+  font-family: 'fontello','Arbesco-DT' !important;
+}
+.engrave.icon-chess-piece {
+  font-family: 'fontello', 'Arbesco-DT' !important;
+
+}
+
+.engrave.icon-chess-piece.mobile-engrave.sling-phone-case {
+    /* bottom: 10%; */
+    top: 69%;
+left:-1%;
+    width: 100%;
+    font-size: 0.9em;
+    text-align: center;
+}
+.customizer .engrave.sling-phone-case {
+        top: 72%;
+    font-size: .75em;
+    left: 49%;
+    transform: translateX(-50%);
+}
+.engrave.bifold-wallet {
+    right: 11%;
+    font-size: 1em;
+    bottom: 26.5%;
+}
+
+.cart-engrave.engrave.sling-phone-case {
+    font-size: .75em;
+    left: 49%;
+    letter-spacing: 1px;
+}
+.template-collection .engrave.sling-phone-case {
+    top: 68%;
+}
+.engrave.beauty-pouch {
+    top: 36%; //change beauty pouch
+    font-size: 1em; //change beauty pouch
+    left: 31%;
+    letter-spacing:1px !important;
+    text-align: center;
+    position: absolute;
+    transform: translateX(0%);
+    width: 50%;
+}
+.engrave.beauty-pouch.b-top {
+    top: 22.5%; //change beauty pouch
+    left: 26%;
+}
+  .cust.engrave.icon-chess-piece.beauty-pouch.beauty-pouch {
+    top: 34%;
+}
+  .customizer .engrave.beauty-pouch.b-top {
+    top: 19%;
+}
+
+.cart-engrave.engrave.beauty-pouch.gold {
+    font-size: 0.25rem;
+ }
+#product-matching .engrave.beauty-pouch {
+  display: none;
+}
+.matching-engrave.engrave.beauty-pouch {
+    display: none;
+}
+.engrave.collection-gird.beauty-pouch {
+   
+    top: 35.5%;
+    &.b-top{
+      top: 21%;
+    }
+}
+.collection-list {
+  .engrave.beauty-pouch {
+    font-size: 0.55rem;
+  }
+}
+@media(max-width: 991px) {
+  .engrave.beauty-pouch {
+  
+       left: 31%;
+    top: 35%;
+  }
+  .engrave.beauty-pouch.b-top {
+    top: 20%;
+    left: 26%;
+}
+  .customizer .engrave.beauty-pouch {
+    left: 31.5%;
+  }
+  .customizer .engrave.beauty-pouch.b-top {
+    left: 26%;
+  }
+  .cart-engrave.engrave.beauty-pouch {
+    font-size: 0.2rem;
+    left: 32%;
+  }
+}
+  .cust.engrave.card-holder.card-holder {
+    font-size: 1.5em;
+        bottom: 33%;
+}
+  .engrave.card-holder{
+    bottom: 35%;
+   @media(max-width:992px) {
+      bottom: 32%;
+   }
+}
+.engrave.micro-cross-body {
+    top: 41%;
+    left: 45%;
+  font-size: 1.6em;
+    /* text-align: center; */
+  @media(max-width:991px) {
+top: 38%;
+
+  }
+}
+  .cust.engrave.micro-cross-body {
+    left: 0%;
+        font-size: 1.4em;
+        width: 100%;     
+
+}
+
+    /* for mini backpack */
+.engrave.mini-soft-backpack {
+top: 52%;
+    left: 1%;
+    right: 0%;
+    text-align: center;
+    font-size: 0.8em;
+    &.engrave-collection,  &.cart-engrave{
+      display:none;
+    }
+}
+  
+
+    @media (max-width: 991px) {
+.engrave.mini-soft-backpack {
+    top: 52.5%;
+ 
+  } 
+  }
+  
+  /* for minitote */
+.engrave.mini-tote {
+    top: 50%;
+    left: 45%;
+    right: 0%;
+    text-align: center;
+
+
+}
+
+
+  
+.monogram-engrave.mini-tote {
+    top: 68%;
+    left: 27%;
+    font-size: 0.4em;
+}
+
+
+
+
+@media (max-width: 991px) {
+.engrave.mini-tote {
+    top: 50%;
+  left:50%; 
+  } 
+  .monogram-engrave.mini-tote {
+    left: 22%;
+    font-size: 0.25em;
+    top: 68%;
+   } 
+  .cart-engrave.engrave.mini-tote {
+    top: 68.5%;
+    left: 29%;
+    font-size: 0.1rem;
+  }
+}
+.cust.engrave.mini-tote {
+    left: 52%;
+}
+  
+.cust.engrave.icon-chess-piece.the-crossbody-phone-pouch.crossbody-phone-pouch {
+    top: 66%;
+    left: 57%;
+    font-size: 1em;
+}
+.cart-engrave.engrave.chess_text.card-holder {
+    top: 50%;
+}
+.cart-engrave.engrave.chess_text.laptop-case {
+    top: 3%;
+    font-size: 0.35em;
+}
+.cart-engrave.engrave.chess_text.zipped-wallet {
+    font-size: 0.65em;
+}
+.cart-engrave.engrave.chess_text.Gold.card-case {
+    top: 50%;
+    height: fit-content;
+
+}
+.cust.engrave.icon-chess-piece.the-backpack.backpacks {
+    top: 67%;
+    left: 60%;
+    font-size: 1.35em;
+}
+.cust.engrave.icon-chess-piece.the-mini-backpack.backpacks {
+    text-align: center;
+    top: 66%;
+    left: 7%;
+    font-size: 1.1em;
+    width: 100%;
+}
+.cart-engrave.engrave.chess_text.micro-cross-body {
+    font-size: 0.9em;
+    top: 28%;
+    left: 42%;
+}
+.cart-engrave.engrave.chess_text.mini-tote {
+    font-size: 0.3em;
+    top: 63%;
+    left: 26%;
+    right: 0%;
+    text-align: center;
+}
+.cart-engrave.engrave.chess_text.beauty-pouch {
+    font-size: 0.4em;
+    top: 32%;
+}
+.cart-engrave.engrave.chess_text {
+    &.backpacks,&.crossbody-phone-pouch {
+        display: none;
+    }
+}
+.customizer_bottom {
+    display: flex;
+    align-items: end;
+    margin-top: auto;
+}
+@media(min-width:992px) {
+    button.btn-customizer.btn-blue.customizer_save {
+      max-width: 35%;
+      margin-left: auto;
+      font-size: 16px;
+  }
+  sub.silver-warning {
+    position: absolute;
+    margin-top: 0.5rem;
+}
+}
+@media(max-width:992px) {
+   .customizer_wrap {
+    height: 100vh;
+ 
+}
+  h1.personailze_heading {
+      margin-bottom: 1rem;
+      font-size: 20.8px;
+      margin-top: 0;
+  }
+  .customizer_bottom {
+    display:block;
+  }
+  .customizer_bottom ul {
+    margin-bottom: 1.5rem;
+}
+.btn-customizer {
+  line-height:3.5rem;
+}
+.initials {
+    padding: 8px 16px 8px;
+    font-size: 18px;
+}
+}
+
+input[type="radio"]:checked + .color-option{
+border-color: #fff !important;
+outline: 1px solid #000000 !important;
+}
+
+.initials_text .error{
+  font-size: 13px!important;
+}  
+
+.pomegranate-red{background-color:#bf1e2e}.mercury-grey{background-color:#c5c5c5}.saharan-nude{background-color:#fccd9e}.walnut-brown{background-color:#603912}.pink-lily{background-color:#ffa5b5}.pistachio-green{background-color:#c1dc99}.emerald-green{background-color:#056839}.black-caviar{background-color:#000}.everbloom{background:linear-gradient(to right,#74aad2 0%,#74aad2 32%,#ffa5b5 33%,#ffa5b5 66%,#c1dc99 67%,#c1dc99 67%,#c1dc99 100%)}.lapis-blue{background-color:#231e68}.sky-blue{background-color:#74aad2}.ivory-white{background-color:#fff8f1}.violet-purple{background-color:#491074}.moss-green{background-color:#4e5239}.coral-pink{background-color:#de6a68}.sandstone-brown{background-color:#9e6943}.shibuya-fuchsia{background-color:#d3264c}.manhattan-orange{background-color:#c6542f}.bondi-blue{background-color:#547d83}.lavender-purple{background-color:#b8aece}.dusk-lilac{background-color:#8493d8}.coral-blue{background-color:#5cb2b1}.mickey-red{background:url(//cdn.shopify.com/s/files/1/0242/7060/2321/files/ICON_2.png?v=1634755988);background-position:center;background-size:cover}.donald-sky-blue{background:url(//cdn.shopify.com/s/files/1/0242/7060/2321/files/ICON_6.png?v=1634756002);background-position:center;background-size:cover}.daisy-purple{background:url(//cdn.shopify.com/s/files/1/0242/7060/2321/files/ICON-1.png?v=1634756028);background-position:center;background-size:cover}.goofy-orange{background:url(//cdn.shopify.com/s/files/1/0242/7060/2321/files/ICON_4.png?v=1634756016);background-position:center;background-size:cover}.pluto-green{background:url(//cdn.shopify.com/s/files/1/0242/7060/2321/files/ICON_3.png?v=1634756053);background-position:center;background-size:cover}.minnie-pink{background:url(//cdn.shopify.com/s/files/1/0242/7060/2321/files/ICON_5.png?v=1634758201);background-position:center;background-size:cover}.ombre-sky{background:linear-gradient(to bottom,#93c7ec 33%,#043988)}.ombre-matcha{background:linear-gradient(to bottom,#a8b27f 45%,#1b6c3c)}.ombre-lily{background:linear-gradient(to bottom,#df9f9d 50%,#cc5363)}.ombre-lavender{background:linear-gradient(to bottom,#baadc8 45%,#7858a5)}
+
+/*  New Css  */
+ul.product__media-list {
+  .product__media.media{
+    @media (min-width: 300px){
+      font-size:2.4rem;
+    }
+    @media (min-width: 425px){
+      font-size:3.6rem;
+    }
+    @media (min-width: 768px){
+      font-size:4rem;
+    }
+    @media (min-width: 990px){
+      font-size:2.3rem;
+    }
+    @media (min-width: 1200px){
+      font-size:3.2rem;
+    }
+    @media (min-width: 1320px){
+      font-size:3.6rem;
+    }
+    @media (min-width: 1440px){
+      font-size:3.8rem;
+    }
+    .engrave.airpods {
+      @media (max-width: 989px) and (min-height: 768px){
+        top:47%;
+       }
+    }
+  }
+}
+
+.customizer.open {
+  .container_product-images {
+     @media (min-width: 320px){
+        font-size:2.08rem;
+     }
+     @media (min-width: 375px){
+        font-size:2.16rem;
+     }
+     @media (min-width: 425px){
+        font-size:2.28rem;
+     }
+      @media (min-width: 575px){
+        font-size:2.4rem;
+      }
+      @media (min-width: 992px){
+        font-size:3.8rem;
+      }
+     @media (min-width: 992px) and (max-height: 900px){
+      font-size:2.56rem;
+     }
+      
+  }
+}
+.cart-popup-box {
+  .cart-fill-product-image {
+      font-size: 1.2rem;
+      @media (max-width: 639px){
+        font-size:0.6rem;
+      }
+  }
+}
+.related_image_pys {
+  @media (min-width: 320px){
+    font-size: 1.1rem;
+  }
+  @media (min-width: 575px){
+    font-size: 1.5rem;
+  }
+  @media (min-width: 768px){
+    font-size: 1.6rem;
+  }
+  @media (min-width: 990px){
+    font-size: 1.58rem;
+  }
+  @media (min-width: 1440px){
+    font-size: 1.7rem;
+  }    
+}
+.engrave{
+  line-height:1.4;
+  &.nomonogramshows{
+    display:none!important;
+  }
+}
+.engrave.airpods {
+    top: 50%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    font-size: 1em;
+  &.cart-engrave {
+    top:48%;
+  }
+  &.engrave-collection{
+    top:49%;
+  }
+}
+
+.engrave.apple-watch-band {
+    font-size: 0.632em;
+    top: 85%;
+    left: 0.5%;
+    width: 100%;
+    text-align: center;
+}
+.engrave.apple-watch-band.cart-engrave, 
+.color-filter-slider .engrave.apple-watch-band, 
+#product-matching-desktop .engrave.apple-watch-band, 
+#product-matching-mobile .engrave.apple-watch-band, 
+.matching-engrave.apple-watch-band, 
+.engrave.collection-gird.apple-watch-band, 
+.slider-container .engrave.apple-watch-band, 
+.card--product .engrave.apple-watch-band {
+    display: none;
+}
+  
+.engrave.card-case, 
+.engrave.card-case-bundle {
+    bottom: 38.75%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    font-size: 1em;
+  &.cart-engrave,
+    &.matching-engrave{
+    bottom:38.75%;
+    top:auto;
+  }
+  &.engrave-collection{
+    bottom: 38%;
+  }
+}
+
+.engrave.card-holder, 
+.engrave.card-holder-bundle {
+    bottom: 35%;
+    font-size: 1em;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    &.engrave-collection{
+      bottom: 35%;
+    }
+  &.matching-engrave{
+    font-size: 0.8em;
+  }
+}
+
+.engrave.phone-case, 
+.engrave.phone-case-bundle {
+    top: 30%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    font-size: 0.7em;
+   @media (max-width:989px) {
+     font-size: 0.8em;
+   }
+  &.iphone-14-pro-max-case{
+    top:32%;
+  }
+  &.cart-engrave,
+    &.matching-engrave {
+    @media (max-width:989px) {
+     font-size: 1.2em;
+   }
+  }
+  &.engrave-collection{
+    top: 32%;
+    font-size: 1em;
+    @media (min-width:990px) and (max-width:1200px) {
+      font-size: 0.85em;
+    }
+    @media (max-width:639px) {
+      font-size: 0.8em;
+    }   
+  }
+  &.engrave-s-product {
+     @media (max-width:424px) {
+        font-size: 1em;
+     }
+  }
+}
+.customizer_product{
+  .engrave.phone-case, 
+  .engrave.phone-case-bundle{
+    font-size: 0.95em;
+  }
+}
+.engrave.laptop-case,
+.customizer .engrave.laptop-case {
+    font-size: .5em;
+    top: 5.6%;
+    width: 50%;
+    left: 24%;
+    text-align: center;
+    &.cart-engrave.chess_text,
+    &.matching-engrave {
+      font-size: .5em;
+      top: 6.5%;
+    }
+  &.engrave-collection{
+    top: 6%;
+  }
+}
+
+.engrave.mini-tote {
+    top: 57%;
+    left: 52%;
+    right: 0%;
+    text-align: center;
+    font-size: .9em;
+    &.engrave-s-product {
+       @media (max-width:749px) {
+          top: 56%;
+          left: 41%;
+          font-size: .9em;
+      }
+    }
+  &.engrave-collection {
+      top: 66%;
+      left: 28%;
+      font-size: .45em;
+      display:none;
+  }
+  &.cart-engrave,
+    &.matching-engrave {
+    font-size: .3em!important;
+    top: 66%!important;
+    left: 30%!important;
+    @media (max-width:479px){
+      font-size: .5em!important;
+      top: 63%!important;
+    }
+}
+  &.cp-front{
+    display:none;
+  }
+  &.monogram-engrave {
+      top: 66.5%;
+      left: 27%;
+      font-size: .4em;
+      @media (max-width:749px){
+            left: 22%;
+          top: 66%;
+    }
+  }
+}
+
+.engrave.pocket-bifold {
+    font-size: .55em;
+    bottom: 27%;
+    text-align: center;
+    left: 48%;
+    transform: translate(0);
+    width: 50%;
+    @media (max-width:749px){
+      bottom: 26%;
+      left: 43.5%;
+    }
+    &.cp-front,
+  &.engrave-collection {
+      display:none;
+    }    
+}
+  
+.engrave.bifold-wallet {
+    right: 7%;
+    bottom: 25%;
+    font-size: .45em;
+    letter-spacing: .1rem;
+    &.engrave-s-product {
+    @media(max-width:749px){
+            font-size: .45em;
+            right: 15%;
+            bottom: 25%;
+      }
+    }
+   &.cp-front,
+  &.engrave-collection {
+     display:none;
+   }
+}
+
+.engrave.backpacks {
+    font-size: .7em;
+    top: 72%;
+    width: 100%;
+    left: 14%;
+    letter-spacing: .1rem;
+    text-align: center;
+    &.engrave-s-product {
+      @media(max-width:749px){
+          font-size: .7em;
+          left: 11%;
+      }
+    }
+    &.cp-front,
+    &.engrave-collection {
+     display:none;
+   } 
+   &.the-mini-backpack{
+     left:7.5%;
+     &.engrave-s-product {
+       @media(max-width:749px){
+          left: 6%;
+       }
+     }
+   }
+}
+
+.engrave.camera-bag {
+    top: 76%;
+    font-size: .6em;
+    left: 7%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+   &.engrave-s-product {
+      @media(max-width:749px){
+          left: 6%;
+      }
+    }
+    &.cp-front,
+    &.engrave-collection,
+    &.cart-engrave,
+    &.matching-engrave {
+     display:none;
+   } 
+}
+
+       .engrave.the-magsafe-wallet{
+    
+      top: 66%;
+    font-size: .65em;
+    left: 49%;
+    transform: translate(-40%);
+  }
+
+    .engrave.magsafe-wallet{
+    top: 66%;
+    font-size: .65em;
+    left: 49%;
+    transform: translate(-40%);
+  }
+
+.engrave.card-phone-case {
+    top: 77%;
+    font-size: .55em;
+    left: 50%;
+    transform: translate(-50%);
+   &.cart-engrave,
+    &.matching-engrave {
+     top: 75%;
+     font-size: .6em;
+   } 
+   &.engrave-collection {
+    @media(max-width:749px){
+        font-size: .6em;
+        top: 76%;
+    }
+  }
+  &.the-card-phone-case-iphone-13-mini{
+    top:75%;
+  }
+}
+
+.engrave.silicone-phone-case {
+    display: none;
+}
+
+.engrave.luggage-tag {
+    top: 83%;
+    font-size: .5em;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 1px;
+    left:0px;
+    &.engrave-s-product,
+    &.engrave-customizer {
+      @media(max-width:749px){
+          font-size: .55em;
+      }
+    }
+    &.cart-engrave,
+    &.matching-engrave {
+       top: 81%;
+     } 
+    &.matching-engrave {
+       top: 76%;
+    } 
+}
+
+  .engrave.the-pencil-case {
+    display: none;
+}
+       .engrave.pencil-case {
+    display: none;
+}
+  
+.engrave.coin-purse {
+    display: none;
+}
+  
+.engrave.mini-hobo-bag {
+  font-size: .95em;
+  top: 53%;
+  left: 1.3%;
+  text-align: center;
+  width: 100%; 
+    &.cart-engrave,
+    &.engrave-collection,
+    &.matching-engrave {
+      display:none;
+    }
+}
+
+.engrave.notebook.notebook {
+    font-size: .55em;
+    bottom: 20%;
+    left: 50%;
+    transform: translate(-50%);
+    top:auto;
+    &.cart-engrave,
+    &.matching-engrave {
+       bottom: 24%;
+     } 
+    &.matching-engrave{
+      bottom: 24%;
+    }
+}
+
+.engrave.passport-holder {
+    top: 72%;
+    font-size: .6em;
+    left: 0%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    &.cart-engrave {
+       top: 69%;
+    }
+    &.matching-engrave {
+       top: 64%;
+    }
+}
+
+.engrave.the-crossbody-phone-pouch {
+    font-size: .5em;
+    width: 100%;
+    top: 69%;
+    text-align: center;
+    left: 10.75%;
+    display: block;
+    &.engrave-s-product{
+      @media (max-width:767px){
+          font-size: .45em;
+          top: 69%;
+          left: 9%;
+      }
+    }
+}
+
+.engrave.sling-bag {
+    top: 72%;
+    font-size: .6em;
+    left: -14%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    &.engrave-s-product{
+      @media (max-width:767px){
+        left: -12%;
+      }
+    }
+    &.cart-engrave,
+    &.engrave-collection,
+    &.matching-engrave {
+      display:none;
+    }
+}
+
+.engrave.sling-phone-case {
+    top: 72%!important;
+    font-size: .55em!important;
+    left: 49%!important;
+    transform: translate(-50%)!important;
+    &.cart-engrave,
+    &.matching-engrave {
+      top:69%!important;
+    }
+}
+
+
+.engrave.soft-tote {
+    top: 64%;
+    font-size: .6em!important;
+    left: 0%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    &.cart-engrave,
+    &.engrave-collection,
+    &.matching-engrave {
+      display:none;
+    }
+}
+
+.engrave.leather-strap {
+   /* display: none; */
+}
+
+.engrave.keychain {
+    font-size: .65em;
+    top: 53.5%;
+    transform: translateY(-50%);
+    left: 32%;
+    line-height: 1.2;
+    &.cart-engrave {
+        writing-mode: vertical-lr;
+        left: 47%;
+        top: 60%;
+       @media (max-width:767px){
+         left: 44.5%;
+       }
+    }
+    &.matching-engrave {
+        writing-mode: vertical-lr;
+        left: 45%;
+        top: 60%;
+       @media (max-width:767px){
+         left: 44.5%;
+       }
+    }
+  &.engrave-collection {
+    display:none;
+  }
+}
+
+.engrave.zipped-wallet {
+    top: 40%;
+    left: 2.5%;
+    right: 0%;
+    text-align: center;
+    font-size: .85em;
+    letter-spacing: .1rem;
+    &.cart-engrave,
+    &.matching-engrave {
+      font-size: .85em!important;
+      @media (max-width:639px){
+        font-size: 1.2em!important;
+      }
+    }
+}
+
+.engrave.soft-tote {
+    top: 64%;
+    font-size: .6em!important;
+    left: 0%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.engrave.webbing-strap {
+    display: none;
+}
+
+.engrave.engrave-collection.crossbody-phone-pouch {
+    display: none;
+}
+
+.engrave.vanity-bag {
+    top: 78%;
+    font-size: .6em;
+    left: 14%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    &.engrave-s-product{
+      @media (max-width:767px){
+        left: 11%;
+      }
+    }
+  &.cart-engrave,
+  &.engrave-collection,
+    &.matching-engrave {
+    display:none;
+  }
+}
+
+.engrave.statement-strap {
+ /*   display: none; */
+ top: 55%;
+    font-size: .60em;
+    left: 0%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    &.cart-engrave,
+    &.engrave-collection,
+    &.matching-engrave {
+      display:none;
+    }
+}
+
+.engrave.laptop-bag {
+    top: 56%;
+    left: 69%;
+    font-size: .85em;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    width: 80px;
+    transform: translateX(-50%);
+     @media (max-width:749px){
+        left: 65%;
+        font-size: 1em;
+        top: 56%;
+     }
+     @media screen and (max-width: 767px) and (min-width: 425px) {
+          left: 65.5%;
+          font-size: 0.72em;
+          top: 55%;
+     }
+   &.engrave-customizer {
+      top: 57%;
+     @media (max-width:749px){
+       left: 69%;
+       top: 55%;
+     }
+  }
+  &.cart-engrave,
+  &.engrave-collection,
+  &.matching-engrave {
+    display:none;
+  }
+}
+.customizer  a.customizer_mask {
+    display: block;
+}
+/*  new product launch css */
+.engrave.small-soft-tote {
+    top: 55%;
+    font-size: .65em !important;
+    left: 0%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    padding-left: 5.5%;
+  &.cart-engrave,
+  &.engrave-collection {
+    display:none!important;
+  }
+  @media (max-width:749px){
+          top: 55.5%;
+          font-size: .75em!important;
+          padding-left: 2%;
+  }
+}
+.customizer {
+.engrave.small-soft-tote {
+  top: 55.5%;
+  @media (max-width:749px){
+      padding-left: 5.5%;
+  }
+}
+}
+#shopify-section-product-matching .engrave.small-soft-tote{
+  display:none!important;
+}
+.engrave.trifold-wallet {
+    top: 59.2%;
+    font-size: .45em!important;
+    left: 0%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px!important;
+    padding-left: 3.8%;
+    &.cart-engrave,
+    &.engrave-collection {
+      display:none!important;
+    }
+    @media (max-width:1450px){
+      top: 59.3%;
+    }
+    @media (max-width:749px){
+      top: 59.5%;
+      font-size: .55em!important;
+      padding-left: 1.5%;
+    }
+    @media (max-width:575px){
+      top: 59%;
+      font-size: .48em!important;
+      padding-left: 1.5%;
+    }
+}
+.customizer {
+.engrave.trifold-wallet {
+  top: 59.5%;
+  @media (max-width:749px){
+      top: 59.5%;
+      font-size: .45em!important;
+      padding-left: 3.5%;
+    }
+}
+}
+#shopify-section-product-matching .engrave.trifold-wallet{
+  display:none!important;
+}
+@media (max-width:991px){
+  .customizer .initials_clear {
+    top: 12px;
+    line-height: 7px;
+}
+}
+
+/* new products css */
+.customizer .engrave.largeosftbackpack{
+  left: 0;
+  top: 48%;
+}
+.engrave.largeosftbackpack{
+  left: 0;
+  top: 48%;
+}
+.customizer .engrave.zippedsmartpouch{
+  top: 71%;
+  left:23%;
+}
+.engrave.zippedsmartpouch{
+  top: 71%;
+  left:23%;
+}
+@media (max-width:749px){
+.engrave.zippedsmartpouch{
+  top: 71.5%;
+  left:19.5%;
+}  
+}
+  
+.backpacks.the-large-messenger-bag.engrave {
+    top: 54.1%;
+    left: 36.70%;
+    font-size: 0.35em;
+}  
+.customizer .backpacks.the-large-messenger-bag.engrave {
+    top: 54.1%;
+    left: 36.70%;
+    font-size: 0.36em;
+}  
+.ipad-sleeve.engrave {
+    top: 29.5%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    font-size: 0.42em;
+    text-align: center;
+}
+@media (max-width:991px){
+.backpacks.the-large-messenger-bag.engrave {
+    font-size: .30em;
+}
+}
+@media (max-width:749px){ 
+.backpacks.the-large-messenger-bag.engrave {
+    font-size: 0.45em;
+    top: 54.2%;
+    left: 30.9%;
+}
+}
+@media (max-width:575px){ 
+.backpacks.the-large-messenger-bag.engrave {
+    font-size: 0.35em;
+}
+}
+

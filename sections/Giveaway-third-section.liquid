@@ -1,0 +1,55 @@
+<section class="giveaway-3rd-sec">
+  <div class="page-width">
+    <div class="giveaway-3rd-sec-row">
+      <div class="giveaway-3rd-col">
+        <div class="giveaway-3rd-content">
+          {{ section.settings.third_description }}
+        </div>
+        <div class="termsandcondition">
+          <a href="{{ section.settings.termsconditionurl }}">{{ section.settings.termsconditiontext }}</a>
+        </div>
+      </div>
+      <div class="giveaway-3rd-col">
+        <div class="giveaway-3rd-media">
+          <img src="{{ section.settings.third_image | img_url:'master'  }}" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Giveaway Third Section",
+  "settings": [
+       {
+           "type": "image_picker",
+           "id": "third_image",
+           "label": "Image"
+         },
+        {
+           "type": "html",
+           "id": "third_description",
+           "label": "Description"
+         },
+         {
+           "type": "url",
+           "id": "termsconditionurl",
+           "label": "Terms condition url"
+         },
+       {
+           "type": "text",
+           "id": "termsconditiontext",
+           "label": "Terms condition Text"
+         }
+
+  ],
+  "presets":
+    [
+      {
+      "name":"Giveaway Third Section"
+      }
+    ]
+
+}
+{% endschema %}

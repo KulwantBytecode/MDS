@@ -1,0 +1,128 @@
+<div id="product-matching" class="page-width" data-product-id="{{ product.id }}" data-section-id="{{ section.id }}" data-section-type="product-matching">
+  {% if section.settings.show_matching_items %}
+    <div class="product-recommendations__inner">
+      {% if section.settings.heading != blank %}
+        <div class="section-header">
+          <h4>{{ section.settings.heading | escape }}</h4>
+          <span class="line horizontal"></span>
+        </div>
+      {% endif %}
+
+      {% assign type = product.type %}
+      {% assign colour = product.selected_or_first_available_variant.option1 %}
+      {%if type contains 'Watch'%}
+            {% assign colour = product.selected_or_first_available_variant.option2 %}
+
+      {%endif%}
+      {% assign allProducts =  collections.matching-slider.products %}
+      {% assign ignoredProducts = allProducts | where: "type", type %}
+      {% assign matches = 0 %}
+      
+      {% for product in allProducts %}
+          {% assign ignored = ignoredProducts | where: "id", product.id %}
+          {% unless ignored.size > 0 %}
+            {% assign variants = product.variants | where: "option1", colour | where: "available" %}
+      {%if product.type contains 'Watch'%}
+            {% assign variants = product.variants | where: "option2", colour | where: "available" %}
+
+      {%endif%}
+            {% for variant in variants %}
+              {% assign matches = matches | plus: 1 %}
+            {% endfor %}
+          {% endunless %}
+       {% endfor %}
+
+      {% assign shown = 0 %}
+      <div class="hide-mobile" id="product-matching-desktop">
+        <div class="grid grid--uniform">
+          {% for product in allProducts %}
+              {%unless product.type contains 'Bundle' %}
+                {% if shown < 4 %}
+                  {% assign ignored = ignoredProducts | where: "id", product.id %}
+                  {% unless ignored.size > 0 %}
+                    {% if matches > 0 and colour != 'Black Caviar (MYM Edition)' %}
+          
+                      {% assign variants = product.variants | where: "option1", colour | where: "available" %}
+                        {%if product.type contains 'Watch'%}
+                          {% assign variants = product.variants | where: "option2", colour | where: "available" %}
+
+                    {%endif%}
+                    {% else %}
+                      {% assign variants = product.variants | where: "option1", "Black Caviar" | where: "available" %}
+                    {% endif %}
+                    {% for variant in variants %}
+            			{% assign is_preorder = false %}
+                        {% if variant.inventory_policy == "continue" and variant.inventory_quantity <= 0 %}
+                            {% assign is_preorder = true %}
+                        {% endif %}
+          {%unless variant.sku contains '42'%}
+                      <div class="grid__item medium-up--one-half">
+                        {% include 'product-featured',is_preorder %}
+                      </div>
+                      {% assign shown = shown | plus: 1 %}
+          {% endunless %}
+                    {% endfor %}
+                  {% endunless %}
+                {% endif %}
+              {%endunless%}
+          {% endfor %}
+        </div>
+      </div>
+
+      {% assign shown = 0 %}
+      <div class="hide-desktop" id="product-matching-mobile">
+        <div class="css-slider {% unless matches > 1 %} lefty{% endunless %}">
+          {% for product in allProducts %}
+            {%unless product.type contains 'Bundle' %}
+              {% if shown < 4 %}
+                {% assign ignored = ignoredProducts | where: "id", product.id %}
+                {% unless ignored.size > 0 %}
+                  {% if matches > 0 and colour != 'Black Caviar (MYM Edition)'%}
+					{% assign variants = product.variants | where: "option1", colour | where: "available" %}
+                        {%if product.type contains 'Watch'%}
+                          {% assign variants = product.variants | where: "option2", colour | where: "available" %}
+
+                    {%endif%}                  {% else %}
+                    {% assign variants = product.variants | where: "option1", "Black Caviar" | where: "available" %}
+                  {% endif %}
+                  {% for variant in variants %}
+          			{% assign is_preorder = false %}
+                      {% if variant.inventory_policy == "continue" and variant.inventory_quantity <= 0%}
+                          {% assign is_preorder = true %}
+                      {% endif %}
+           {%unless variant.sku contains '42'%}
+                    <div class="css-slider_slide">
+                      {% include 'product-featured',is_preorder%}
+                    </div>
+                    {% assign shown = shown | plus: 1 %}
+			  {% endunless %}
+                  {% endfor %}
+                {% endunless %}
+              {% endif %}
+            {%endunless%}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Matching items",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_matching_items",
+      "label": "Show matching items",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default":"Add matching items"
+    }
+  ]
+}
+{% endschema %}

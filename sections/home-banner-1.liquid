@@ -1,0 +1,391 @@
+{% capture disneylogo %}
+  <img class="disneyhp" src="{{section.settings.disneylogo | img_url: "master" }}" alt="Disney"/>
+{% endcapture %}
+{% capture disneylogom %}
+  <img class="disneyhp" src="{{section.settings.disneylogom | img_url: "master" }}" alt="Disney"/>
+{% endcapture %}<div class="blog-slider__container hide-desktop">
+  {% for block in section.blocks %}
+    <div class="{% if block.settings.alignright %} alignright {% endif %} {% if block.settings.blacktextm %}
+  blacktextm   {% endif %} blogSlides fade hp-slider hp-slider-{{ forloop.index }}" style="background: url({{block.settings.imagemob | img_url: 'master'}});">
+
+      <div class="page-width">
+         <div class="blog-slider__text"> 
+        <div class="blog-slider__text--inner"> 
+            {% if block.settings.badge_mob != blank  %}
+       <div class="jelligrain-hp">   <span class="mega-title mega-title-2 text-normal xl_text">{{ block.settings.text | strip_html  }} </br> <img class="hp-badge {{ block.settings.badge_size }} " src ="{{ block.settings.badge_mob | img_url: 'master' }}"/>
+</span>       </div>     {% endif %}
+     
+
+    {%- if block.settings.heading != blank and block.settings.badge_mob == blank -%}
+              <h3 class="mega-title mega-title-2 text-normal xl_text">{{ block.settings.heading | replace:'Disney',disneylogom}}</h3>
+        {%- endif -%}
+         {%- if block.settings.text != blank and block.settings.badge_mob == blank-%}
+ <p class="sm_text text-black"> <mark class="{% if block.settings.invert_ctam %} mark-black {% endif %}">&nbsp; {{ block.settings.text | strip_html | replace : 'and', 'and &nbsp; <br> &nbsp;' }}&nbsp;</mark></p>     
+        {%- endif -%}
+        {%- if block.settings.btnlabel != blank and block.settings.btnlink != blank -%}
+            <a href="{{ block.settings.btnlink }}" class="btn--main {% if block.settings.invert_ctam %} btn--main-black {% endif %}">
+                  {{ block.settings.btnlabel | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  </div>
+  {% endfor%}
+</div>
+<div class="blog-slider__container hide-mobile">
+  {% for block in section.blocks %}
+    <div class="{% if block.settings.aligncenter %} aligncenter {% elsif block.settings.alignleft %}
+  alignleft {% elsif block.settings.alignmain %} alignmain {% endif %}{% if block.settings.blacktext %}
+  blacktext {% endif %}blogSlides  fade hp-slider hp-slider-{{ forloop.index }}" style="background: url({{block.settings.image | img_url: 'master'}});">
+
+      <div class="page-width">
+      <div class="blog-slider__text {% if block.settings.badge != blank  %} badge_hp {%endif %}"> 
+        <div class="blog-slider__text--inner  {% if block.settings.badge != blank  %} badge_hp {%endif %}"> 
+ {% if block.settings.badge != blank  %}
+       <div class="jelligrain-hp">   <span class="mega-title mega-title-2 text-normal xl_text">{{ block.settings.heading }} <img class="hp-badge {{ block.settings.badge_size }} " src ="{{ block.settings.badge | img_url: 'master' }}"/>
+</span>       </div> 
+   {% endif %}
+    {%- if block.settings.heading != blank and block.settings.badge == blank -%}
+            <h3 class="mega-title mega-title-2 text-normal xl_text">{{ block.settings.heading | replace:'Disney',disneylogo}}</h3> 
+        {%- endif -%}
+         {%- if block.settings.text != blank and  block.settings.badge == blank -%}
+ <p class="sm_text text-black  "> <mark class="{% if block.settings.invert_cta %} mark-black {% endif %}">&nbsp; {{ block.settings.text | strip_html | replace : 'and', 'and &nbsp; <br> &nbsp;' }}&nbsp;</mark></p>     
+        {%- endif -%}
+        {%- if block.settings.btnlabel != blank and block.settings.btnlink != blank -%}
+            <a href="{{ block.settings.btnlink }}" class="btn--main {% if block.settings.invert_cta %}btn--main-black{% endif %} ">
+                  {{ block.settings.btnlabel | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  </div>
+  {% endfor%}
+</div>
+<div class="home-info">
+  <div class="home-info-inner page-width hide-mobile">
+    
+    <div class="home-info-inner__item">
+      {%include 'home-svg-leather'%}
+      Sustainable DriTan™ Leather
+    </div>
+    <div class="home-info-inner__item" style="flex-basis: 34%;padding: 1.5rem;">
+	{%include 'home-svg-shipping'%}
+      Usually Dispatches Same Day for Orders Placed Before 11 am
+    </div>
+    <div class="home-info-inner__item">
+      {%include 'home-svg-personalise'%}
+     Complimentary Personalisation
+    </div>
+  </div>
+  <div class="home-info-inner page-width hide-desktop">
+    
+    <div class="home-info-inner__item">{%include 'home-svg-leather'%}
+      Sustainable DriTan™ Leather
+    </div>
+     <div class="home-info-inner__item">
+		{%include 'home-svg-shipping'%}
+       Usually Dispatches Same Day for Orders Placed Before 11 am
+    </div>
+    <div class="home-info-inner__item com-abc">{%include 'home-svg-personalise'%}
+     Complimentary Personalisation
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    
+    $('.blog-slider__container').flickity({
+      autoPlay:5000,
+wrapAround: true,
+ change: function( index ) {
+      console.log( 'Slide changed to' + index );
+    }
+    });
+  $('.home-info-inner.page-width.hide-desktop').slick({
+   autoplay: true
+
+  });
+  
+
+});
+
+</script>
+<style>
+  a.btn--main.btn--main-black {
+    background: #000 ;
+    color: #fff;
+}
+   .mark-black {
+     color:#000 !important;
+       
+   }
+ .hp-slider-1 h3.mega-title.mega-title-2.text-normal.xl_text {
+   padding:1rem;
+ }
+ 
+   
+}@media(max-width:992px) {
+ .hp-slider-1 h3.mega-title.mega-title-2.text-normal.xl_text {
+    color: #000;
+   
+}
+  
+ .hp-slider-1 + .blog-slider__container .flickity-button svg {
+    fill: #000!important;
+    width: 44px;
+    height: 44px;
+}
+ .hp-slider-1  mark {
+    background: transparent;
+    color: #000;
+    font-weight: bold;
+}
+.hp-slider-5 .blog-slider__text {
+    background: none!important;
+}
+  
+  .jelligrain-hp {
+    position: absolute;
+    top: 8rem;
+    /* left: 50%; */
+    left: 0;
+    /* transform: translatey(-50%); */
+    width: 100%;
+    text-align: center;
+}
+  .hp-slider-3 .blog-slider__text {
+
+padding-top: 2rem;
+
+}
+    .hp-slider-4 .blog-slider__text {
+padding-top: 2rem;
+
+}
+
+  img.hp-badge {
+       vertical-align: middle;
+    max-width: 50%;
+       margin-left:-0.25rem;
+}
+}
+   .hp-slider{
+     
+      background-position:center !important;
+    	background-size:cover  !important;
+  }
+       
+  
+      mark {
+      background:transparent;
+      color:#fff;
+        font-weight: bold;
+      }
+      .disneyhp {
+    max-width: 10rem;
+
+    vertical-align: middle;
+      }
+  @media(min-width:992px) {
+    img.hp-badge {
+    /* display: flex; */
+    max-width: 32%;
+    vertical-align: middle;
+    margin-left: -1.1rem;
+}
+  
+.blog-slider__text--inner.badge_hp {
+    max-width: 100%;
+}
+    .aligncenter .blog-slider__text.badge_hp {
+    align-items: center;
+    padding: 0rem 55px 5rem;
+    justify-content: center;
+    top: 6.7rem;
+}
+    .mega-title{
+      font-size:1rem;
+    }
+
+    .aligncenter .blog-slider__text {
+    align-items: center;
+    padding: 0rem 55px 5rem;
+    justify-content: flex-end;
+      }
+    .blog-slider__text--inner {
+     max-width: 50%;
+}
+   .aligncenter mark  {
+            color:#fff;
+}
+
+        .alignmain .blog-slider__text.badge_hp {
+    align-items: center;
+    padding: 0rem 55px 5rem;
+    justify-content: center;
+    top: 6.7rem;
+}
+    
+      .alignleft .blog-slider__text.badge_hp {
+    align-items: start;
+    padding: 0rem 55px 5rem;
+    justify-content: center;
+    top: 6.7rem;
+}
+      .disneyhp {
+    max-width: 40rem;
+      }
+
+    .alignmain .blog-slider__text {
+    
+    align-items: center;
+    padding: 0rem 55px 5rem;
+    justify-content: center;
+      }
+    
+    .alignleft .blog-slider__text {
+    
+    align-items: start;
+    padding: 0rem 55px 5rem;
+    justify-content: center;
+      }
+    .blog-slider__text--inner {
+     max-width: 50%;
+}
+   .alignleft .mega-title  {
+        /*    color:black !important;*/
+}
+    
+   
+ 
+  }
+
+.alignmain .blog-slider__text {
+  top: 7rem;
+}
+  
+.alignleft .blog-slider__text {
+  top: 7rem;
+}
+     .blacktext .mega-title  {
+            color:black !important;
+}
+   .blacktextm .mega-title  {
+            color:black !important;
+}
+ 
+</style>
+
+{% schema %}
+{
+  "name": "Home Banner",
+  "class": "index-section index-section--flush index-section--banner",
+  "settings": [
+  {
+      "type": "image_picker",
+      "id": "disneylogo",
+      "label": "Disney logo Desktop"
+    },
+      {
+      "type": "image_picker",
+      "id": "disneylogom",
+      "label": "Disney logo Mobile"
+    }
+  ],
+  "blocks" : [
+  {
+  "name":"Home Banner Carousel",
+  "type":"carousel",
+  "settings": [
+    {
+    "type":"checkbox",
+     "id":"aligncenter",
+     "label":"Move to center Desktop (default Right)"
+    },
+       {
+    "type":"checkbox",
+     "id":"alignleft",
+     "label":"Move to left Desktop (default Right)"
+    },
+
+         {
+    "type":"checkbox",
+     "id":"alignmain",
+     "label":"Move to Main Desktop (default Right)"
+    },
+    
+    {
+     "type":"checkbox",
+     "id":"blacktextm",
+     "label":"Main title to Black Mobile"
+    },   
+    {
+     "type":"checkbox",
+     "id":"blacktext",
+     "label":"Main title to Black"
+    },
+    {
+    "type":"image_picker",
+    "id":"image",
+    "label":"Desktop Banner"
+    },
+    {
+    "type":"image_picker",
+    "id":"imagemob",
+    "label":"Mobile Banner"
+    },
+     {
+    "type":"image_picker",
+    "id":"badge",
+    "label": "Badgde Png"
+    },
+    {
+    "type":"image_picker",
+    "id":"badge_mob",
+    "label": "Badgde Png Mob"
+    },
+    {
+    "type":"text",
+    "id":"heading",
+    "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type":"checkbox",
+      "label":"CTA Black",
+      "id":"invert_cta"
+    },
+
+      {
+      "type":"checkbox",
+      "label":"CTA Black Mobile",
+      "id":"invert_ctam"
+    },
+  
+    {
+      "type": "text",
+      "id": "btnlabel",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "btnlink",
+      "label": "Button link"
+    }
+  ]
+  }
+  ],
+  "presets": [
+    {
+      "name": "Home banner",
+      "category": "Maison"
+    }
+  ]
+}
+{% endschema %}

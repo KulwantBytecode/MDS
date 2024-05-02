@@ -1,0 +1,36 @@
+{%include 'size_help'%}
+
+{% schema %}
+{
+    "name": "Watch Size Guide",
+    "settings": [
+      {
+        "type": "text",
+        "id": "size_main_heading",
+        "label": "Text"
+      },
+      {
+        "type": "richtext",
+        "id": "size_description",
+        "label": "Description",
+        "default": "<p>Your order will dispatch within 1-2 business days once production is complete.<\/p>"
+      },
+      {
+        "type": "image_picker",
+        "id": "size_img",
+        "label": "Image"
+      },
+      {
+        "type": "url",
+        "id": "size_link",
+        "label": "Link"
+      },
+      {
+        "type": "text",
+        "id": "size_btn_text",
+        "label": "Button Text",
+        "default": "ok"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,88 @@
+<div class="pdp_usp_sec {{ product.type | handleize }}">
+  <div class="page-width">
+    <div class="usp_blocks_list">
+    <div class="usp_block">
+      {% if  product.metafields.custom.u_s_p_first_image != blank %}
+      <div class="usp_block_left">
+          <figure>
+            <img src="{{ product.metafields.custom.u_s_p_first_image | img_url:'master' }}" alt="{{ product.metafields.custom.u_s_p_first_image }}">
+          </figure>      
+      </div>
+        {% endif %}
+      <div class="usp_block_right">
+        {% if product.metafields.custom.usp_text != blank %}
+        <h3>{{ product.metafields.custom.usp_text }}</h3>
+          {% endif %}
+          {% if product.metafields.custom.u_s_p_description != blank %}
+        <p>{{ product.metafields.custom.u_s_p_description }}</p>
+            {% endif %}
+      </div>
+    </div>
+
+          <div class="usp_block">
+            {% if product.metafields.custom.u_s_p_secod_image != blank %}
+      <div class="usp_block_left">
+          <figure>
+            <img src="{{ product.metafields.custom.u_s_p_secod_image | img_url:'master' }}" alt="{{ product.metafields.custom.u_s_p_secod_image }}">
+          </figure>      
+      </div>
+              {% endif %}
+      <div class="usp_block_right">
+        {% if product.metafields.custom.usp_second_heading != blank %}
+        <h3>{{ product.metafields.custom.usp_second_heading }}</h3>
+        <p>{{ product.metafields.custom.usp_second_row_content }}</p>
+          {% endif %}
+      </div>
+    </div>
+      
+<div class="usp_block">
+  {% if product.metafields.custom.usp_third_image != blank %}
+      <div class="usp_block_left">
+          <figure>
+            <img src="{{ product.metafields.custom.usp_third_image | img_url:'master' }}" alt="{{ product.metafields.custom.usp_third_image }}">
+          </figure>      
+      </div>
+    {% endif %}
+      <div class="usp_block_right">
+        {% if product.metafields.custom.usp_third_heading  != blank %}
+        <h3>{{ product.metafields.custom.usp_third_heading }}</h3>
+        <p>{{ product.metafields.custom.usp_third_row_content }}</p>
+          {% endif %}
+      </div>
+    </div>
+      
+      <div class="usp_block">
+        {% if product.metafields.custom.usp_fourth_row_image != blank %}
+      <div class="usp_block_left">
+          <figure>
+            <img src="{{ product.metafields.custom.usp_fourth_row_image | img_url:'master' }}" alt="{{ product.metafields.custom.usp_fourth_row_image }}">
+          </figure>      
+      </div>
+          {% endif %}
+      <div class="usp_block_right">
+        {% if product.metafields.custom.usp_fourth_row_heading != blank %}
+        <h3>{{ product.metafields.custom.usp_fourth_row_heading }}</h3>
+        <p>{{ product.metafields.custom.usp_fourth_row_content }}</p>
+          {% endif %}
+      </div>
+    </div>
+      
+    </div>    
+  </div>
+</div>
+
+
+
+
+{% schema %}
+  {
+    "name": "usp-product",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

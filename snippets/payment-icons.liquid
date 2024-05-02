@@ -1,0 +1,43 @@
+{% comment %}
+  {% for type in shop.enabled_payment_types %}
+    <li class="payment-icon">
+      {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+    </li>
+  {% endfor %}
+{% endcomment %}
+
+{% assign displayTitle = "hide" %}
+{%if tabs %}
+    {% assign displayTitle = "payment-icon-title" %}
+  <div class="product-tabs-icons">
+{%endif%}
+
+<li class="payment-icon">
+   {% include 'new-afterpay' %}
+  <span class="{{displayTitle}}"> AfterPay </span>
+</li>
+  
+<li class="payment-icon">
+  {% include 'amex-svg' %}
+  <span class="{{displayTitle}}"> AMEX </span>
+</li>
+<li class="payment-icon">
+  {% include 'new-applepay' %}
+   <span class="{{displayTitle}}"> ApplePay </span>
+</li>
+<li class="payment-icon">
+  {% include 'new-googlepay' %}
+  <span class="{{displayTitle}}"> GooglePay </span>
+</li>
+<li class="payment-icon">
+  {% include 'new-mastercard' %}
+  <span class="{{displayTitle}}"> MasterCard </span>
+</li>
+<li class="payment-icon">
+  {% include 'new-paypal' %}
+   <span class="{{displayTitle}}"> PayPal </span>
+</li>
+<li class="payment-icon">
+  {% include 'new-visasvg' %}
+  <span class="{{displayTitle}}"> Visa </span>
+</li>

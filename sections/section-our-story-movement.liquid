@@ -1,0 +1,40 @@
+  <div class="our_movement_block">
+    <div class="page-width">
+      <small  data-aos="fade-up">{{ section.settings.title }}</small>
+      <h4  data-aos="fade-up">{{ section.settings.description }}</h4>
+      {% if section.settings.btn_text %} <a class="btn" href="{% if section.settings.btn_url != "" %}{{ section.settings.btn_url }}{% else %}javascript:void(0);{% endif %}">{{ section.settings.btn_text }}</a> {% endif %}
+    </div>
+  </div>
+{% schema %}
+  {
+    "name": "Section Movement",
+    "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Movement title"
+        },      
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Movement Description"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Button Text"
+        }, 
+        {
+          "type": "url",
+          "id": "btn_url",
+          "label": "Button Url"
+        }      
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

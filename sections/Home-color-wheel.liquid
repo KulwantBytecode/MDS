@@ -1,0 +1,309 @@
+{% unless page.handle == "sustainability-pledge" %}
+{% assign colours_arr = section.settings.visible_colours | newline_to_br | split: '<br />' %}
+<style>
+
+ #shopify-section-template--14653356048465__1642593597ed2bc9c1 .product-grid3 .title a{
+   font-size: 1.5rem!important; 
+  }
+ #shopify-section-template--14653356048465__1642593597ed2bc9c1 h2{
+font-family: 'juanalight';
+ } 
+#shopify-section-template--14653356048465__1642593597ed2bc9c1 .view-all-p-btnn a{
+  text-transform: uppercase!important;
+}
+ #shopify-section-template--14653356048465__1642593597ed2bc9c1 .product-content h3 a{
+    font-family: 'gt_americaregular' !important;
+  }
+ #shopify-section-template--14653356048465__1642593597ed2bc9c1  .product-content p{
+  display: none;
+}
+
+@media(max-width: 780px){
+   #shopify-section-template--14653356048465__1642593597ed2bc9c1 .product-content h3{
+       padding-bottom: 35px;
+padding-left: 10px;
+padding-right: 10px;
+   }
+}
+  
+</style>  
+
+
+<!-- products color name   -->
+<section class="color-wheel-section-homepagenav" style="opacity : 1;">
+  <h2 class="h2"> {{section.settings.title}} </h2>
+  <div class="page-width">
+    <div class="color-wheel-box tab-menu">
+       <ul class="list-inline-color">
+         {% for colouname in colours_arr %}
+         <li  class="tab-index tab-a {% if forloop.index < 2 %}active-a{% endif %}" data-clr="{{ colouname | handleize }}" data-id="tab{{forloop.index}}"> <a href="javascript:void(0)"> <span style="background-color: {{colouname}};" class="{{colouname  | replace: " ", "-" | downcase }}"> </span> 
+         <p style="color:black;"> 
+         <small >{{ 'general.default.show_me' | t }} </small> {{ colouname }} </p> </a> </li>
+         {% endfor %}
+      </ul>
+    </div> 
+    
+   {% for colouname in colours_arr %}
+    <div  class="tab colotab {% if forloop.index < 2 %}tab-active{% endif %}" data-id="tab{{forloop.index}}" {% if forloop.index > 1 %}  {% endif %}>
+     <div class="tabcontent">
+    <div class="colorwheel-slider">
+    {%- for product in collections[section.settings.collection_handle].products -%}
+      <!--       Script start by wvt -->
+       {% assign color_active = false %}
+       {% for option in product.options %}
+       {% if option == 'Color' %}
+    	{% assign color_active = true %}
+       {% endif %}
+       {% endfor %}
+      
+       {% if product.variants.size > 1 and color_active == true %}
+       {% for option in product.options %}
+       {% if option == 'Color' %}
+       {% assign index = forloop.index0 %}
+       {% assign colorlist = '' %}
+       {% assign color = '' %}
+       {% for variant in product.variants %}
+       {% capture color %}
+       {{ variant.options[index] }}
+       {% endcapture %}
+       {% unless colorlist contains color %}
+       {% assign updatedcolouname = colouname | replace: " ", "-" | downcase %}
+       {% assign updatedcolouname2 = updatedcolouname |  lstrip %}
+       {% assign updatedcolortext = variant.title | replace: " ", "-" | downcase | remove: '<br>' -%}
+       {% if updatedcolouname2 == updatedcolortext %} 
+      <div class="flickty_item">
+       {% include 'product-card-variant', product: product , colouname : colouname, updatedcolouname : updatedcolouname, count : forloop.index0 %}
+      </div>
+         <div>
+         </div>
+       {% endif %}
+       {% capture tempList %}
+       {{colorlist | append: color | append: " " }}
+       {% endcapture %}
+       {% assign colorlist = tempList %}
+       {% endunless %}
+       {% endfor %}
+
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}  
+      
+     <!-- Script End by wvt -->
+    
+    </div>
+
+
+       
+     </div> 
+   </div><!--end of tab one--> 
+    {% endfor %}
+    {% if section.settings.button_text != '' and section.settings.button_text !='' %}
+      <div class="view-all-btn center viewbtn1">
+        <a class="btn-custom" href="{{ section.settings.button_url }}">{{ section.settings.button_text }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text1 !='' %}
+      <div class="view-all-btn center viewbtn2">
+        <a class="btn-custom" href="{{ section.settings.button_url1 }}">{{ section.settings.button_text1 }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text2 !='' %}
+      <div class="view-all-btn center viewbtn3">
+        <a class="btn-custom" href="{{ section.settings.button_url2 }}">{{ section.settings.button_text2 }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text3 !='' %}
+      <div class="view-all-btn center viewbtn4">
+        <a class="btn-custom" href="{{ section.settings.button_url3 }}">{{ section.settings.button_text3 }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text4 !='' %}
+      <div class="view-all-btn center viewbtn5">
+        <a class="btn-custom" href="{{ section.settings.button_url4 }}">{{ section.settings.button_text4 }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text5 !='' %}
+      <div class="view-all-btn center viewbtn6">
+        <a class="btn-custom" href="{{ section.settings.button_url5 }}">{{ section.settings.button_text5 }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text6 !='' %}
+      <div class="view-all-btn center viewbtn7">
+        <a class="btn-custom" href="{{ section.settings.button_url6 }}">{{ section.settings.button_text6 }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text7 !='' %}
+      <div class="view-all-btn center viewbtn8">
+        <a class="btn-custom" href="{{ section.settings.button_url7 }}">{{ section.settings.button_text7 }}</a>
+      </div>
+    {% endif %}
+    {% if section.settings.button_text != '' and section.settings.button_text8 !='' %}
+      <div class="view-all-btn center viewbtn9">
+        <a class="btn-custom" href="{{ section.settings.button_url8 }}">{{ section.settings.button_text8 }}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+<!-- <div class="collection-viewall text-center">
+   {% if section.settings.btntext != blank %}
+<a class="" href="{{ section.settings.url }}">{{ section.settings.btntext }}</a>
+  {% endif %}
+</div> -->
+{% endunless %}
+{% schema %}
+{
+  "name": "Home-Product Color Wheel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "collection",
+      "id": "collection_handle",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "filter_prefix",
+      "label": "Filter Prefix",
+      "default": "color"
+    },
+    {
+      "type": "textarea",
+      "id": "visible_colours",
+      "label": "Visible Colors",
+      "info": "Press [Enter] for a new colour variant"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Url"
+    },
+        {
+      "type": "text",
+      "id": "button_text1",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url1",
+      "label": "Button Url"
+    },
+        {
+      "type": "text",
+      "id": "button_text2",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url2",
+      "label": "Button Url"
+    },
+        {
+      "type": "text",
+      "id": "button_text3",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url3",
+      "label": "Button Url"
+    },
+        {
+      "type": "text",
+      "id": "button_text4",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url4",
+      "label": "Button Url"
+    },
+        {
+      "type": "text",
+      "id": "button_text5",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url5",
+      "label": "Button Url"
+    },
+        {
+      "type": "text",
+      "id": "button_text6",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url6",
+      "label": "Button Url"
+    },
+      {
+      "type": "text",
+      "id": "button_text7",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url7",
+      "label": "Button Url"
+    },
+    {
+      "type": "text",
+      "id": "button_text8",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url8",
+      "label": "Button Url"
+    }   
+  ],
+  "presets": [
+    {
+      "name": "Home-Product Color Wheel"
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .black-caviar{
+  background-color: {{ settings.black_caviar }};
+  }
+  .lapis-blue{
+    background-color: {{settings.lapis-blue}} !important;
+  }
+  .walnut-brown{
+  background-color: {{settings.walnut-brown}}!important;
+  }
+  .emerald-green{
+  background-color: {{settings.emerald-green}} !important;
+  }
+  .pomegranate-red{
+  background-color:{{settings.pomegranate-red}}!important;
+  }
+ .pink-lily{
+  background-color: {{settings.pink-lily}}!important;
+  }
+  .saharan-nude{
+  background-color:{{settings.saharan-nude}}!important;
+  }
+  .mercury-grey{
+  background-color: {{settings.mercury-grey}}!important;
+  }
+ 
+</style>
+  
+  
+  
+  
+  

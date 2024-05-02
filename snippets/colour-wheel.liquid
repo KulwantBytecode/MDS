@@ -1,0 +1,54 @@
+
+{% assign colours_arr = section.settings.visible_colours | newline_to_br | split: '<br />' | join: ',' %}
+
+{%- capture products_json -%}
+[
+{%- for product in collections[section.settings.collection_handle].products -%}
+{%- render 'json-product' mod_item: product -%}
+{%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}
+]
+{%- endcapture -%}
+{%- assign products_json = products_json | strip | strip_newlines | url_encode -%}
+
+<div class="colour-wheel animated" data-module="colour-wheel">
+  <div is="colour-wheel" filter-prefix="{{section.settings.filter_prefix}}" collection-handle="{{section.settings.collection_handle}}" inline-template products-json="{{products_json}}" colours-array="{{colours_arr}}">
+    <div class="colour-wheel__container container">
+      <header class="colour-wheel__head">
+        <h1 class="h2 colour-wheel__title">{{section.settings.title}}</h1>
+      </header>
+
+      <div class="colour-wheel__colors">
+        <nav class="colour-wheel__nav">
+          <ul class="colour-wheel__nav__items">
+            <li @click="triggerColour" :data-colour="handleValue(colour)" class="colour-wheel__nav__item" :class="[index === 0 ? 'is-active' : '']" v-for="(colour, index) in colours" :key="index">
+              <div class="colour-wheel__nav__switcher p2" :class="'color-swatches-' + handleValue(colour)">
+                <span class="colour-wheel__nav__switcher__hover" v-html="'{{ 'general.colour_wheel.show_me_html' | t }} ' + colour"></span>
+
+                <span class="colour-wheel__nav__switcher__activated" v-text="colour" ></span>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="colour-wheel__body" v-if="activeColour">
+        <div class="colour-wheel__carousel" ref="carousel">
+          <component
+            ref="productBox"
+            is="product-box"
+            :product="product"
+            :first-colour="activeColour"
+            inline-template
+            v-for="(product, index) in products" :key="product.id">
+          <div class="colour-wheel__cell animated-el-within" v-if="activeVariant">
+            {%- render 'product-box' -%}
+          </div>
+          </component>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

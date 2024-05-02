@@ -1,0 +1,90 @@
+<!-- UPSELL BOX HERE -->
+<div class="upsell-box-main-NAVM">
+    {% assign productOne = product.metafields.custom.upsell_product_one %}
+{% comment %}
+{% assign data_ids = productOne | split:'products/' | last | split: '?' | first %}
+{% assign relatedProduct = all_products[data_ids] %}
+ {% for relatedVariant in relatedProduct.variants %}   
+    {% if variant.inventory_quantity != 0 %}
+  <option value="{{ relatedVariant.id }}">{{ relatedVariant.title }} - {{ relatedVariant.price | money }}</option> 
+          {% endif %}
+{% endfor %} {% endcomment %}
+
+    {% assign productTwo = product.metafields.custom.upsell_product_two %}
+
+{% if productOne != blank or productTwo != blank %}
+    <h2> Make it a match </h2>
+ {% for block in section.blocks %}
+      {% if block.settings.subscription-text != blank %}
+        <h4>{{ block.settings.subscription-text }}</h4>
+      {% endif %}
+    {% endfor %}
+    {% if productOne != blank %}
+    <div class="upsell-box-main-NM upsell_prd_pys upsell_prd_pys_one" data-url="{{ productOne }}">
+       <div class="upsell-image" data-url = "{{ productOne }}">
+        <a href="{{ productOne }}"><span class="imgapp"></span></a>
+      </div>
+      <div class="upsell-image-contentt">
+      <div class="upsell-middle-content">
+        <div class="ddmm-upsell">
+        <a href="{{ productOne }}"><h3 class="title">{{ productOne.title }} </h3></a>
+        <small class="varTitle"> </small>
+        </div>
+      {% assign data_id = productOne | split:'='  %}
+     
+     
+          {% if product.selected_or_first_available_variant.available %}
+            <a data-id="{{ data_id[1] }}" class="button cart_add_btn"> + Add 
+            
+            <div class="upsell loading-overlay__spinner hidden">
+              <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+              <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
+            </a>
+            {% else %}
+            <a data-id="{{ data_id[1] }}" class="button cart_add_btn" disabled> + Sold Out </a>
+            {% endif %}
+      </div>
+     
+      <div class="upsell-end-box">
+        <h5 class="price">{{ productOne.price | money }}</h5>
+<!--         <a href="{{ productOne }}">View More </a> -->
+      </div>
+    </div>
+  </div>
+    {% endif %}
+  
+    {% if productTwo != blank %}
+  	<div class="upsell-box-main-NM upsell_prd_pys upsell_prd_pys_two" data-url="{{ productTwo }}">
+       <div class="upsell-image" data-url = "{{ productTwo }}">
+      <a href="{{ productTwo }}"><span class="imgapp"></span></a>
+      </div>
+         <div class="upsell-image-contentt">
+      <div class="upsell-middle-content">
+        <div class="ddmm-upsell">
+        <a href="{{ productTwo }}"><h3 class="title">{{ productTwo.title }} </h3></a>
+        <small class="varTitle"> </small>
+           </div>
+        {% assign data_id = productTwo | split:'='  %}
+           {% if product.selected_or_first_available_variant.available %}
+        <a data-id="{{ data_id[1] }}" class="button cart_add_btn"> + Add </a>
+              {% else %}
+   <a data-id="{{ data_id[1] }}" class="button cart_add_btn"  disabled="disabled"> + Sold Out </a>
+    {% endif %}
+      </div>
+     
+      <div class="upsell-end-box">
+        <h5 class="price">{{ productTwo.price | money }}</h5>
+<!--         <a href="{{ productTwo }}">View More </a> -->
+      </div>
+    </div>
+  </div>
+    {% endif %}
+  {% endif %}
+  </div>
+  <!-- UPSELL BOX CLOSED -->
+
+
+<script>
+</script>

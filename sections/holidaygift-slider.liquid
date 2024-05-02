@@ -1,0 +1,331 @@
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'facets.js' | asset_url | script_tag }}
+<style>
+    .product-grid3 .product-image3 img:nth-child(n+3) {
+    display: unset;
+}
+    .list_product-colors {
+    display: block;
+   
+}
+.container_product-colors {
+  display: block;
+  width:100%;
+  max-width: 235px;
+  padding-right: 35px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1.5rem;
+
+}
+.swiper-button-next {
+    position: absolute;
+    display: block !important;
+    top: 93%;
+        left: 66%;
+}
+.container_product-colors .swiper-slide {
+    max-width: 40px;
+}
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+    content: 'next';
+    font-size: 15px;
+}
+.icon-next,.icon-prev {
+  position: absolute;
+
+  transform: translate(-50%,-50%);
+  width: 50px;
+  height: 60px;
+  cursor: pointer;
+  top: 44%;
+    left: 100%;
+    right: 0%;
+        z-index: 9;
+}
+.icon-prev { 
+display: none;
+}
+.icon-prev {
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(-180deg);
+    width: 50px;
+    height: 60px;
+    cursor: pointer;
+        top: 50%;
+    left: 90%;
+    right: 0%;
+    z-index: 9;
+}
+.arrow {
+ 
+  top: 25px;
+  display: block !important;
+     position: absolute;
+    top: 50%;
+    width: 22px;
+    height: 2.5px;
+    background-color: #000;
+}
+
+.arrow::after, .arrow::before {
+     content: '';
+    position: absolute;
+    width: 54%;
+    height: 2.5px;
+    right: -2px;
+    background-color: #000;
+}
+
+.arrow::after {
+top: -4px;
+transform: rotate(45deg);
+}
+
+.arrow::before {
+  top: 4px;
+  transform: rotate(-45deg);
+}
+.badge--bottom-left.badge {
+    color: #000;
+    background-color: #fff;
+    padding: 7px 11px !important;
+    margin-left: 8px;
+    border-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px 0px #ece9e9;
+}
+span.badge.price__badge-sale, span.badge.badge--bottom-left.color-accent-1 {
+   background: #fff;
+    border-radius: 3px;
+    color: #b03034;
+}
+.card-information__wrapper>*:not(.visually-hidden:first-child)+*:not(.rating) {
+    margin-top: 0;
+}
+.card-information+.card {
+    margin-bottom: 1.7rem;
+    background: #f4f4f4;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+}
+.card-wrapper {
+    background: #ffffff;
+   /* box-shadow: 0px 4px 10px 0px #eaeaea; */
+}
+.product-recommendations .card-wrapper {
+    background: #ffffff;
+   
+}
+.full-unstyled-link{
+  display: block;
+  position: relative;
+}
+
+@media(max-width: 991px) {
+  .color-option {
+
+    width: 18px;
+    height: 18px;
+}
+.card.card--product.card--outline {
+    background: #f4f4f4;
+    width: calc(100% + 20px);
+    margin-left: -10px;
+}
+.arrow {
+    top: 25px;
+    top: 50%;
+    width: 16px;
+    height: 2.5px;
+
+}
+.icon-prev {
+   
+    left: 75%;
+
+}
+.arrow::after, .arrow::before {
+    content: '';
+    position: absolute;
+    width: 55%;
+    height: 2.5px;
+    right: 0px;
+    background-color: #000;
+}
+}
+</style>
+  <div class="sale_collection_list newarrival-wrapper page-width">
+   {% for block in section.blocks %}
+  <div class="similar_productcollection collection"> 
+     <div class="collections-slider">
+   
+    {% assign newcollection = collections[block.settings.collection] %}
+     <div class="content-item mobile-hide dynamic-style" style="background-color:{{ block.settings.color1 }}; color:{{ block.settings.color2 }};">
+                  <div class="product-content relative">
+                    <h3>{{ block.settings.pd_title }}</h3>
+                    <div class="rte" style="color:{{ block.settings.color2 }};">
+                        {{ block.settings.info }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="content-item desktop-hide non-dynamic-style">
+                  <div class="product-content relative">
+                    <h3>{{ block.settings.pd_title }}</h3>
+                    <div class="rte">
+                        {{ block.settings.info }}
+                    </div>
+                  </div>
+                </div>
+       <div class="customslider_item">
+      <button type="button" class="slider_next_btn">
+      <svg class="flickity-button-icon" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+      </button>
+      <button type="button" class="slider_prev_btn">
+      <svg class="flickity-button-icon" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path></svg>
+      </button>
+    <ul data-id="{{ section.id }}" class="custom-carousel-slider
+          grid grid--2-col negative-margin product-grid {% if similarcollection.products_count < 4 %} grid--{{ similarcollection.products_count }}-col-tablet{% else %}
+            {% if similarcollection.products_count == 4 %} grid--4-col-desktop{% else %} grid--3-col-tablet grid--one-third-max grid--4-col-desktop grid--quarter-max{% endif %}
+          {% endif %}">
+          {%- for product in newcollection.products %}
+            <li class="newarrival_slide grid__item">
+              {% render 'collectioncard-homepage',
+                product_card_product: product,
+                media_size: section.settings.image_ratio,
+                show_secondary_image: section.settings.show_secondary_image,
+                add_image_padding: section.settings.add_image_padding,
+                show_vendor: section.settings.show_vendor,
+                show_image_outline: section.settings.show_image_outline,
+                show_rating: section.settings.show_rating
+               
+              %}
+            </li>
+    {% endfor %}
+    </ul>
+       </div>
+  </div>
+  </div>
+    {% endfor %}
+  </div>
+{% schema %}
+  {
+    "name": "New Arrival Collection",
+    "settings": [
+      {
+        "type" : "text",
+        "id" : "title",
+        "label" : "Title of Section"
+      },
+      {
+        "type" : "textarea",
+        "id" : "description",
+        "label" : "Collection Description"
+       }, 
+     
+      {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_image_padding",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.add_image_padding.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_outline",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.show_image_outline.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+      {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    }
+    ],
+    "blocks" : [
+      {
+        "name" : "collection",
+        "type" : "collection",
+        "settings" : [
+          {
+            "type" : "collection",
+            "id" : "collection",
+            "label" : "Select Collection"
+          },
+          {
+          "label": "Title",
+          "id": "pd_title",
+          "type": "text",
+          "default": "Title"
+        },        
+        {
+          "label": "Info",
+          "id": "info",
+          "type": "textarea",
+          "default": "Description"
+        },
+        {
+          "label": "Tile Bg Color",
+          "id": "color1",
+          "type": "color",
+          "default": "#fff"
+        },
+        {
+          "label": "Tile Text Color",
+          "id": "color2",
+          "type": "color",
+          "default": "#fff"
+        }        
+        ]
+      }
+    ],
+    "presets" : [
+      {
+        "name" : "Custom homepage Collection"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,99 @@
+<!-- UPSELL BOX HERE -->
+
+<script>
+  function upsell_product() {
+
+    var upsell_product_data = localStorage.getItem("upsell_product_data");
+    var getObje = JSON.parse(upsell_product_data);
+    var shop_url_upsell = window.origin;
+    jQuery.getJSON(shop_url_upsell+'/cart.js', function(cart) {
+
+      var upsellcartItems = cart.items;
+      var handle_arr = [];
+      var upsell_product_url = [];
+      for (var i = 0; i < upsellcartItems.length; i++) {
+        
+        var cart_item_upsell = upsellcartItems[i];  
+        var color = cart_item_upsell.variant_title;
+        var handle = cart_item_upsell.handle; 
+    
+        for(var x = 0; x < getObje.length; x++)
+        {
+          if(getObje[x].handle == handle){
+            upsell_product_url.push(getObje[x].p1);
+            upsell_product_url.push(getObje[x].p2);
+          }
+        }
+
+        $.each(upsell_product_url, function( index, product_url ) {
+          var dataUrl = product_url;
+          var dataSplit = dataUrl.split('/');
+          var prdstr = dataSplit[3];
+          if (prdstr == 'products') {
+            var prdhandle = dataSplit[4].split('?');
+            var handle = prdhandle[0];
+            var cart_item_div_new = "";
+            jQuery.getJSON(window.Shopify.routes.root + 'products/' + handle + '.js', function(product) {
+
+                var title = product.title;
+                var phandle = product.handle;
+                var price = product.price;
+                var text = "" + price + " / 100";
+                var priceCurr = eval(text);
+                var varArray = product.variants;
+                var varIdSplit = dataUrl.split('=');
+                var varId = varIdSplit[1];
+
+                var prdVar = varArray.find(element => {
+                  if (element.id == varId && element.available) {
+                    return true;
+                  }
+                  return false;
+                });
+                if (!prdVar) {
+                  prdVar = varArray.find(element => {
+                    if (element.available) {
+                      return true;
+                    }
+                    return false;
+                  });
+                }
+                var varTitle = prdVar.title;
+                var img = prdVar.featured_image.src;
+                
+                if (index == 0) {
+
+                 cart_item_div_new = '<div class="upsell_cart_box"><div class="upsell-box-main-NM upsell_prd_pys upsell_prd_pys_one">';
+                 cart_item_div_new += '<div class="upsell-image"><a href="/product/'+phandle+'/?variant='+varId+'"><span class="imgapp"><img class="'+index+'" src="'+img+'"></span></a></div>';
+                 cart_item_div_new += '<div class="upsell-image-contentt"><div class="upsell-middle-content">';
+                 cart_item_div_new += '<div class="ddmm-upsell">';
+                 cart_item_div_new += '<a href="/product/'+phandle+'/?variant='+varId+'"><h3 class="title">'+varTitle+'</h3></a>';
+                 cart_item_div_new += '<small class="varTitle"></small></div>';
+                 cart_item_div_new += '<div class="upsell-end-box"><h5 class="price">$ '+priceCurr+'</h5></div>';
+                 cart_item_div_new += '<a data-id="'+phandle+'" class="button cart_add_btn"> + Add ';
+                 cart_item_div_new += '<div class="upsell loading-overlay__spinner hidden"><svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg></div></a>';
+                 cart_item_div_new += '</div></div></div></div>';
+                  
+                }
+                else if (index == 1) {
+                  
+                 cart_item_div_new = '<div class="upsell_cart_box"><div class="upsell-box-main-NM upsell_prd_pys upsell_prd_pys_one">';
+                 cart_item_div_new += '<div class="upsell-image"><a href="/product/'+phandle+'/?variant='+varId+'"><span class="imgapp"><img class="'+index+'" src="'+img+'"></span></a></div>';
+                 cart_item_div_new += '<div class="upsell-image-contentt"><div class="upsell-middle-content">';
+                 cart_item_div_new += '<div class="ddmm-upsell">';
+                 cart_item_div_new += '<a href="/product/'+phandle+'/?variant='+varId+'"><h3 class="title">'+varTitle+'</h3></a>';
+                 cart_item_div_new += '<small class="varTitle"></small></div>';
+                 cart_item_div_new += '<div class="upsell-end-box"><h5 class="price">$ '+priceCurr+'</h5></div>';
+                 cart_item_div_new += '<a data-id="'+phandle+'" class="button cart_add_btn"> + Add ';
+                 cart_item_div_new += '<div class="upsell loading-overlay__spinner hidden"><svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg></div></a>';
+                 cart_item_div_new += '</div></div></div></div>';
+                    
+                }
+                $('#upsell-cart-items-add').append(cart_item_div_new);
+            });
+          }
+        });        
+      }
+    });
+  }
+</script>

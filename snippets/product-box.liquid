@@ -1,0 +1,28 @@
+<div class="product-box" :data-type="product.product_type" :data-handle="product.handle">
+  <a :href="link" class="product-box__link"></a>
+
+  <div class="product-box__images">
+    <div v-bind:class="monogramClasses" v-if="product.monoText" v-html="product.monoText"></div>
+    <div v-bind:class="monogramClassesAlt" v-if="product.monoText && product.product_type == 'Beauty Pouch'" v-html="product.monoText"></div>
+    <div
+      is="vue-image"
+      css="fit-contain product-box__image product-box__image--front"
+      :src="frontImage"
+      :alt="imageAltText"></div>
+    <div
+      v-if="secondImage"
+      is="vue-image"
+      css="fit-contain product-box__image product-box__image--back"
+      :src="secondImage.src"
+      :alt="imageAltText"></div>
+  </div>
+
+  <div class="product-box__content">
+    <div class="product-box__head">
+      <p class="h5 product-box__title grey-dark" v-text="product.title"></p>
+    </div>
+    <div class="product-box__description">
+      <p class="p1 product-box__colour__type" v-html="colourText"></p>
+    </div>
+  </div>
+</div>

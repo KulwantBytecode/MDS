@@ -1,0 +1,66 @@
+<div class="mission_sec">
+  <div class="page-width">
+      <div class="mission_sec_inner">
+        {% for block in section.blocks %}
+        <div class="mission_block">
+          <div class="mission_block_inner" style="background: {{ block.settings.color_picker }};">
+              <h4 style="color: {{ block.settings.color_text }};">{{ block.settings.mission_title }}</h4>
+              <p style="color: {{ block.settings.color_text }};">{{ block.settings.mission_description }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    
+      <div class="mission_paragraph_block">
+        <h4>{{ section.settings.description }}</h4>
+      </div>
+    
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Mission Section",
+    "settings": [
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Mission Description"
+        }     
+    ],
+    "blocks": [
+       {
+         "name": "Mission Section",
+         "type": "MISSIONSECTION",
+         "settings": [
+           {
+             "type": "text",
+             "id": "mission_title",
+             "label": "Mission Title"
+           },
+           {
+             "type": "text",
+             "id": "mission_description",
+             "label": "Mission Description"
+           },
+           {
+             "type": "color",
+             "id": "color_picker",
+             "label": "Grid Color"
+           }, 
+           {
+             "type": "color",
+             "id": "color_text",
+             "label": "Text Color"
+           }           
+         ]
+       }
+    ]      
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

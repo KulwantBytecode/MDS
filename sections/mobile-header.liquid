@@ -1,0 +1,572 @@
+<style>
+.nav-slider li.slick-slide {
+    display: block;
+}
+  .bodyflowfixed{
+    overflow:hidden;
+  }
+
+
+
+/* new css start here  */
+  body.mobile_nav_opened,
+  html.overflow_hidden {
+    overflow: hidden!important;
+    position:relative;
+}
+/* body.mobile_nav_opened {
+    position:fixed!important;
+} */
+.mobile_navigation_wrap {
+    position: fixed;
+    left: 0;
+    background: #eeeeee;
+    width: 100%;
+    max-width: calc(100% - 30px);
+    padding: 0px;
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    transition: all ease 0.35s;
+    overflow: auto;
+    z-index: 9991;
+    height: 100%;
+}
+/* .mobile_navigation_wrap.noScroll {
+    overflow: hidden;
+} */
+.mobile_menu_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(105, 105, 105, 0.4);
+    z-index: 9990;
+    display: none;
+}
+body.mobile_nav_opened .mobile_menu_overlay {
+    display: block;
+}
+body.mobile_nav_opened .mobile_navigation_wrap {
+    transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+}
+.mobile_navigation_wrap .mobile_main_nav_list .m-menu {
+    position: absolute;
+    left: 0;
+    max-width: 100%;
+    width: 100%;
+    top: 36px;
+    height: calc(100% + 0px)!important;
+    -moz-transform: translate3d(105,0,0);
+    -o-transform: translate3d(105,0,0);
+    -ms-transform: translate3d(105%,0,0);
+    -webkit-transform: translate3d(105,0,0);
+    transform: translate3d(105%,0,0);
+    -moz-transition: transform .35s;
+    -o-transition: transform .35s;
+    -webkit-transition: transform .35s;
+    transition: transform .35s;
+    z-index: 111;
+    overflow: hidden;
+    background-color: #fff;
+}
+.mobile_navigation_wrap .mobile_main_nav_list .m-menu__checkbox:checked + .m-menu {
+    -moz-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+    transform: translateZ(0);
+}
+.mobile_navigation_wrap ul.mobile_main_nav_list {
+    padding: 58px 0 24px;
+  background:#fff;
+}
+.mobile_navigation_wrap ul.mobile_main_nav_list > li {
+    padding: 0 16px;
+}
+.mobile_navigation_wrap ul.mobile_main_nav_list > li > label,
+  .mobile_navigation_wrap ul.mobile_main_nav_list > li > a {
+    position: relative;
+    background: #F5F5F5;
+    border: 0;
+    margin: 4px 0 0px;
+    padding: 0 12px 0 12px;
+    background-repeat: no-repeat;
+    background-size: 73px auto;
+    background-position: right bottom;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 23px;
+    min-height: 73px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+    font-family: Muli,Lato;
+    width: 100%;
+} 
+.mobile_navigation_wrap ul.mobile_main_nav_list > li.custonM-gift-guide > label {
+    background-size: cover;
+    background-position: center center;
+    color: #fff;
+}
+.mobile_navigation_wrap .m-menu__checkbox {
+    display: none;
+    width: auto;
+    margin-right: 0.5rem;
+}
+.mobile_navigation_wrap .mobile_main_nav_list .m-menu ul li{
+    padding: 0 16px;
+}
+.mobile_navigation_wrap .mobile_main_nav_list .m-menu ul li a {
+    display: block;
+    text-align: left;
+    line-height: 39px;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+    font-size: 13px;
+    font-family: Muli,Lato;
+    width: 100%;
+    line-height: 50px;
+}
+.mobile_navigation_wrap .mobile-nav-menu {
+    min-height: 100%;
+    position: relative;
+    display: block;
+    overflow:hidden;
+}
+.mobile_navigation_wrap .m-menu__header {
+    margin: 0 16px;
+    height: 50px;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    -ms-flex-pack: space-around;
+    -webkit-align-items: center;
+    align-items: center;
+    border-bottom: 1px solid #e8e8e8;
+    position: relative;
+}
+
+.mobile_navigation_wrap .m-menu__header span {
+    font-size: 1.2rem;
+    font-weight: 400;
+    text-align: left;
+    width: 100%;
+    padding-left: 16px;
+    color: #727272;
+}
+.mobile_navigation_wrap .m-menu .m-menu label.m-menu__toggle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-bottom: 0;
+    padding: 0;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.mobile_navigation_wrap .m-menu ul span.headr-bdg {
+    margin-left: 8px;
+}
+
+.mobile_navigation_wrap ul.nav_shipping_list {
+    background: #eee;
+    margin-top: 0px;
+    padding-top: 15px;
+    padding-bottom: 50px;
+    height: auto;
+}
+.mobile_navigation_wrap ul.nav_shipping_list li {
+    padding: 0 16px;
+}
+.mobile_navigation_wrap ul.nav_shipping_list li a {
+    line-height: 40px;
+    border: 0;
+    display: block;
+    text-align: left;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+    position: relative;
+    font-size: 13px;
+    font-family: Muli,Lato;
+    width: 100%;
+}
+.mobile_navigation_wrap ul.nav_shipping_list li .ship-to-button--mobile {
+    margin-left: 0;
+    padding-top: 10px;
+}
+
+
+
+@media (min-width:992px){
+  .mobile_navigation_wrap, .mobile_menu_overlay {
+      /* display: none!important; */
+  }
+}
+  
+@media (max-width:479px){
+.mobile_navigation_wrap .m-menu__header span {
+    padding-left: 22px;
+}  
+}
+</style>
+
+
+<!-- Mobile Navigation Start Here By Nav -->
+    <div class="mobile_menu_overlay">&nbsp;</div>
+<div class="mobile_navigation_wrap">
+    <div class="mobile-nav-menu">  
+    <div class="m-menu navmm">
+      <div class="mobile-nav-trigger_cross">
+     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.2929 10L2.64648 1.35359L3.35359 0.646484L12 9.29293L20.6464 0.646484L21.3536 1.35359L12.7071 10L21.3536 18.6465L20.6464 19.3536L12 10.7071L3.35359 19.3536L2.64648 18.6465L11.2929 10Z" fill="black"/>
+</svg>
+      </div>
+    
+         <!-- new search icon -->
+     
+  
+      <ul class="mobile_main_nav_list">
+      {% for link in linklists[section.settings.menu].links %}
+       {% if link.links == blank %} 
+       <li class="custom_sales_nav"> <a {{ link.object.handle }} style="background-image:url({{ collections[link.object.handle].metafields.custom.mobile_nav_image.value | image_url }});" href="{{link.url}}">  {{link.title}} </a> </li>
+       {% else %}
+        <li class="custonM-{{ link.title | handleize  }} "{% if link.object.handle == 'sale' %}{{ collections[link.object.handle].image | image_url }}{% endif %}"> 
+        <label {{ link.object.handle }} style="background-image:url({{ collections[link.object.handle].metafields.custom.mobile_nav_image.value | image_url }});" class="a-label__chevron" for="item-{{forloop.index}}"><span> {{link.title}}</span>
+     <svg xmlns="http://www.w3.org/2000/svg" width="9" height="17" viewBox="0 0 9 17" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 15.766L7.4873 8.5L0 1.23398L0.75633 0.5L9 8.5L0.75633 16.5L0 15.766Z" fill="black"/>
+</svg>
+        </label>
+           <input type="checkbox" id="item-{{forloop.index}}" name="item-{{forloop.index}}" class="m-menu__checkbox">
+          <div class="m-menu">
+            <div class="m-menu__header">
+              <label class="m-menu__toggle" for="item-{{forloop.index}}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" height="14" viewBox="0 0 19 14" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.46557 13.2864C5.53044 13.3525 5.60798 13.4053 5.69377 13.4421C5.77956 13.4788 5.87191 13.4987 5.96555 13.5005C6.05919 13.5024 6.15229 13.4862 6.23953 13.4529C6.32677 13.4196 6.40644 13.3698 6.47399 13.3064C6.54155 13.243 6.59566 13.1672 6.63325 13.0833C6.67084 12.9995 6.69116 12.9092 6.69306 12.8177C6.69495 12.7262 6.67839 12.6352 6.6443 12.5499C6.61022 12.4646 6.55929 12.3867 6.49442 12.3207L2.02182 7.76421H18.2858C18.4748 7.76421 18.656 7.69083 18.7896 7.56023C18.9233 7.42962 18.9983 7.25248 18.9983 7.06778C18.9983 6.88307 18.9233 6.70593 18.7896 6.57533C18.656 6.44472 18.4748 6.37135 18.2858 6.37135H1.99332L6.45357 1.83156C6.58458 1.69845 6.65614 1.51992 6.65248 1.33525C6.64883 1.15057 6.57027 0.974875 6.43409 0.846813C6.29791 0.718751 6.11526 0.648813 5.92632 0.652382C5.73738 0.655952 5.55763 0.732738 5.42662 0.865849L0.437217 5.94513L0.427717 5.95442C0.152219 6.25679 0 6.64756 0 7.05246C0 7.45735 0.152219 7.84813 0.427717 8.15049L0.437217 8.15978L5.46557 13.2855V13.2864Z" fill="black"/>
+              </svg>
+              </label>
+              {% if link.title == 'New Arrivals' %}
+              <span class="enwarr">{{link.title | remove: "Arrivals" }}</span>
+                        {% else %}
+                        <span class="true">{{link.title }}</span>
+                      {% endif %}
+            </div>
+            <ul>
+             {% for child_link in link.links %}
+               {% if child_link.title contains '[new]' %}
+                 {% assign child_mb_link = child_link.title | remove :"[new]" | strip %}
+              {% elsif child_link.title contains '[sale]' %}
+                 {% assign child_mb_link = child_link.title | remove :"[sale]" | strip %}
+              {% else %}
+                 {% assign child_mb_link = child_link.title | strip %}
+                 {% endif %}
+              <li class="customheader_sale"><a href="{{child_link.url}}">{{child_mb_link}}
+               {% if child_link.title contains '[new]' %}  <span class="headr-bdg">{{'general.default.new' | t}} </span>
+               {% elsif child_link.title contains '[sale]' %}<span class="headr-bdg">{{'general.default.sale' | t}}</span>
+               {% endif %}
+               {% for block in section.blocks %}
+                {% if block.settings.title == child_link.title %}
+                  {% if block.settings.badge != blank %}
+                  <span class="headr-bdg spanmobile" style="color:{{ block.settings.badge_color }};background-color:{{ block.settings.badge_bgcolor }};">{{block.settings.badge}}</span>
+                    {% endif %}
+                {% endif %}
+              {% endfor %}
+              </a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+        </ul>
+        <ul class="nav_shipping_list">
+         <li class="nav-mobile__item nav-mobile__item"> <a href="{{shop.url}}/account" class="bg-grey-1 "> {{'general.default.login' | t}}</a> </li>
+         <li class="nav-mobile__item nav_shipping_text">
+           <span class="ship-to-button ship-to-button--mobile p1 bg-grey-1 js-store-info">
+           <span class="ship-to-button__flag bg-black flag-icon flag-icon-au flag-icon-background js-store-info-flag" style="background-image:url(https://cdn.shopify.com/s/files/1/0532/9652/9590/t/203/assets/au.svg?v=1644314664);"></span>
+           <span class="ship-to-button__text js-store-info-text" data-half-text="Ship to">Ship to: Australia & New Zealand</span> </span>  
+        </li>
+        {% for link in linklists[section.settings.menu_utility].links %}
+        <li class="nav-mobile__item"> <a href="{{link.url}}" class="bg-grey-1 "> {{link.title}} </a> </li>
+        {% endfor %}
+      </ul>  
+    </div>
+    </div>
+</div>  
+<!-- Mobile Navigation end Here By Nav -->
+
+
+
+            
+<script>
+$(document).ready(function(){
+  $('.btn-search-container').click(function(){
+    $('.modal-search').addClass('expand-searchnew show');
+    // $('.modal-search').show('slow').siblings().hide('slow');
+    $('body').removeClass('mobile_nav_opened');
+     $('.ss__autocomplete__input').focus();
+    $('.mobile-nav-menu .js-hamburgernav').removeClass('isactive');
+    });
+  
+   $('.close-search-modal').click(function(){
+      $('body').removeAttr("style");
+      $('html').removeClass("overflow_hidden"); 
+    }); 
+  
+$('.mobile-nav-menu .js-hamburgernav').click(function(){
+      $('.modal-search').removeClass('expand-searchnew show');
+      $('.modal-search').hide('slow').siblings().show('slow');
+    });    
+  
+  
+  $('.mobile_menu_overlay').click(function(){
+    var body = document.body;
+        // Check if the user has scrolled vertically
+        if (window.scrollY > 0) {
+            // Add the 'scrolled' class to the body
+            body.classList.add('header_sticky');
+        } else {
+            // Remove the 'scrolled' class if the user scrolls back to the top
+            body.classList.remove('header_sticky');
+        }
+    $('body').css( 'overflow', "");
+    $('body').css( 'height', "");
+    $('body').removeClass('mobile_nav_opened');
+    $('html').removeClass('overflow_hidden');
+    $('body').find('.hamburger').removeClass("isactive");
+  });
+  
+  $('.js-hamburgernav').click(function(){
+    $('body').addClass('mobile_nav_opened');
+    // $('html').addClass('overflow_hidden');
+  });
+  
+  $('.mobile-nav-trigger_cross').click(function(){
+    $('body').removeClass('mobile_nav_opened');
+    $('html').removeClass('overflow_hidden');
+    $('body').find('.hamburger').removeClass("isactive");
+    $('body').css( 'overflow', "");
+    $('body').css( 'height', "");
+  });
+  
+  $(".m-menu__checkbox").change(function() {    
+      if(this.checked) {
+        $( ".mobile_navigation_wrap" ).scrollTop( 0 );
+        $('.mobile_navigation_wrap').addClass('noScroll');
+      } 
+  });
+  $(".m-menu__toggle").click(function(){
+ 	$('.mobile_navigation_wrap').removeClass('noScroll');
+});
+});
+</script>
+
+{% comment %}
+
+<div data-module="search-mobile" class="search-mobile">
+  <div class="search-mobile__inner">
+    <div class="search-mobile__wrapper">
+     <header class="search-mobile__head">
+  
+      <button class="search-mobile__back">
+      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                      width="35" height="35" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+                <g>
+                    <polyline fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="bevel" stroke-miterlimit="10" points="37,15 20,32 
+                        37,49 	"/>
+                </g>
+                </svg>
+      </button>
+     <p class="h2 search-mobile__title">{{'general.default.search' | t}}</p>
+   </header>
+ <div class="search-mobile__body">
+  <form action="/search" class="search search-form">
+    <input autocomplete="off" type="text" name="q" class="search_input" placeholder="Search &quot;Phone Case&quot;"> 
+      <button type="submit" class="btn-search">
+       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.8153 14.9238L11.1864 10.2946C13.2156 7.8183 13.0744 4.15806 10.7626 1.84641C8.30072 -0.615504 4.30869 -0.615504 1.84676 1.84661C-0.615522 4.30855 -0.615521 8.30065 1.84637 10.7626C4.15821 13.0743 7.81847 13.2154 10.2948 11.1862L14.9238 15.8153C15.1701 16.0616 15.569 16.0616 15.8153 15.8153C16.0616 15.569 16.0616 15.1701 15.8153 14.9238ZM2.73787 9.87087C0.76852 7.90128 0.76852 4.70792 2.73787 2.73793C4.70805 0.768555 7.90136 0.768555 9.87071 2.73793C11.8409 4.70792 11.8409 7.90128 9.87112 9.87107C7.90136 11.8408 4.70803 11.8406 2.73787 9.87087Z" fill="black"></path></svg>
+         <span class="sr-only">{{'general.default.search' | t}}</span></button>
+    
+         {% include 'all-products-search' %}
+         </form>
+      </div>
+    </div> 
+    <div class="search-mobile__results">
+        <div class="suggestions__inner suggestions w1 z4" style="top: 0px;"><!----> <!---->
+      </div>
+     </div>
+   </div>
+  <span class="search-mobile__overlay"></span>
+</div>
+{% endcomment  %}
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "mobile_nav_sec",
+  "settings": [
+  {
+    "type" : "image_picker",
+    "id" : "imagesale",
+    "label" : "Select Sale Background Image"
+  },
+    {
+      "type": "text",
+      "id": "logo",
+      "label": "Logo",
+      "info": "CDN File link"
+    },
+{
+        "type": "range",
+        "id": "logo_width",
+        "min": 100,
+        "max": 250,
+        "step": 5,
+        "unit": "%",
+        "label": "Custom logo width",
+        "default": 100
+      },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Utility Navigation",
+      "info": "This navigation will appear only on mobile"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_utility",
+      "label": "Menu"
+    },
+  {
+      "type": "image_picker",
+      "id": "m_img",
+      "label": "Add image"
+     
+    },
+       {
+      "type": "url",
+      "id": "m_url",
+      "label": "Add url"
+     
+    },
+    {
+      "type": "text",
+      "id": "m_title",
+      "label": "Add Title"
+     
+    },
+   {
+      "type": "image_picker",
+      "id": "m_img2",
+      "label": "Add image"
+     
+    },
+       {
+      "type": "url",
+      "id": "m_url2",
+      "label": "Add url"
+     
+    },
+    {
+      "type": "text",
+      "id": "m_title2",
+      "label": "Add Title"
+     
+    },
+   {
+      "type": "image_picker",
+      "id": "m_img3",
+      "label": "Add image"
+     
+    },
+     {
+      "type": "url",
+      "id": "m_url3",
+      "label": "Add url"
+     
+    },
+    {
+      "type": "text",
+      "id": "m_title3",
+      "label": "Add Title"
+     
+    },
+  {
+      "type": "textarea",
+      "id": "promo",
+      "label": "Promo bar",
+      "default":"New iPhone 13 Cases Have Landed! 🛍️ "
+    },
+    {
+      "type": "textarea",
+      "id": "promo2",
+      "label": "Promo bar",
+      "default":"New iPhone 13 Cases Have Landed! 🛍️ "
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Featured Image",
+      "type": "feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Link title",
+          "info": "We use this to match the feature with the specific link (e.g. 'shop')"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text",
+          "info": "Will appear on the right side of the link as a badge"
+        },
+        {
+          "type": "color",
+          "id": "badge_color",
+          "label": "Badge Color"
+        },
+        {
+          "type": "color",
+          "id": "badge_bgcolor",
+          "label": "Badge Background Color"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

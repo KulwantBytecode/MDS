@@ -1,0 +1,405 @@
+{% comment %}
+    Renders a product card
+
+    Accepts:
+    - product_card_productcorporate: {Object} Product Liquid object (optional)
+    - media_size: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
+    - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+    - add_image_padding: {Boolean} Enables padding on the image to space out the grid
+    - show_vendor: {Boolean} Show the product vendor. Default: false
+    - show_image_outline: {Boolean} Show card outline. Default: true (optional)
+    - show_rating: {Boolean} Show the product rating. Default: false
+
+    Usage:
+    {% render 'product-card', show_vendor: section.settings.show_vendor %}
+{% endcomment %}
+{% assign is_airpod_pro = false %}
+{% if product_card_productcorporate.tags contains 'airpods_pro' %}
+  {% assign is_airpod_pro = true %}
+{% endif %}
+{% assign mini_clutch = false %}
+{% if product.tags contains 'mini_clutch' %}
+  {% assign mini_clutch = true %}
+{% endif %}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+ {% for tag in product_card_productcorporate.tags %}
+    {% if tag == 'new' %}
+      {% assign is_new = true %}
+    {% endif %}
+    {% if tag == 'best-seller' %}
+      {% assign is_best = true %}
+    {% endif %}
+    {% if tag == 'selling-fast' %}
+      {% assign is_fast = true %}
+    {% endif %}
+{%endfor%}
+<div class="card-wrapper" p-id = "v-{{product_card_productcorporate.id}}">
+  <div class="card-information pr-information">
+    <div data-product-id="{{ product_card_productcorporate.id }}" data-variant-id="{{ product_card_productcorporate.selected_or_first_available_variant.id }}" class="card-information__wrapper custom-price" data-personalize="{% if product.variants[forloop.index0].metafields.custom.personaliser_button != blank %}{{ product.variants[forloop.index0].metafields.custom.personaliser_button.value }}{% else %}false{% endif %}">
+      {%- if show_vendor -%}
+        <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+        <div class="caption-with-letter-spacing light">{{ product_card_productcorporate.vendor }}</div>
+      {%- endif -%}
+
+      {%- if product_card_productcorporate.featured_media -%}
+        <a href="{{ product_card_productcorporate.url | default: '#' }}" class="full-unstyled-link">
+           {% unless collection.handle == 'the-outlet-sales' or collection.handle == 'sale' or collection.handle =='sale-spotlight'  %}
+          <h3 class="card-information__text h5">
+              {% comment %} {{ product_card_productcorporate.title | escape }} {% endcomment %} 
+           
+              {%if product_card_productcorporate.title contains '12' and gift_collection%} Phone Cases {%else%} {{ product_card_productcorporate.metafields.custom.product_title_cards }} {%endif%}
+          </h3>
+             {% endunless %}
+           <h3 class="card-information__text h5 forsalepage">
+           {% if collection.handle == 'the-outlet-sales' or collection.handle == 'sale' or collection.handle =='sale-spotlight' %}
+      {%if product_card_productcorporate.title contains '12' and gift_collection%} Phone Cases {%else%} {{ product_card_productcorporate.title }} {%endif%}
+              {% endif %}
+           </h3>
+        </a>
+      {%- endif -%}
+
+      {% comment %} TODO: metafield {% endcomment %}
+      <span class="caption-large light">{{ block.settings.description | escape }}</span>
+      {%- if show_rating and product_card_productcorporate.metafields.reviews.rating.value != blank -%}
+        {% liquid
+          assign rating_decimal = 0 
+          assign decimal = product_card_productcorporate.metafields.reviews.rating.value.rating | modulo: 1 
+          if decimal >= 0.3 and decimal <= 0.7
+            assign rating_decimal = 0.5
+          elsif decimal > 0.7
+            assign rating_decimal = 1
+          endif 
+        %}
+        <div class="rating" role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product_card_productcorporate.metafields.reviews.rating.value, rating_max: product_card_productcorporate.metafields.reviews.rating.value.scale_max }}">
+          <span aria-hidden="true" class="rating-star color-icon-{{ settings.accent_icons }}" style="--rating: {{ product_card_productcorporate.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product_card_productcorporate.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"></span>
+        </div>
+        <p class="rating-text caption">
+          <span aria-hidden="true">{{ product_card_productcorporate.metafields.reviews.rating.value }} / {{ product_card_productcorporate.metafields.reviews.rating.value.scale_max }}</span>
+        </p>
+        <p class="rating-count caption">
+          <span aria-hidden="true">({{ product_card_productcorporate.metafields.reviews.rating_count }})</span>
+          <span class="visually-hidden">{{ product_card_productcorporate.metafields.reviews.rating_count }} {{ "accessibility.total_reviews" | t }}</span>
+        </p>
+      {%- endif -%}
+      {% if make_it_match %}
+        {% assign make_it_match_class = 'customvarprice' %}
+        {% else %}
+        {% assign make_it_match_class = 'customvarprice' %}
+      {% endif %}
+      {% comment %}
+      {% render 'makeitmatch-price', product: product_card_productcorporate, price_class: make_it_match_class  %}
+      {% endcomment %}
+    </div>
+     <div class="container_product-colors">
+<div class="list_product-colors" >
+    <div class="swiper-wrapper">
+          {% assign  splitProductTitle = product_card_productcorporate.title | split:'-' %}
+          {% assign productTitle = splitProductTitle[0] | handleize %}
+          {% for newproduct in collections[productTitle].products %}
+           {% assign colorCount = newproduct.metafields.custom.product_gradient_color.value | size %}
+           {% assign colorFirst = newproduct.metafields.custom.product_gradient_color.value[0] %}
+           {% assign colorSecond = newproduct.metafields.custom.product_gradient_color.value[1] %} 
+           <div class="swiper-slide">
+          <a data-stock-status={% if newproduct.available %}"in-stock"{% else %}"out_of_stock"{% endif %} class="bundle_product_grid customizer-color_ {{ newproduct.handle }}  {% if product.handle == newproduct.handle %}selected{% endif %}"  href="/products/{{ newproduct.handle }}">
+          <div class="color-option color-swatch-wrap-new">
+            <span class="style1" {% if newproduct.metafields.custom.product_gradient_position.value %}style="{% if colorCount > 1 %}background-image: linear-gradient(to bottom, {{ colorFirst }} 45%, {{ colorSecond }});{% else %}background-color: {{ newproduct.metafields.custom.single_variant_color }}{% endif %}"
+            {% else %}style="{% if colorCount > 1 %}background-image: linear-gradient(to right, {{ colorFirst }} 50%, {{ colorSecond }} 50%){% else %}background-color: {{ newproduct.metafields.custom.single_variant_color }}{% endif %}"
+            {% endif %}
+            </span>
+          </div>
+          </a>  
+           </div>
+          {% endfor %}
+    </div>
+      
+   <div class="icon icon-next">
+      <div class="arrow"></div>
+  </div>
+  <div class="icon icon-prev" v-index="{{forloop.index0}}">
+      <div class="arrow"></div>
+  </div>
+</div>
+</div>
+</div>
+  <div class="card card--product{% if product_card_productcorporate.featured_media == nil %} card--text-only card--soft{% endif %}{% if product_card_productcorporate.featured_media != nil and show_image_outline %} card--outline{% endif %} {{ product_card_productcorporate.metafields.custom.product_title_cards | handle }}" tabindex="-1">
+    <a href="{{ product_card_productcorporate.url | default: '#' }}" class="full-unstyled-link">
+    <div class="card__inner related_image_pys {% if collection.handle contains 'graphite-grey' %}onlycolortheme{% endif %}">
+      {%- if product_card_productcorporate.featured_media -%}
+        {%- liquid
+          assign featured_media_aspect_ratio = product_card_productcorporate.featured_media.aspect_ratio
+          if product_card_productcorporate.featured_media.aspect_ratio == nil
+            assign featured_media_aspect_ratio = 1
+          endif
+        -%}
+        <div class="card_image_wrap {% if add_image_padding %} card__media-full-spacer {% endif %}">
+          <div class="related_media_pys sss media media--transparent media--{{ media_size }} "
+            {% if media_size == 'adapt' and product_card_productcorporate.featured_media %} style="padding-bottom: {{ 1 | divided_by: featured_media_aspect_ratio | times: 100 }}%;"{% endif %}      
+          >
+            <img
+              srcset="{%- if product_card_productcorporate.featured_image.width >= 165 -%}
+              {{ product_card_productcorporate.featured_image | img_url: '165x' }} 165w,{%- endif -%}
+                {%- if product_card_productcorporate.featured_media.width >= 360 -%}{{ product_card_productcorporate.featured_image | img_url: '360x' }} 360w,{%- endif -%}
+                {%- if product_card_productcorporate.featured_media.width >= 533 -%}{{ product_card_productcorporate.featured_image | img_url: '533x' }} 533w,{%- endif -%}
+                {%- if product_card_productcorporate.featured_media.width >= 720 -%}{{ product_card_productcorporate.featured_image | img_url: '720x' }} 720w,{%- endif -%}
+                {%- if product_card_productcorporate.featured_media.width >= 940 -%}{{ product_card_productcorporate.featured_image | img_url: '940x' }} 940w,{%- endif -%}
+                {%- if product_card_productcorporate.featured_media.width >= 1066 -%}{{ product_card_productcorporate.featured_image | img_url: '1066x' }} 1066w,{%- endif -%}
+                {{ product_card_productcorporate.featured_image | img_url: 'master' }} {{ product_card_productcorporate.featured_media.width }}w"
+              src="{{ product_card_productcorporate.featured_image | img_url: '533x' }}"
+              sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+              alt="{{ product_card_productcorporate.featured_media.alt | escape }}"
+              loading="lazy"
+              img-id = "v-{{product_card_productcorporate.id}}"
+              class="motion-reduce collection"
+            >
+            <div alt_engrave ="{{ product_card_productcorporate.title}}" class="engrave mobile-engrave icon-chess-piece engrave-collection {{ product_card_productcorporate.type | handle }} {% if mini_clutch %}  mini-clutch {%endif%} {% if is_airpod_pro %}  airpods-pro {%endif%} gold {% if personaliser_button == true or product_card_productcorporate.selected_or_first_available_variant and product.title == "Mini Tote"  %}nomonogramshows{% endif %} {{ product_card_productcorporate.handle }}"></div>
+          </div>
+        </div>
+{%- else -%}
+        <div class="card__content">
+          <h2 class="card__text h3">
+            <a href="{{ product_card_productcorporate.url | default: '#' }}" class="full-unstyled-link">
+              {{ product_card_productcorporate.title }}
+            </a>
+          </h2>
+        </div>
+      {%- endif -%}
+      <div class="card__badge">
+        {%if is_fast %} 
+             <span class="badge badge--bottom-left">Selling Fast</span>
+        {%endif%}
+        {%if is_best %} 
+             <span class="badge badge--bottom-left">Best Seller</span>
+        {%endif%}
+        {%if is_new%} 
+        {% comment %}
+             <span class="badge badge--bottom-left newtags">New</span>
+          {% endcomment %}
+        {%endif%}
+
+        {% if product_card_productcorporate.metafields.custom.coming_soon != blank %}
+         <span class="badge badge--bottom-left coming-soon">{{ product_card_productcorporate.metafields.custom.coming_soon }}</span> 
+          
+        {% endif %}
+{%- for value in option.values -%}
+        {% assign sale_price_new = '' %}
+        {% for variant in product_card_productcorporate.variants %}
+        {%- assign compare_at_price = variant.compare_at_price -%}
+        {% if compare_at_price %}
+        {% assign sale_price_new = compare_at_price | minus: variant.price | times: 100.0 | divided_by: compare_at_price | money_without_currency | times: 100 | remove: '.0'%}
+       {% comment %}  <span  class="badge badge--bottom-left product-tag tag-sale newbadge_discount hide" data-price="{{ variant.price }}" data-compareprice="{{ variant.compare_at_price }}" data-option1="{{ variant.option1 }}" data-option2="{{ variant.option2 }}" data-option3="{{ variant.option3 }}" {% if product.handle == 'apple-watch-bands' %} data-colormatch="{{ variant.option2 | handleize }}" data-colormatch1="{{ variant.option1 }}" {% else %} data-colormatch="{{ variant.option1 | handleize }}"{% endif %}>
+     {{ sale_price_new | append: '% off' }} 
+        </span>
+          {% endcomment %}
+        {% endif %}
+        {% endfor %} 
+  {% endfor %} 
+      
+        {%- if product_card_productcorporate.available == "dsdsds" -%}
+          <span class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}">{{ 'products.product.sold_out' | t }}</span>
+        {%- elsif product_card_productcorporate.compare_at_price > product_card_productcorporate.price -%}
+         {% assign percent_off = product_card_productcorporate.compare_at_price | minus: product_card_productcorporate.price | times: 100.0 | divided_by: product_card_productcorporate.compare_at_price | money_without_currency | times: 100 | remove: '.0' %}
+       {% comment %}
+        {% assign sale_text = percent_off | append: '% OFF' %}
+        <span class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }} customdiscounttags">{{ sale_text }}
+          </span>
+        
+          {% endcomment %}
+          {%- endif -%}
+       
+         <span class="badge badge--bottom-left custtomtag1 product-tag {% if product_card_productcorporate.selected_or_first_available_variant.metafields.custom.new_custom_tag1.value != blank %}show{% else %}hide{% endif %}" var-titles="{{ variant.title }}" data-tagavailability="{{ variant.metafields.custom.new_custom_tag1.value }}">
+        {{ product_card_productcorporate.selected_or_first_available_variant.metafields.custom.new_custom_tag1.value }}
+        </span>
+          
+        <span class="badge badge--bottom-left custtomtag2 product-tag {% if product_card_productcorporate.selected_or_first_available_variant.metafields.custom.new_custom_tag2.value != blank %}show{% else %}hide{% endif %}" var-titles="{{ variant.title }}">
+        {{ product_card_productcorporate.selected_or_first_available_variant.metafields.custom.new_custom_tag2.value }}
+        </span>
+
+
+        <span class="badge badge--bottom-left custtomtag3 product-tag {% if product_card_productcorporate.selected_or_first_available_variant.metafields.custom.new_custom_tag3.value != blank %}show{% else %}hide{% endif %}" var-titles="{{ variant.title }}">
+        {{ product_card_productcorporate.selected_or_first_available_variant.metafields.custom.new_custom_tag3.value }}
+        </span>
+        {% assign color_of_year_name = settings.color_of_name %}
+        {% for variant in product_card_productcorporate.variants %}
+          {% if variant.title == color_of_year_name %}
+         <span  class="badge badge--bottom-left {{variant.title}} t3 cardswatch product-tag colorofyear {% if product_card_productcorporate.selected_or_first_available_variant.title == variant.title %}show{% else %}hide{% endif %}">{{ settings.color_of_year }}</span>
+         {% endif %}
+         
+            {% endfor %}
+            {% comment %}
+             {% assign sale_price_new = '' %}
+        {% assign selected_product_variant = product_card_productcorporate.selected_or_first_available_variant.title | handleize %}
+        {% for variant in product_card_productcorporate.variants %}
+          {% assign vHandleTitle = variant.title | handleize %}
+        {%- assign compare_at_price = variant.compare_at_price -%}
+        {% if compare_at_price %}
+        {% assign sale_price_new = compare_at_price | minus: variant.price | times: 100.0 | divided_by: compare_at_price | money_without_currency | times: 100 | remove: '.0'%}
+        <span  class="badge badge--bottom-left product-tag tag-sale newbadge_discount {% if selected_product_variant == vHandleTitle %}{% else %}hide{% endif %}" data-price="{{ variant.price }}" data-compareprice="{{ variant.compare_at_price }}" data-option1="{{ variant.option1 }}" data-option2="{{ variant.option2 }}" data-option3="{{ variant.option3 }}" {% if product.handle == 'apple-watch-bands' %} data-colormatch="{{ variant.option2 | handleize }}" data-colormatch1="{{ variant.option1 }}" {% else %} data-colormatch="{{ variant.option1 | handleize }}"{% endif %}>
+        {{ sale_price_new | append: '% off' }}
+        </span>
+        {% endif %}
+        {% endfor %}
+        {% endcomment %}
+      </div>
+    </div>
+    </a>
+  </div>
+       
+</div>
+<link rel="stylesheet"href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.3.2/swiper-bundle.min.js" integrity="sha512-V1mUBtsuFY9SNr+ptlCQAlPkhsH0RGLcazvOCFt415od2Bf9/YkdjXxZCdhrP/TVYsPeAWuHa+KYLbjNbeEnWg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+    .product-grid3 .product-image3 img:nth-child(n+3) {
+    display: unset;
+}
+    .list_product-colors {
+    display: block;
+   
+}
+.container_product-colors {
+  display: block;
+  width:100%;
+  max-width: 235px;
+  padding-right: 35px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.swiper-button-next {
+    position: absolute;
+    display: block !important;
+    top: 93%;
+        left: 66%;
+}
+.container_product-colors .swiper-slide {
+    max-width: 40px;
+}
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+    content: 'next';
+    font-size: 15px;
+}
+.icon-next,.icon-prev {
+  position: absolute;
+
+  transform: translate(-50%,-50%);
+  width: 50px;
+  height: 60px;
+  cursor: pointer;
+  top: 44%;
+    left: 100%;
+    right: 0%;
+        z-index: 9;
+}
+.icon-prev { 
+display: none;
+}
+.icon-prev {
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(-180deg);
+    width: 50px;
+    height: 60px;
+    cursor: pointer;
+        top: 50%;
+    left: 90%;
+    right: 0%;
+    z-index: 9;
+}
+.arrow {
+ 
+  top: 25px;
+  display: block !important;
+     position: absolute;
+    top: 50%;
+    width: 22px;
+    height: 2.5px;
+    background-color: #000;
+}
+
+.arrow::after, .arrow::before {
+     content: '';
+    position: absolute;
+    width: 57%;
+    height: 2.5px;
+    right: -2px;
+    background-color: #000;
+}
+
+.arrow::after {
+top: -4px;
+transform: rotate(45deg);
+}
+
+.arrow::before {
+  top: 4px;
+  transform: rotate(-45deg);
+}
+.badge--bottom-left.badge {
+    color: #000;
+    background-color: #fff;
+    padding: 7px 11px !important;
+    margin-left: 8px;
+    border-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px 0px #ece9e9;
+}
+span.badge.price__badge-sale, span.badge.badge--bottom-left.color-accent-1 {
+   background: #fff;
+    border-radius: 3px;
+    color: #b03034;
+}
+.card-information__wrapper>*:not(.visually-hidden:first-child)+*:not(.rating) {
+    margin-top: 0;
+}
+.card-information+.card {
+    margin-bottom: 1.7rem;
+    background: #f4f4f4;
+    width: calc(100% + 30px);
+    margin-left: -15px;
+}
+.card-wrapper {
+  /*
+    background: #ffffff;
+    box-shadow: 0px 4px 10px 0px #eaeaea;
+  */
+}
+.product-recommendations .card-wrapper {
+    background: #ffffff;
+   
+}
+.full-unstyled-link{
+  display: block;
+  position: relative;
+}
+
+@media(max-width: 991px) {
+  .color-option {
+
+    width: 18px;
+    height: 18px;
+}
+.card.card--product.card--outline {
+    background: #f4f4f4;
+    width: calc(100% + 20px);
+    margin-left: -10px;
+}
+.arrow {
+    top: 25px;
+    top: 50%;
+    width: 16px;
+    height: 2.5px;
+
+}
+.icon-prev {
+   
+    left: 75%;
+
+}
+.arrow::after, .arrow::before {
+    content: '';
+    position: absolute;
+    width: 55%;
+    height: 2.5px;
+    right: 0px;
+    background-color: #000;
+}
+}
+    </style>

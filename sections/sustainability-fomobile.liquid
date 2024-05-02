@@ -1,0 +1,186 @@
+<div class="sustainability_page_wrap sustainablefor-mobile">
+  
+  <div class="sustainability_help_sec text-center">
+    <div class="page-width">
+      {% if section.settings.title != blank %}
+      <div class="small_text">{{ section.settings.title }}</div>
+        {% endif %}
+           {% if section.settings.info != blank %}
+      {{ section.settings.info }}
+          {% endif %} 
+         
+    </div>
+  </div>
+
+  <div class="our_timeline_sec">
+    <div class="page-width">
+      <h2>{{ section.settings.timeline }}</h2>
+
+      
+
+
+      
+      <div class="timeline_steps for_mobile">
+        <ul class="timeline_steps_mobile">
+          {% for block in section.blocks %}
+          
+            {% if block.settings.Sustainability-headingmobile != blank %}
+              <li>
+            <h4>  {{ block.settings.Sustainability-headingmobile }} </h4>
+              
+            <p>
+              {% if block.settings.sustainabilitytextmobile != blank %}
+                {{ block.settings.sustainabilitytextmobile }}
+              
+                {% endif %}
+            </p>
+            {% if block.settings.learnmoremobile != blank %}
+            <p>{{ block.settings.learnmoremobile }}</p>
+              {% endif %}
+          </li>
+              {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sustainability_features_sec text-center">
+    <div class="page-width">
+      <div class="s_features_list">
+        <div class="s_feature_item">
+          {% if section.settings.logo1 != blank %}
+          <div class="s_feature_icon">
+            <img src="{{ section.settings.logo1 | img_url : 'master' }}" />
+          </div>
+            {% endif %}
+           {% if section.settings.featurereview != blank %}
+          <h5>{{ section.settings.featurereview }}</h5>
+            {% endif %}
+        </div>
+        <div class="s_feature_item">
+          {% if section.settings.logo2 != blank %}
+          <div class="s_feature_icon">
+            <img src="{{ section.settings.logo2 | img_url : 'master' }}" />
+          </div>
+            {% endif %}
+           {% if section.settings.featurereview2 != blank %}
+          <h5>{{ section.settings.featurereview2 }}</h5>
+            {% endif %}
+        </div>
+        <div class="s_feature_item">
+          {% if section.settings.logo3 != blank %}
+          <div class="s_feature_icon">
+            <img src="{{ section.settings.logo3 | img_url : 'master' }}" />
+          </div>
+            {% endif %}
+          {% if section.settings.featurereview3 != blank %}
+          <h5>{{ section.settings.featurereview3 }}</h5>
+            {% endif %}
+        </div>
+      </div>
+      {% if section.settings.featuresdesc != blank %}
+          <p>
+          {{ section.settings.featuresdesc }}
+        </p>
+          {% endif %}
+          {% if section.settings.featuresdesc2 != blank %}
+           
+      <p> {{ section.settings.featuresdesc2 }} </p>
+            {% endif %}  
+    </div>
+  </div>
+  
+</div>
+{% schema %}
+  {
+    "name": "Sustainability Mobile",
+    "class" : "Sustainability-fomobile",
+    "settings": [
+     {
+        "type" : "text",
+        "id" : "title",
+        "label" : "Page Title"
+      },
+      {
+        "type" : "textarea",
+        "id" : "info",
+        "label" : "Page Info"
+      },
+      {
+        "type" : "text",
+        "id" : "timeline",
+        "label" : "OUR TIMELINE"
+      },
+         {
+        "type" : "text",
+        "id" : "featurereview",
+        "label" : "Feature Review Heading 1"
+      },
+       {
+        "type" : "image_picker",
+        "id" : "logo1",
+        "label" : "Select Logo image"
+      },
+      {
+        "type" : "text",
+        "id" : "featurereview2",
+        "label" : "Feature Review Heading 2"
+      },
+       {
+        "type" : "image_picker",
+        "id" : "logo2",
+        "label" : "Select Logo image"
+      },
+      {
+        "type" : "text",
+        "id" : "featurereview3",
+        "label" : "Feature Review Heading 3"
+      },
+       {
+        "type" : "image_picker",
+        "id" : "logo3",
+        "label" : "Select Logo image"
+      },
+      {
+        "type" : "textarea",
+        "id" : "featuresdesc",
+        "label" : "Sustainable Features Description"
+      },
+      {
+        "type" : "textarea",
+        "id" : "featuresdesc2",
+        "label" : "Sustainable Features Bottom Description"
+      }
+    ],
+   "blocks" : [
+      {
+        "type" : "textarea",
+        "name" : "Sustainable Text Mobile",
+        "settings" : [
+          {
+            "type" : "text",
+            "id" : "Sustainability-headingmobile",
+            "label" : "Sustainability Heading"
+          },
+          {
+            "type" : "textarea",
+            "id" : "sustainabilitytextmobile",
+            "label" : "Sustainability Description"
+          },
+          {
+            "type" : "richtext",
+            "id" : "learnmoremobile",
+            "label" : "Sustainability Learn More"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,271 @@
+
+<section class="about_container" id="timeless">
+    <div class="about_block page-width">
+        <div class="about_col background" style="background-image: url('{{ section.settings.top_mobile | img_url: 'master' }}')">
+            <div class="about_text_container">
+                <div class="about_heading">
+                    <h3 data-aos="fade-up"  class="mega-title">{{ section.settings.top_heading }}</h3>
+                </div>
+                <div data-aos="fade-up" class="about_body">{{ section.settings.top_content }}</div>
+            </div>
+        </div>
+        <div data-aos="fade-up" class="about_col hide-mobile">
+            <img src="{{ section.settings.top_desktop | img_url: 'master' }}" />
+        </div>
+    </div>
+</section>
+
+<section class="people_container">
+    <div class="about_block page-width">
+        <div class="people_block">
+            <div class="about_text_container">
+                <h3 data-aos="fade-up" data-aos-delay="300" class="mega-title text-black">{{ section.settings.founders_heading }}</h3>
+            </div>
+        </div>
+        <div class="people_block">
+            <div class="about_text_container">
+                <div data-aos="fade-up" data-aos-delay="300"  class="about_body">{{ section.settings.founders_content }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="signatures_container page-width">
+        <div class="signature_block" data-aos="fade-right">
+            <img src="{{ section.settings.zane_signature | img_url: 'master' }}">
+            <span  class="signature_caption">{{ section.settings.zane_title }}</span>
+        </div>
+        <div class="signature_block" data-aos="fade-left" >
+            <img src="{{ section.settings.omar_signature | img_url: 'master' }}">
+            <span  class="signature_caption">{{ section.settings.omar_title }}</span>
+        </div>
+    </div>
+    <div class="mug_shot_container page-width">
+        {% if section.settings.zane_mobile != blank %}
+        <div class="picture_container">
+            <picture data-aos="fade-right">
+                <source media="(min-width: 992px)" srcset="{{ section.settings.zane_desktop | img_url: 'master' }}" />
+                <img src="{{ section.settings.zane_mobile | img_url: 'master' }}" alt="Zane" />
+            </picture>
+        </div>
+        <div class="picture_container">
+            <picture data-aos="fade-left">
+                <source media="(min-width: 992px)" srcset="{{ section.settings.omar_desktop | img_url: 'master' }}" />
+                <img src="{{ section.settings.omar_mobile | img_url: 'master' }}" alt="Omar" />
+            </picture>
+        </div>
+        {% endif %}
+        <div data-aos="fade-up" class="mug_shot_mobile">
+            <img src="{{ section.settings.zane_mobile | img_url: 'master' }}" alt="Omar" />
+        </div>
+    </div>
+</section>
+
+<section class="about_container">
+    <div class="about_block reverse page-width">
+        <div  id="overlay" class="about_col background" style="background-image: url('{{ section.settings.bot_mobile | img_url: 'master' }}')">
+            <div class="about_text_container">
+                <div class="about_heading bottom_heading">
+                    <h3 data-aos="fade-up" class="mega-title">{{ section.settings.bot_heading }}</h3>
+                </div>
+                <div data-aos="fade-up" class="about_body">{{ section.settings.bot_content }}</div>
+            </div>
+        </div>
+        <div class="about_col hide-mobile">
+            <img data-aos="fade-up" src="{{ section.settings.bot_desktop | img_url: 'master' }}" />
+        </div>
+    </div>
+</section>
+
+<section class="about_container index-section--flush">
+	<div id="move-banner" class="about_block bacground" style="background-image: url('{{ section.settings.move_desktop | img_url: 'master' }}')">
+		<div class="page-width">
+			<div class="about_block flex-end">
+				<div class="people_block text-white">
+					<div class="about_heading bottom_heading">
+                      <h3 data-aos="fade-up" class="mega-title">{{ section.settings.move_title }}</h3>
+                    </div>
+                  <div data-aos="fade-up" class="about_body text-white">{{ section.settings.move_content }}</div>
+                  {% if section.settings.btn_link != blank and section.settings.btn_text != blank %}
+					<a class="btn btn--main" href="{{ section.settings.btn_link }}">{{ section.settings.btn_text }}</a>
+				{% endif %}
+              </div>
+          </div>
+      </div>
+	</div>
+</section>
+<style>
+    @media(max-width:991px) {
+        #move-banner {
+            background-image: url("{{ section.settings.move_mobile | img_url: 'master' }}") !important;
+        }
+    }
+</style>
+
+
+{% schema %}
+{
+  "name": "Section About Content",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background",
+      "default": "#ebebeb"
+    },
+    {
+        "type": "header",
+        "content": "Timeless"
+    },
+    {
+        "type": "text",
+        "id": "top_heading",
+        "label": "Heading",
+        "default": "Timeless, Elegant & classic"
+    },
+    {
+        "type": "richtext",
+        "id": "top_content",
+        "label": "Content",
+        "default": "<p>Refined, classic and timeless designs are effortlessly MAISON de SABRE; choosing to ignore the fast-fashion runway trends and focus on creating pieces to love that outlast seasons.</p><p>MAISON de SABRE reinvents the traditional monogram with a meaningful purpose as it proves to be more than just a series of letters- but a statement of self-expression.</p>"
+    },
+    {
+        "type": "image_picker",
+        "id": "top_mobile",
+        "label": "Image Mobile"
+    },
+    {
+        "type": "image_picker",
+        "id": "top_desktop",
+        "label": "Image Desktop"
+    },
+    {
+        "type": "header",
+        "content": "Founders"
+    },
+    {
+        "type": "text",
+        "id": "founders_heading",
+        "label": "Heading",
+        "default": "Founders"
+    },
+    {
+        "type": "richtext",
+        "id": "founders_content",
+        "label": "Content",
+        "default": "<p>In 2017, two brothers established their own personalised leather goods brand in Australia, devoted to represent their commitment to translate self-identity into a personalised creative outlet.</p><p>MAISON de SABRE stems from the brothers inherent family values, meaning 'House of Sabre'.</p>"
+    },
+    {
+        "type": "header",
+        "content": "Zane"
+    },
+    {
+        "type": "image_picker",
+        "id": "zane_signature",
+        "label": "Signature"
+    },
+    {
+        "type": "text",
+        "id": "zane_title",
+        "label": "Title",
+        "default": "Zane Sabre | CO-FOUNDER COO"
+    },
+    {
+        "type": "image_picker",
+        "id": "zane_mobile",
+        "label": "Mobile"
+    },
+    {
+        "type": "image_picker",
+        "id": "zane_desktop",
+        "label": "Desktop"
+    },
+    {
+        "type": "header",
+        "content": "Omar"
+    },
+    {
+        "type": "image_picker",
+        "id": "omar_signature",
+        "label": "Signature"
+    },
+    {
+        "type": "text",
+        "id": "omar_title",
+        "label": "Title",
+        "default": "Omar Sabre | CO-FOUNDER CEO"
+    },
+    {
+        "type": "image_picker",
+        "id": "omar_mobile",
+        "label": "Mobile"
+    },
+    {
+        "type": "image_picker",
+        "id": "omar_desktop",
+        "label": "Desktop"
+    },
+    {
+        "type": "header",
+        "content": "Leather grade"
+    },
+    {
+        "type": "text",
+        "id": "bot_heading",
+        "label": "Heading",
+        "default": "Leather Grade and Craftsmanship"
+    },
+    {
+        "type": "richtext",
+        "id": "bot_content",
+        "label": "Content",
+        "default": "<p>Refined, classic and timeless designs are effortlessly MAISON de SABRE; choosing to ignore the fast-fashion runway trends and focus on creating pieces to love that outlast seasons.</p><p>MAISON de SABRE reinvents the traditional monogram with a meaningful purpose as it proves to be more than just a series of letters- but a statement of self-expression.</p>"
+    },
+    {
+        "type": "image_picker",
+        "id": "bot_mobile",
+        "label": "Image Mobile"
+    },
+    {
+        "type": "image_picker",
+        "id": "bot_desktop",
+        "label": "Image Desktop"
+    },
+    {
+        "type": "header",
+        "content": "Our movement"
+    },
+    {
+        "type": "text",
+        "id": "move_title",
+        "label": "Title",
+        "default": "Our Movement"
+    },
+    {
+        "type": "richtext",
+        "id": "move_content",
+        "label": "Content",
+        "default": "<p>From the beginning, the community has been at the heart of MAISON de SABRE values. 'Make Your Mark' is a movement central to how people can be inspired to be the best versions of themselves, but through the functions of every-day life. It's more than just an accessory; a personalised monogram provides a canvas for self-expression and confidence in owning your identity.</p>"
+    },
+    {
+        "type": "image_picker",
+        "id": "move_mobile",
+        "label": "Image Mobile"
+    },
+    {
+        "type": "image_picker",
+        "id": "move_desktop",
+        "label": "Image Desktop"
+    },
+	{
+			"type": "text",
+			"id": "btn_text",
+			"label": "Button Text",
+			"default": "Explore Collections"
+		},
+		{
+			"type": "url",
+			"id": "btn_link",
+			"label": "Button Link"
+		}
+  ]
+}
+{% endschema %}

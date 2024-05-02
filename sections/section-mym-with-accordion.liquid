@@ -1,0 +1,77 @@
+  <div class="i_p_usp_sec our_core_value_sec">
+    <div class="page-width">   
+        <div class="i_p_usp_block">
+          <div class="i_p_usp_left"  data-aos="fade-right">
+             {{ section.settings.image | img_url: 'master' | img_tag }}
+          </div>
+          <div class="i_p_usp_right"  data-aos="fade-left">
+            <div class="i_p_usp_right_inner">
+              <small>{{ section.settings.usp_sub_title}}</small>
+              <h3>{{ section.settings.usp_title}}</h3>
+              <div class="accordion_wrap">  
+                {% for block in section.blocks %}
+                  <div class="accordion-contianer">
+                    <button class="accordion {% if forloop.first %}active{% endif %}">{{ block.settings.acc_heading }}</button>
+                    <div class="panel" {% if forloop.first %}style="display:block;"{% else %}style="display:none;"{% endif %}>
+                      <p>{{ block.settings.acc_content }}</p>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+           </div>
+          </div>
+        </div>      
+    </div>
+  </div>
+
+{% schema %}
+  {
+    "name": "Mym Accordion Section",
+    "settings": [
+       {
+         "type": "text",
+         "id": "usp_sub_title",
+         "label": "Usp Sub Title"
+       },
+       {
+         "type": "text",
+         "id": "usp_title",
+         "label": "Usp Title"
+       },      
+       {
+         "type": "text",
+         "id": "usp_description",
+         "label": "Usp Description"
+       },
+       {
+         "type": "image_picker",
+         "id": "image",
+         "label": "Image"
+       }     
+    ],
+    "blocks": [
+      {
+       "name": "Accordion",
+       "type": "Accordian",
+       "settings": [
+           {
+         "type": "text",
+         "id": "acc_heading",
+         "label": "Heading"
+       },  
+       {
+         "type": "text",
+         "id": "acc_content",
+         "label": "Content"
+       }  
+         ]
+       }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

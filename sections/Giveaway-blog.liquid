@@ -1,0 +1,47 @@
+<section class="giveaway-blog">
+  <div class="page-width">
+    <div class="giveaway-blog-row">
+      {% for block in section.blocks %}
+        <div class="giveaway-blog-col">
+          <div class="giveaway-blog-media">
+            <img src="{{ block.settings.blog_image | img_url:'master' }}" alt="">
+          </div>
+          <div class="giveaway-blog-content">
+            <p>{{ block.settings.blog_desc }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Giveaway Blog",
+   "blocks": [
+  {
+     "name": "Blog Section",
+     "type": "header",
+     "limit":3,
+    "settings": [
+      {
+        "type": "image_picker",
+        "label": "Blog Image",
+        "id": "blog_image"
+      },
+      {
+        "type": "html",
+        "label": "Blog Description",
+        "id": "blog_desc"
+      }
+    ]
+  }
+],
+  "presets":
+    [
+      {
+      "name":"Giveaway Blog"
+      }
+    ]
+
+}
+{% endschema %}

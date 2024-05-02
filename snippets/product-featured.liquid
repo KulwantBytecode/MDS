@@ -1,0 +1,113 @@
+{% assign is_art_series = false %}
+{% if product.tags contains 'customize_artwork' %}
+  {% assign is_art_series = true %}
+{% endif %}
+
+{% assign is_zodiac_series = false %}
+{% if product.tags contains 'customize_zodiac' %}
+  {% assign is_zodiac_series = true %}
+{% endif %}
+
+{% assign is_airpods = false %}
+{% if product.type contains 'Airpods' %}
+  {% assign is_airpods = true %}
+{% endif %}
+{% assign is_airpod_pro = false %}
+{% if product.tags contains 'airpods_pro' %}
+  {% assign is_airpod_pro = true %}
+{% endif %}
+
+{% assign eta = '' %}
+{% for tag in product.tags %}
+	{% if tag contains 'eta:' %}
+		{% assign eta = tag | replace: 'eta:', '' %}
+	{% endif %}
+{% endfor %}
+{% for tag in product.tags %}
+	{% if tag contains 'p_desc:' %}
+		{% assign p_desc = tag | replace: 'p_desc:', '' | replace:'$',',' %}
+	{% endif %}
+{% endfor %}
+
+<div class="featured-item">
+	<div class="feautred-product-image">
+		<a href="{{ variant.url }}" class="image-link etet">
+			<div class="grid-view-item__image-wrapper product-card__image-wrapper js product-image-fix {{ variant.option1 | handle }}">
+				{%- assign img_url = variant.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+				<div class="relative">
+					<img class="grid-view-item__image lazyload active" alt="{{ variant.image.alt }}" data-src="{{ img_url }}" data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ variant.image.aspect_ratio }}" data-sizes="auto" data-image>
+					{% if is_zodiac_series %}
+						<div class="zodiac-engrave icon-chess-piece {{ product.type | handle }}"></div>
+					{% endif %}
+					{% if is_art_series %}
+						<div class="artwork-engrave {{ product.type | handle }}"></div>
+					{% endif %}
+					{% unless is_art_series %}
+						<div class="engrave icon-chess-piece {{ product.type | handle }} {{ product.title | handle }} {% if is_airpod_pro %} airpods-pro {%endif%} gold"></div>
+					{% endunless %}
+				</div>
+			</div>
+                    {% assign is_new = false %}
+    {% assign new_variant_handles = '' %}
+    {% assign is_best = false %}
+    {% assign best_variant_handles = '' %}
+
+    {% assign on_sale = false %}
+    {% assign sale_text = '' %}
+
+    {%- assign compare_at_price = product.first_available_variant.compare_at_price -%}
+    {%- assign price = product.first_available_variant.price -%}
+    {% if compare_at_price > price %}
+      {% assign on_sale = true %}
+      {% assign percent_off = product.first_available_variant.compare_at_price | minus: product.first_available_variant.price | times: 100.0 | divided_by: product.first_available_variant.compare_at_price | money_without_currency | times: 100 | remove: '.0' %}
+      {% assign sale_text = percent_off | append: '% OFF' %}
+      {%if product.type contains 'Set'%}
+    		{% assign sale_text =  compare_at_price | minus: price  | money_without_currency | round  | replace: '.00', '' | replace: 'AUD', '' | prepend: 'SAVE $'   %}
+      {%endif%}
+    {% endif %}
+    {% assign is_new = false %}
+    {%if product.type contains 'Keychain' or product.type contains 'Notebook' or product.type contains 'Sling' or product.type contains 'Crossbody' or product.type contains 'Camera' or product.type contains 'Purse' or product.type contains 'Backpacks' %}
+    {% assign is_new = true %}
+    {%endif%}
+   <div id="{{ tag_id }}" class="product-tag-list">
+         <span class="product-tag tag-sale{% unless on_sale  == true %} hide{% endunless %}">{{ sale_text }}</span>
+      <img class="earth_tag {%unless earth  %} hide {%endunless%}" src="{{ 'earthday.png' |  asset_img_url : 'master' }}" />
+	</div>
+		</a>
+            
+
+    </div>
+	<div class="featured-details rte">
+		<a href="{{ variant.url }}">
+			<h4>{{ variant.option2 | append:' ' }}{{ variant.option1  }}<br>{{ product.title }}</h4>
+		</a>
+
+		{% include 'product-price', variant: variant %}
+
+		<p>{{p_desc}}</p>
+		
+		{% form 'product', product, class: 'product-form product-form-product-template', novalidate: 'novalidate', data-product-form: '' %}
+			<input type="hidden" name="id" value="{{ variant.id }}">
+			<input type="hidden" name="Color" value="{{ variant.option1 }}">
+			{% if is_art_series %}
+				<input type="hidden" name="properties[Artwork]" value="" class="artwork">
+			{% else %}
+				<input type="hidden" name="properties[Text]" value="" class="initials matching-initials">
+				<input type="hidden" name="properties[Foil Colour]" value="" class="foil">
+			{% endif %}
+
+			<button type="submit" name="add" aria-label="{{ 'cart.general.add' | t }}" {% if is_preorder %} preorder-text="{{eta}}" {%endif%} {%if is_airpod_pro%} p-type="Airpods_PRO" {%elsif is_airpods %} p-type="Airpods" {%endif%} class="btn btn--pill text-upper add-to-bag{% if is_art_series %} is_art_series{% endif %}{% if is_zodiac_series %} is_zodiac_series{% endif %}" data-variant="{{- variant.id -}}" data-add-to-cart>
+				<span data-add-to-cart-text>
+				  {% if is_preorder %}
+                      {{ 'products.labels.preorder_matching' | t }}
+                  {%else%}
+					{{ 'cart.general.add' | t }}
+                  {%endif%}
+				</span>
+				<span class="hide" data-loader>
+					{% include 'icon-spinner' %}
+				</span>
+			</button>
+		{% endform %}
+	</div>
+</div>

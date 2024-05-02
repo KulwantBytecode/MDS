@@ -1,0 +1,134 @@
+ <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.css"/>
+<style>
+  #shopify-section-template--14653356048465__16425044931ad2cdbc section.footer-top-section{
+background-color: #000000;
+color: #ffffff;
+}
+
+#shopify-section-template--14653356048465__16425044931ad2cdbc  .footer-top-inner-cionbox ul li a{
+    color: #ffffff!important;
+  }
+  .footer-top-inner-cionbox ul li{
+    min-height: 38px;
+  }
+</style>  
+<section class="footer-top-section hide-mobile">
+   <div class="page-width">
+     <div class="footer-top-inner-cionbox">
+      <ul class="list-inline footer-top-icontext ">
+          {% for block in section.blocks  %}
+        <li ><a class="cursorclass" href="{% if block.settings.url1 == blank %}javascript:void(0){% else %}{{block.settings.url1}}{% endif %}"> 
+          <img class="hideonplaceholder" src="{{block.settings.img1 | img_url:'master' | format: 'svg'}}" alt="{{block.settings.img1.alt}}"> {{block.settings.text1}}</a> </li>
+        {% endfor %}
+         </ul>
+     </div>
+  </div>
+</section>
+
+
+<section class="footer-top-section hide-desktop">
+   <div class="page-width">
+     <div class="footer-top-inner-cionbox">
+      <ul class="list-inline footer-top-icontext ">
+          {% for block in section.blocks  %}
+        <li><a class="cursorclass" href="{% if block.settings.url1 == blank %}javascript:void(0){% else %}{{block.settings.url1}}{% endif %}">
+          <img class="hideonplaceholder" src="{{block.settings.img1 | img_url:'master' | format: 'svg' }} " alt="{{block.settings.img1.alt}}">
+          {{block.settings.text1}}</a> </li>
+        {% endfor %}
+        
+  
+   
+         </ul>
+     </div>
+  </div>
+</section>
+<style>
+
+  .cursorclass{
+    cursor:default !important;
+  }
+  
+.footer-top-section  .slick-arrow {
+    display: none !important;
+  
+}
+  section.footer-top-section.hide-desktop .footer-top-inner-cionbox {
+    max-height: 55px;
+}
+ section.footer-top-section.hide-desktop .slick-list {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    padding: 1rem 0rem;
+    flex-direction: column;
+    /* max-height: 45px; */
+}
+   section.footer-top-section.hide-desktop .footer-top-inner-cionbox ul li a {
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    font-family: 'gt_americaregular';
+    font-size: 14px;
+    align-items: center;
+    /* max-width: 100%; */
+    /* text-align: center; */
+    justify-content: center;
+}
+</style>
+
+<script>
+
+const imgfilesvg = '{{block.settings.img1 | img_url }}'; 
+const fileExtension = imgfilesvg.substr((imgfilesvg.lastIndexOf('.') + 1));
+  if(fileExtension == 'gif'){
+    $('.hideonplaceholder').attr('style','display:none');
+  }
+console.log('file-'+ fileExtension);   
+
+</script>  
+
+
+<script>
+    $('.footer-top-section.hide-desktop ul').slick({
+autoplay:true,
+  });
+</script>
+
+{% schema %}
+ {
+   "name": "Home-icons",
+   "settings": [],
+    "blocks": [
+      {
+        "type": "icon",
+        "name": "icon",
+        "settings": [
+          {
+            "id": "img1",
+            "type": "image_picker",
+            "label": "Add image"
+          },
+          {
+            "id": "text1",
+            "type": "textarea",
+            "label": "Add text"
+          },
+         {
+            "id": "url1",
+            "type": "url",
+            "label": "Add url (Optinal)"
+          }
+       
+        ]
+      }
+    ],
+"presets":[{
+"name": "Home-icons",
+"category": "Custom Content"
+
+}]
+ }
+{% endschema %}

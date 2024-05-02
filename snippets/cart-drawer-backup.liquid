@@ -1,0 +1,492 @@
+{% assign gift_product = all_products[settings.cart_gift_product] %}
+{% assign gift_product_add = all_products[settings.cart_gift_product_add] %}
+{% assign gift_product_add_id = gift_product_add.selected_or_first_available_variant.id %}
+{% assign new_cart_price =  cart.total_price | divided_by: 100 | plus:0  %}
+{% assign min_free_shipping = settings.min_free_shipping_threshold | plus:0  %}
+{% assign different_amount = min_free_shipping | minus: new_cart_price | plus:0 %}
+  <div class="cart-popup-box" id="cartpopupboxnav">
+{% comment %}     <div class="cart_loader"><div class="cart_loader_inner"></div></div> {% endcomment %}
+  <div class="cart_popup_bg">
+    <div class="loader_wrap show_loader">
+<!--     <img src="https://cdn.shopify.com/s/files/1/0532/9652/9590/files/loader.gif?v=1649066063"> -->
+<svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-spinner" viewBox="0 0 20 20"><path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" fill="#919EAB"></path></svg>
+    </div>
+  </div>
+  <div class="modal-header-nav">
+    <p id="cart-title" tabindex="-1" class="header-cart__title h2">Your Bag  (<span>{{ cart.item_count }}</span>)</p>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.9999 1L1.19824 14.8017L14.9999 1Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"></path> <path d="M14.8017 14.8017L1 1L14.8017 14.8017Z" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"></path></svg>
+    </button>
+  </div>
+  
+  <div class="modal-body-nav">
+   <input class="min_free_values" type="hidden" value="{{settings.min_free_shipping_threshold}}" data-varlu="{{settings.min_free_shipping_threshold | plus:0}}"
+     data-text="{{ settings.free_shipping_threshold_text}}" data-maxfree="{{ settings.unlocked-Free-shipping | strip_html }}">
+       {% if cart.item_count == 0 %}
+      <div class="empty-cart"{% if cart.item_count == 0 %} style="display:none;"{% else %} style="display:none;"{% endif %}>
+         {% if cart.item_count == 0 %}
+        <div class="header-cart__proggress progres-data-empty">
+        <div class="progress-bar ">
+            <div class="progress-bar__notifications topd">
+              <p class="p1">{{ settings.free_shipping_threshold_text | replace: "[min_free_shipping]", different_amount  }}</p>
+            </div>
+            <div class="progress-bar__indicator"><span class="progress-bar__fill" style="width:0%;"></span></div>
+          </div>
+        
+        </div>
+           
+            <h3> Your bag is empty. </h3>
+          {% endif %}
+        <div class="empty-card-boxess">
+          <div class="empty-card-shopes">
+            
+    
+            {% if settings.empty_cart_grid_img_one != blank and settings.empty_cart_grid_title_one != blank and settings.empty_cart_grid_link_one != blank %}
+            <div class="cart-01-box">
+              <div class="cartempty-image">
+                {% if settings.empty_cart_grid_img_one != blank %}
+                <a href="{% if settings.empty_cart_grid_link_one != blank %}{{ settings.empty_cart_grid_link_one }}{% else %}javascript:void(0){% endif %}"> <img src="{{ settings.empty_cart_grid_img_one | img_url: 'master' }}" alt="{{ settings.empty_cart_grid_title_one }}"> </a>
+                {% endif %}
+              </div>
+              {% if settings.empty_cart_grid_title_one != blank %}
+              <a href="{% if settings.empty_cart_grid_link_one != blank %}{{ settings.empty_cart_grid_link_one }}{% else %}javascript:void(0){% endif %}" class="cart-button-nav">{{ settings.empty_cart_grid_title_one }}</a>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            {% if settings.empty_cart_grid_img_two != blank and settings.empty_cart_grid_title_two != blank and settings.empty_cart_grid_link_two != blank %}
+            <div class="cart-01-box">
+              <div class="cartempty-image">
+                {% if settings.empty_cart_grid_img_two != blank %}
+                <a href="{% if settings.empty_cart_grid_link_two != blank %}{{ settings.empty_cart_grid_link_two }}{% else %}javascript:void(0){% endif %}"> <img src="{{ settings.empty_cart_grid_img_two | img_url: 'master' }}" alt="{{ settings.empty_cart_grid_title_two }}"> </a>
+                {% endif %}
+              </div>
+              {% if settings.empty_cart_grid_title_two != blank %}
+              <a href="{% if settings.empty_cart_grid_link_two != blank %}{{ settings.empty_cart_grid_link_two }}{% else %}javascript:void(0){% endif %}" class="cart-button-nav">{{ settings.empty_cart_grid_title_two }}</a>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            {% if settings.empty_cart_grid_img_three != blank and settings.empty_cart_grid_title_three != blank and settings.empty_cart_grid_link_three != blank %}
+            <div class="cart-01-box">
+              <div class="cartempty-image">
+                {% if settings.empty_cart_grid_img_three != blank %}
+                <a href="{% if settings.empty_cart_grid_link_three != blank %}{{ settings.empty_cart_grid_link_three }}{% else %}javascript:void(0){% endif %}"> <img src="{{ settings.empty_cart_grid_img_three | img_url: 'master' }}" alt="{{ settings.empty_cart_grid_title_three }}"> </a>
+                {% endif %}
+              </div>
+              {% if settings.empty_cart_grid_title_three != blank %}
+              <a href="{% if settings.empty_cart_grid_link_three != blank %}{{ settings.empty_cart_grid_link_three }}{% else %}javascript:void(0){% endif %}" class="cart-button-nav">{{ settings.empty_cart_grid_title_three }}</a>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            {% if settings.empty_cart_grid_img_four != blank and settings.empty_cart_grid_title_four != blank and settings.empty_cart_grid_link_four != blank %}
+            <div class="cart-01-box">
+              <div class="cartempty-image">
+                {% if settings.empty_cart_grid_img_four != blank %}
+                <a href="{% if settings.empty_cart_grid_link_four != blank %}{{ settings.empty_cart_grid_link_four }}{% else %}javascript:void(0){% endif %}"> <img src="{{ settings.empty_cart_grid_img_four | img_url: 'master' }}" alt="{{ settings.empty_cart_grid_title_four }}"> </a>
+                {% endif %}
+              </div>
+              {% if settings.empty_cart_grid_title_four != blank %}
+              <a href="{% if settings.empty_cart_grid_link_four != blank %}{{ settings.empty_cart_grid_link_four }}{% else %}javascript:void(0){% endif %}" class="cart-button-nav">{{ settings.empty_cart_grid_title_four }}</a>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            {% if settings.empty_cart_grid_img_five != blank and settings.empty_cart_grid_title_five != blank and settings.empty_cart_grid_link_five != blank %}
+            <div class="cart-01-box">
+              <div class="cartempty-image">
+                {% if settings.empty_cart_grid_img_five != blank %}
+                <a href="{% if settings.empty_cart_grid_link_five != blank %}{{ settings.empty_cart_grid_link_five }}{% else %}javascript:void(0){% endif %}"> <img src="{{ settings.empty_cart_grid_img_five | img_url: 'master' }}" alt="{{ settings.empty_cart_grid_title_five }}"> </a>
+                {% endif %}
+              </div>
+              {% if settings.empty_cart_grid_title_five != blank %}
+              <a href="{% if settings.empty_cart_grid_link_five != blank %}{{ settings.empty_cart_grid_link_five }}{% else %}javascript:void(0){% endif %}" class="cart-button-nav">{{ settings.empty_cart_grid_title_five }}</a>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            {% if settings.empty_cart_grid_img_six != blank and settings.empty_cart_grid_title_six != blank and settings.empty_cart_grid_link_six != blank %}
+            <div class="cart-01-box">
+              <div class="cartempty-image">
+                {% if settings.empty_cart_grid_img_six != blank %}
+                <a href="{% if settings.empty_cart_grid_link_six != blank %}{{ settings.empty_cart_grid_link_six }}{% else %}javascript:void(0){% endif %}"> <img src="{{ settings.empty_cart_grid_img_six | img_url: 'master' }}" alt="{{ settings.empty_cart_grid_title_six }}"> </a>
+                {% endif %}
+              </div>
+              {% if settings.empty_cart_grid_title_six != blank %}
+              <a href="{% if settings.empty_cart_grid_link_six != blank %}{{ settings.empty_cart_grid_link_six }}{% else %}javascript:void(0){% endif %}" class="cart-button-nav">{{ settings.empty_cart_grid_title_six }}</a>
+              {% endif %}
+            </div>
+            {% endif %}
+            
+            
+            
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    <div class="content-cart-nav">
+      {% comment %}
+class="header-cart__proggress header_cart__proggress_fill"{% if cart.item_count > 0 %} style="display:block;"{% else %} style="display:none;"{% endif %}
+      {% endcomment %}
+  <div class="header-cart__proggress header_cart__proggress_fill" datanewprice="{{ new_cart_price }}">
+    {% if new_cart_price == 0 %}
+     {% assign width = '0%' %}
+
+    {% elsif  new_cart_price < min_free_shipping %}
+          {% assign width = '75%' %}
+          <div class="progress-bar">
+            <div class="progress-bar__notifications d1">
+              <p class="p1">{{ settings.free_shipping_threshold_text | replace: "[min_free_shipping]", different_amount }}.</p>
+            </div>
+            <div class="progress-bar__indicator"><span class="progress-bar__fill" style="width:{{ width }}; height: 100%;display: block;background-color: #33496E;"></span></div>
+          </div>
+        {% else %}
+          {% assign width = '100%' %}
+          <div class="progress-bar">
+            <div class="progress-bar__notifications d2">
+              <p class="p1">{{ settings.unlocked-Free-shipping }}</p>
+            </div>
+            <div class="progress-bar__indicator"><span class="progress-bar__fill" style="width: {{ width }};height: 100%;display: block;background-color: #33496E;"></span></div>
+          </div>
+        {% endif %}
+      </div>
+      <div class="added-products-boxes" id="cart_container_id">
+      
+        {% for item in cart.items %}
+          {% assign gift_pr = false %}
+          {% if gift_product_add_id  == item.variant.id %}
+            {% assign gift_pr = true %}
+          {% endif %}
+            <div class="item-cart-fill-main0 efd cart_items_div kp-{{item.variant.id}}{% if gift_pr %} hidden_qty{% endif %}" data-id="{{item.variant.id}}" data-type="Backpacks" data-value="{{item.variant.title}}">
+            <div class="cart__loading">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-spinner" viewBox="0 0 20 20"><path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" fill="#919EAB"></path></svg>
+            </div>
+          <div class="cart-fill-product-image">
+                <a class="cart-image" href="{{ item.url }}">
+          <div class="cart-engrave engrave {{ item.product.type }}">  </div>
+                    <img src="{{ item.variant | img_url: 'master' }}" alt="{{ item.title | escape }}">
+                </a>
+              </div>
+              <div class="cart-fill-product-detail">
+                <div class="cart-fill-detail-01">
+                  <a href="{{ item.url }}">
+                    <p>{{ item.product.title }}</p>
+                  </a>
+                  {% unless item.product.has_only_default_variant %}
+                    <span class="ajaxcart__product-meta">{{ item.variant.title }}</span>
+                  {% endunless %}
+                  {% assign price = item.final_price | times : item.quantity %}
+                  <p class="price">{{ price | money }}</p>
+                </div>
+                <div class="cart-fill=discription"></div>
+                <div class="cart__props">
+                  <div class="cart__prop cart_text">
+                      {% assign property_size = item.properties | size %}
+                      {% if property_size > 0 %}
+                        <span>Personalisation:</span>
+                      {% for p in item.properties %}
+                      {% assign first_character_in_key = p.first | truncate: 1, '' %}
+                      {% unless p.last == blank or first_character_in_key == '_' %}
+                      {% if p.last contains '/uploads/' %}
+                      <a class="lightbox" href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                      {% else %}
+                        {% if forloop.first %}
+                          <span class="foil-option prsnlizer_color {{ p.last }}" ddts="{{ p.last }}" style="order: 3;"></span>
+                        {% else %}
+                          <span class="chess_text">{{ p.last }}</span>
+                        {% endif %}
+                      {% endif %}
+                      {% endunless %}
+                      {% endfor %}
+                      {% endif %}
+                  </div>
+                </div>
+                <div class="wc_qty_box quantity-box">
+                  <div class="num-block skin-3">
+                    <ul class="QuantityBox cart_p_quantity">
+                      <li class="minus-box">
+                        <a href="javascript:void(0)" data-line="2" class="cart_item_minus minus ajaxcart__qty-adjust cart-slider-decrease-qty ajaxcart__qty--minus">
+                          <img src="//cdn.shopify.com/s/files/1/0619/2575/3081/t/5/assets/minu.svg?v=419654119375667803" class="img-fluid">
+                        </a>
+                      </li>
+                      <li class="input-box">
+                        <input readonly="" type="number" name="updates" class="QuantityInput Quantity_cart_slider ajaxcart__qty-num" value="{{ item.quantity }}" min="0">
+                      </li>
+                      <li class="plus-box">
+                        <a href="javascript:void(0)" variant_id="{{item.variant.id}}" class="cart_item_plus plus ajaxcart__qty-adjust cart-slider-increase-qty ajaxcart__qty--plus">
+                          <img src="//cdn.shopify.com/s/files/1/0619/2575/3081/t/5/assets/plus.svg?v=14305593096000451169" class="img-fluid">
+                        </a>
+                      </li>
+                  </ul>
+                </div>
+                <div class="delate-cart-item">
+                  <button class="grey-5 header-cart-item__remove__btn cart_remove_item remove_cart_item" data-line="2">
+<!--                      <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
+                          <path d="M1.75004 13.0417C1.75004 13.9125 2.46254 14.625 3.33337 14.625H9.66671C10.5375 14.625 11.25 13.9125 11.25 13.0417V3.54167H1.75004V13.0417ZM3.33337 5.125H9.66671V13.0417H3.33337V5.125ZM9.27087 1.16667L8.47921 0.375H4.52087L3.72921 1.16667H0.958374V2.75H12.0417V1.16667H9.27087Z" fill="#727272"/>
+                      </svg> -->
+                   </button> 
+                </div>
+              </div>
+            </div>
+          </div>  
+        {% endfor %}
+      </div>
+<!--       Mini Cart  + Make it a Match Styling Start -->
+      <div class="upsel-pro-drawer  {% if cart.item_count > 0 %} showaproducts {%  else %} continue_shop  {% endif %}">
+      {% render 'upsell-pys-drawer', 'cartcount': cart.item_count %} 
+          <div class="emptycart__contents">
+            <div id="emptycartsoo" class="empty-cart-only">
+                      <div class="header-cart__progg">
+                         <div class="progress-bars">
+                          <div class="progress-bar__notificationss topd">
+                            <p class="p1">{{ settings.free_shipping_threshold_text | replace: "[min_free_shipping]", min_free_shipping  }}</p>
+                          </div>
+                          <div class="progress-bar__indicator"><span class="progress-bar__fills" style="width: 0%;"></span></div>
+                        </div>
+                     </div>
+              </div>
+            <p class="general-cart-empty text-black">
+                Your shopping bag is currently empty.
+            </p>
+               <a class="product-image-fix emptycart-image-fix-link" href="{{ settings.sho_arrival_lnk }}">
+                  <div class="emptycart__collection">
+                    <div class="relative_empty-cart">
+                      <span class="emptycart__collection--title cart_text"> {{ settings.sho_newarrivals }} </span>
+                    </div>
+                  </div>
+              </a>
+               <a class="product-image-fix emptycart-image-fix-link" href="{{ settings.sho_phn_lnk }}">
+                  <div class="emptycart__collection">
+                    <div class="relative_empty-cart">
+                      <span class="emptycart__collection--title cart_text"> {{ settings.sho_phone }}</span>
+                    </div>
+                  </div>
+              </a>
+               <a class="product-image-fix emptycart-image-fix-link" href="{{ settings.sho_handbags_lnk }}">
+                  <div class="emptycart__collection">
+                    <div class="relative_empty-cart">
+                      <span class="emptycart__collection--title cart_text"> {{ settings.sho_handbags }} </span>
+                    </div>
+                  </div>
+              </a>
+               <a class="product-image-fix emptycart-image-fix-link" href="{{ settings.sho_airpods_lnk }}s">
+                  <div class="emptycart__collection">
+                    <div class="relative_empty-cart">
+                      <span class="emptycart__collection--title cart_text">{{ settings.sho_airpods }} </span>
+                    </div>
+                  </div>
+              </a>
+          </div>
+     </div>
+<!--       Mini Cart  + Make it a Match Styling End -->
+      <input type="hidden" id="gift_product_add_id" value="{{ gift_product_add_id }}">
+      
+      {% if gift_product != blank %}
+<!--       <div class="gift_product">
+        <div class="items_row CartItem">
+          <div class="cart-left">
+            <a class="cart-image" href="{{ gift_product.url }}">
+              <img src="{{ gift_product.featured_image | img_url: 'master' }}" alt="{{ gift_product.title }}">
+            </a>
+          </div>
+          <div class="cart-right">
+            <div class="cart-title">
+              <a href="{{ gift_product.url }}" class="pro-name">{{ gift_product.title }}</a>
+            </div>
+            <div class="cart-price">
+              <p>Free</p>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      {% endif %}
+      
+      <div class="youmay-also-likeproduct youmay_also_likeproduct_fill">
+        <h3> You may also like </h3>
+        <div class="carousel cartlike-slider">
+          
+          {% assign collection = collections[settings.cart_collection] %}
+          
+          {%- for product in collection.products -%}
+          
+          {% if product.variants.first.inventory_quantity > 0 %}
+            <div class="carousel-cell {{ product.type | handle | downcase }}" data-type="{{ product.type | handle | downcase }}">
+              <div class="product-grid3">
+                <div class="product-image3">
+                  <a href="{{ product.url }}">
+
+                    {% for image in product.images %}
+                    <img data-value="{{ image.alt | downcase }}" class="{% if forloop.first %}pic-1 text-wvt-1{% endif %} new_imgs" data-src="{{ image.src | img_url: 'master' }}" alt="{{ product.title }}" />
+                    {% endfor %}
+
+                    {% comment %}
+                    <img class="pic-1 text-wvt-1" src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+                    <img class="pic-2" src="{{ product.images[1]| img_url: 'master' }}" data-img="0" alt="{{ product.title }}">
+                    {% endcomment %}
+
+                  </a>
+                  <div class="labelss">
+                    {% for t in product.tags %}
+                    {% if t contains 'badge:new' %}     
+                    <span class="product-new-label">New</span>
+                    {% endif %}
+                    {% endfor %}
+                    {% assign cmp_price = product.compare_at_price %}
+                    {% assign pdp_price = product.price %}
+                    {% assign cal_price = pdp_price | times: 100 | divided_by: cmp_price | replace: '.0', '' %}
+                    {% assign final_discount = 100 | minus: cal_price %}
+                    {% if cmp_price > pdp_price %}
+                    <span class="product-sale-label">{{ final_discount }}% OFF</span>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="product-content nav-new-p-content">
+                  <div class="productnametitle">
+                    <div class="title-namenam">
+                      <h3 class="title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                    </div>
+                    <div class="pricetag">
+                    <p> <span>{{ product.price | money_with_currency }}</span> </p>
+                  </div>
+                  </div>
+                  
+                   <div class="varient-boxxx">
+                     {%- if product.selected_or_first_available_variant -%}
+                    <p> <span> in {{ product.selected_or_first_available_variant.title }} </span> </p>
+                    {%- endif -%}
+                  </div>
+
+                  {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+
+                  {% if product.variants.size > 1 %}
+
+                  <div id="custom_option_hide_cart" class="custom_option_hide_cart" data-index="option1" name="id" style="display:none !important">
+                    {%for variant in product.variants %}
+                    <span data-value="{{ variant.id }}" data-title="{{ variant.title | handle }}"> {{ variant.title }} </span>
+                    {% endfor %}
+                  </div>
+                  {%  endif %}
+
+                  <div class="product-form__buttons_pys">
+                    <button type="submit" name="add" class="cart_add_btn product-form__submit button button--full-width {% if block.settings.show_dynamic_checkout and product.selling_plan_groups == empty %}button--secondary{% else %}button--primary{% endif %}"data-id="{{ product.selected_or_first_available_variant.id }}"
+                            {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+                            >
+                      <span>
+                        {%- if product.selected_or_first_available_variant.available -%}
+                        {{ 'products.product.add_to_cart' | t }}
+                        {%- else -%}
+                        {{ 'products.product.sold_out' | t }}
+                        {%- endif -%}
+                      </span>
+                      <div class="loading-overlay__spinner hidden">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                  {%- endform -%}
+
+
+
+                </div>
+              </div>
+            </div>          
+          {% endif %}
+
+          {%- endfor -%}
+          
+        </div>
+      </div>
+      
+
+      <!--       recently uncommented -->
+      <div class="cart-footer-nav">
+<!--gift card wrapper starts  -->
+          {% assign product = all_products[settings.gift-product] %}
+{% for variant in product.variants %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{%- assign compare_at_price = variant.compare_at_price -%}
+{%- assign price = variant.price -%}
+{% endfor %}
+  {% if settings.showgiftproduct %}
+{% assign is_gift_cart = false %}
+  {% for item in cart.items %}
+    {% if item.title == 'Make it a Gift - Gift Wrap' %}
+      {% assign is_gift_cart = true %}
+      {% endif %}
+  {% endfor %}
+
+<div class="cart_gift_box">
+<div class="cart_gift_item">
+<div class="c_g_item_left">
+<figure>
+<img class="active" src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title | escape }}" style="width:50%;">
+</figure>
+</div>
+<div class="c_g_item_middle">
+<div class="c_g_pro_title">{{ product.title }}</div>
+<div class="text-box" data-maxlength="65">{{ product.description }}</div>
+</div>
+<div class="c_g_item_right">
+<div class="cart__price-wrapper price_matching_item">
+<span class="price price__upsell">
+<span class="upsell_deiscount"> {{ product.selected_or_first_available_variant.price | money  }}</span>
+<span class="free_puzzle">  {{   product.selected_or_first_available_variant.compare_at_price }} </span>
+</span>
+</div>
+
+<form class="gift-cart-form">
+<a data-id="{{ product.variants.first.id }}" name="add" class="button cart_add_btn">
+<span data-add-to-cart-text="">+ Add</span>
+<span data-loader="" class="hide"></span>
+<span class="gift-spin hide" data-loader>
+{%- include 'icon-spinner' -%}
+</span>
+</a>
+</form>
+
+</div>
+</div>
+  
+</div>   
+{% endif %}
+
+<!--   ends       -->
+        <div class="subotla-navm-boxes">
+          <div class="cart-final-subtotla">
+            <p class="p1 fzbig black">Shipping:</p> 
+            <p class="p1 fzbig black">FREE</p>
+          </div>
+          <div class="cart-final-subtotla cart_final_subtotal_price_wrap">
+            <p class="p1 fzbig black">Total:</p> 
+            <p class="p1 fzbig black cart_final_subtotal_price">{{totalPrice}}</p>
+          </div>
+        </div>
+        <div class="button-finalnavm-box">
+          <button type="submit" class="custom-btn custom_checkout_btn" name="checkout">Checkout</button>
+        </div>
+      </div>
+      
+      <!--       recently uncommented -->
+      
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.custom_checkout_btn').on('click', function(){
+    	window.location = '/checkout';
+    }); 
+
+    $('#cartpopupboxnav .upsel-pro-drawer h2').on('click', function(){
+        	$(this).parents('.upsel-pro-drawer').toggleClass('opened');
+        	$(this).next('.upsell-cart-slider').slideToggle();
+    }); 
+  }); 
+</script>

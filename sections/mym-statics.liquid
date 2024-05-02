@@ -1,0 +1,53 @@
+<div class="mym-stats page-width">
+	<div class="icons" data-aos="fade-up" data-aos-duration="500" data-aos-delay="000">
+    	<h1 class="xl_text">{{section.settings.stats1 | strip_html }}</h1>
+		<p>	{{section.settings.text1 | strip_html }} </p>
+	</div>
+	<div class="icons" data-aos="fade-up" data-aos-duration="500" data-aos-delay="300">
+    	<h1 class="xl_text">{{section.settings.stats2 | strip_html }}</h1>
+		<p>	{{section.settings.text2 | strip_html }} </p>
+	</div>
+	<div class="icons" data-aos="fade-up" data-aos-duration="500" data-aos-delay="600">
+		<h1 class="xl_text">{{section.settings.stats3 | strip_html }}</h1>
+		<p>	{{section.settings.text3 | strip_html }} </p>
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Mym Stats",
+  "class": "index-section",
+  "settings": [
+   {
+      "type": "text",
+      "id": "stats1",
+      "label": "Stats 1"
+   },
+   {
+      "type": "richtext",
+      "id": "text1",
+      "label": "Text 1"
+    },
+    {
+      "type": "text",
+      "id": "stats2",
+      "label": "Stats 2"
+   },
+    {
+      "type": "richtext",
+      "id": "text2",
+      "label": "Text 2"
+    },
+    {
+      "type": "text",
+      "id": "stats3",
+      "label": "Stats 3"
+   },
+    {
+      "type": "richtext",
+      "id": "text3",
+      "label": "Text 3"
+    }
+  ]
+}
+{% endschema %}

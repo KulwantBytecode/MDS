@@ -1,0 +1,71 @@
+<section class="mds-collection-grid-sec">
+  <div class="mds-collection-grid">
+    {% for block in section.blocks %}
+      {% if block.type == 'image_with_button_block' %}
+        {% if block.settings.image != blank
+          and block.settings.heading != blank
+          and block.settings.button_url != blank
+          and block.settings.button_text != blank
+        %}
+          <div class="mds-collection-grid-col  grid-col-{{ forloop.index }}">
+            <div class="mds-collection-grid-col-in">
+              <div class="mds-collection-grid-media">
+                <a href="{{ block.settings.button_url }}">
+                  <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.alt_text }}"
+                ></a>
+              </div>
+              <div class="mds-collection-grid-content">
+                <h2>{{ block.settings.heading }}</h2>
+                <a href="{{ block.settings.button_url }}" class="">{{ block.settings.button_text }}</a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "New Home Collection",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image_with_button_block",
+      "name": "Image with Button",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Home Collection"
+    }
+  ]
+}
+{% endschema %}

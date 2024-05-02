@@ -1,0 +1,134 @@
+<div data-section-id="{{ section.id }}" data-section-type="hero-section">
+    <div class="hero hide-mobile hero--medium hero-{{ section.id }}{% if section.settings.title != blank or section.settings.text != blank or section.settings.button_label != blank %} hero__overlay{% endif %} box ratio-container lazyload js"
+         id="Hero-{{ section.id }}">
+      <div class="hero__inner">
+         {%- if section.settings.image != blank -%}
+            <img class="black-friday-gif" src="{{ section.settings.image | img_url: 'master' }}" />
+          {%- endif -%}
+          {%- if section.settings.image2 != blank -%}
+            <img class="black-friday-img" src="{{ section.settings.image2 | img_url: 'master' }}" />
+          {%- endif -%}
+           <div class="hero_banner_text">
+              <div class="page-width">                
+                {%- if section.settings.image3 != blank -%}
+                  <img class="black-friday-img-text" src="{{ section.settings.image3 | img_url: 'master' }}" />
+                {%- endif -%}
+                <div class="shop-now-bf">
+                  {% comment %}{%- if section.settings.text != blank -%}
+                    <p class="md_text"> {{ section.settings.text | strip_html }} </p>
+                  {%- endif -%}{% endcomment %}
+                  {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+                    <a href="{{ section.settings.button_link }}" class="btn--main">
+                      {{ section.settings.button_label | escape }}
+                    </a>
+                  {%- endif -%}
+                </div>
+               </div>
+          </div>
+      </div>
+    </div>
+    <noscript>
+      <div class="hero hide-mobile hero--medium{% if section.settings.title != blank or section.settings.text != blank or section.settings.button_label != blank %} hero__overlay{% endif %}"{% if section.settings.image %} style="background-image: url('{{ section.settings.image | img_url: '2048x' }}'); background-position: center;"{% endif %}></div>
+    </noscript>
+
+    <div class="hero hide-desktop hero--medium hero-{{ section.id }}{% if section.settings.title_mob != blank or section.settings.text_mob != blank or section.settings.button_label != blank %} hero__overlay{% endif %} box ratio-container lazyload js"
+         id="Hero-{{ section.id }}">
+     <div class="hero__inner hero__inner-mob">
+       {%- if section.settings.image_mob != blank -%}
+            <img class="black-friday-gif" src="{{ section.settings.image_mob | img_url: 'master' }}" />
+          {%- endif -%}
+          {%- if section.settings.image2_mob != blank -%}
+            <img class="black-friday-img" src="{{ section.settings.image2_mob | img_url: 'master' }}" />
+          {%- endif -%}
+       <div class="hero_banner_text">
+        <div class="page-width">
+          {%- if section.settings.image3_mob != blank -%}
+            <img class="black-friday-img-text" src="{{ section.settings.image3_mob | img_url: 'master' }}" />
+          {%- endif -%}
+          <div class="shop-now-bf">
+            {% comment %}{%- if section.settings.text != blank -%}
+              <p class="md_text"> {{ section.settings.text | strip_html }} </p>
+            {%- endif -%}{% endcomment %}
+            {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+              <a href="{{ section.settings.button_link }}" class="btn--main">
+                {{ section.settings.button_label | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+       </div>
+      </div>
+    </div>
+    <noscript>
+      <div class="hero hide-desktop hero--medium{% if section.settings.title_mob != blank or section.settings.text_mob != blank or section.settings.button_label_mob != blank %} hero__overlay{% endif %}"{% if section.settings.image_mob %} style="background-image: url('{{ section.settings.image_mob | img_url: '2048x' }}'); background-position: center;"{% endif %}></div>
+    </noscript>
+</div>
+<script>
+$(document).ready(function(){
+  $('.blog-slider__container').flickity({
+      autoPlay:5000,
+      wrapAround: true,
+ change: function( index ) {
+    }
+    });
+  $('.home-info-inner.page-width.hide-desktop').slick({
+   autoplay: true
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Home Banner",
+  "class": "index-section index-section--flush index-section--banner home_top_banner_sec",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Gif Live Now"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mob",
+      "label": "Gif Live Now Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Desktop Image BF"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2_mob",
+      "label": "Mobile Image BF"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Everything sale text Image Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3_mob",
+      "label": "Everything sale text Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets":[
+      {
+        "name": "HomeSlider-banner-2",
+        "category": "Custom Content"
+
+      }
+	]
+}
+{% endschema %}

@@ -1,0 +1,47 @@
+<!-- snippet/product-price.liquid -->
+{% if variant.title %}
+  {%- assign compare_at_price = variant.compare_at_price -%}
+  {%- assign price = variant.price -%}
+  {%- assign available = variant.available -%}
+{% else %}
+  {%- assign compare_at_price = 1999 -%}
+  {%- assign price = 1999 -%}
+  {%- assign available = true -%}
+{% endif %}
+
+{%- assign money_price = price | money_with_currency  -%}
+
+<dl {% if id %}id="{{id}}"{% endif %} class="price{% if available and compare_at_price > price %} price--on-sale{% endif %}{% if available and variant.unit_price_measurement %} price--unit-available{% endif %}" data-price>
+
+<div class="price__sale coll1">
+    <dt>
+      <span class="visually-hidden visually-hidden--inline">{{ 'products.product.sale_price' | t }}</span>
+    </dt>
+    <dd>
+      <span class="price-item price-item--sale" data-sale-price>
+        {{ money_price | replace: '.00', '' }} 
+      </span>
+      <span class="price-item__label bold hide" aria-hidden="true">{{ 'products.product.on_sale' | t }}</span>
+    </dd>
+  </div>
+    <div class="price__regular vsdfsdf">
+    <dt>
+      <span class="visually-hidden visually-hidden--inline">{{ 'products.product.regular_price' | t }}</span>
+    </dt>
+    <dd>
+      {% if compare_at_price > price %}
+        <span class="price-item price-item--regular" data-regular-price>
+          {{ compare_at_price | money_with_currency | replace: '.00', ''  }}
+        </span>
+      {% else %}
+        <span class="price-item price-item--regular" data-regular-price>
+          {{ money_price | replace: '.00', '' }}
+        </span>
+      {% endif %}
+    </dd>
+  </div>
+
+  <div class="savings">
+         <span class="{% unless compare_at_price > price %} hide {%endunless%} ">save {{ compare_at_price | minus: price | money_with_currency | replace: '.00', '' | replace: 'USD', ''  }}</span>
+  </div>
+</dl>

@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+    
+  
+  {% include 'friendbuy' %}
+</head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+{% include 'smsbump_checkout_marketing_subscription' %}
+    {{ tracking_code }}
+
+    <script>
+      $(document).ready(function() {
+        if ($('[data-checkout-total-shipping-target="0"]').length > 0) {
+          $('[data-checkout-total-shipping-target="0"]').text('Calculated at next step');
+        }
+      });
+    </script>
+
+<style>
+  .engrave.nylon-sling-bag , .engrave.nylon-backpack , .engrave.nylon-duffle-bag , .engrave.nylon-tote{
+  display:none;
+}
+  .engrave.duffle{
+  display:none;
+}
+.engrave.keybell-keychain {
+    top: 64%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    font-size: .6em;
+}
+  .engrave.zip-card-holder {
+    top: 64%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    font-size: .7em;
+}
+  .engrave.long-zip-wallet {
+    top: 35%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    font-size: .7em;
+     display:none;
+}
+.engrave.mini-messenger-bag, .engrave.small-messenger-bag {
+    top: 60%;
+    left: 75%;
+    text-align: center;
+    font-size: .4em;
+}
+   .engrave.mini-flap-bag{
+    display:none;
+  }
+  .engrave.mini-backpack {
+    top: 70%;
+    font-size: .65em!important;
+    left: 0%;
+    width: 100%;
+    display: block;
+    text-align: center;
+    letter-spacing: 1px;
+    padding-left: 13.5%;
+}
+body .engrave.sling-bag{
+    top: 70%;
+}
+.engrave.mini-messenger-bag {
+    top: 71%;
+    left: 76%;
+    text-align: center;
+    font-size: .4em;
+}
+.pys_collection .engrave.mini-flap-bag {
+    display: none;
+}
+.engrave.mini-flap-bag {
+   top: 65% !important;
+    left: 75.5%;
+    text-align: center;
+    font-size: .5em;
+    right: unset;
+}
+
+@media (max-width:767px){
+  .engrave.mini-flap-bag {
+    top: 66% !important;
+    left: 72%;
+  }
+  .engrave.mini-messenger-bag {
+    top: 71%;
+    left: 72%;
+  }
+}
+  .engrave.sunglasses-sleeve {
+    top: 52%;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    font-size: .95em;
+}
+  .engrave.magsafe-wallet {
+    top: 52%;
+    left: 0;
+    right: 0%;
+    text-align: center;
+    font-size: .95em;
+    width: 100%;
+}
+  .engrave.airpods-sling-case {
+    top: 48%;
+    left: -1%;
+    right: 0%;
+    text-align: center;
+    font-size: .95em;
+}
+  .engrave.airpods-belt {
+    top: 38%;
+    left: 22%;
+    right: 0%;
+    text-align: center;
+    font-size: .95em;
+}
+  tr.product.shown[data-product-type="Screen Protector"] span.product__description__property {
+    display: none;
+}
+      tr.product.shown[data-product-type="Gift Boxes & Tins"] th span:last-child {
+          display: none;
+      }
+
+       th.product__description span:nth-child(6) {
+          display: none;
+      }
+           .product-table tbody tr[data-product-type="newfreegift"] span.product__description__variant {
+    display: none;
+}   
+        @media(max-width: 991px) {
+
+        .hide-mobile {
+          display: none;
+        }
+      }
+      @media(min-width: 992px) {
+
+        .hide-desktop {
+          display: none;
+        }
+        .order-summary__sections {
+        height:auto;
+        }
+      }
+          .extra-info-checkout {
+        padding:1rem;
+      }
+      .extra-info {
+          display: flex;
+          flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+      .right-side {
+
+        flex: 0 0 65%;
+      }
+      .left-side {
+            flex: 0 0 15%;
+            margin-right: 20px;
+        }
+      .right-side p {
+        margin-top: 0.25rem;
+      font-size: 15px !important;
+      }
+      .engrave.apple-watch-band {
+        display:none;
+      }
+      /* Engravings */
+      @font-face {
+        font-family: "Arbesco-DT";
+        src: url('{{ "ArbescoDTBook.eot" | asset_url }}');
+        src: url('{{ "ArbescoDTBook.eot" | asset_url }} ?#iefix') format("embedded-opentype"),
+            url('{{ "ArbescoDTBook.otf" | asset_url }}');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      .banner {
+        padding: 0.75rem 5rem;
+		}
+      .product-thumbnail__wrapper {
+        font-size: 0.375rem;
+      }
+      .engrave {
+        position: absolute;
+        text-transform: uppercase;
+        font-family: "Arbesco-DT", serif;
+        color: #bf9b30;
+        color: #d9c277;
+        font-size: 2.25em;
+      }
+      .engrave.gold {
+        color: #d9c277;
+        background: -webkit-linear-gradient(transparent, transparent),url('{{ "gold-foil.jpg" | asset_url }}') no-repeat center center;
+        background-size: cover;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .pink-lily .engrave.gold,
+      .matcha-green .engrave.gold,
+      .mercury-grey .engrave.gold {
+        background: -webkit-linear-gradient(transparent, transparent),url('{{ "gold-light.png" | asset_url }}') repeat;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .saharan-nude .engrave.gold,
+      .ivory-white .engrave.gold {    
+        background: -webkit-linear-gradient(transparent, transparent),url('{{ "gold-bold.png" | asset_url }}') repeat;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .engrave.silver {
+        color: #f4f4f4;  
+        background: -webkit-linear-gradient(transparent, transparent),url('{{ "silver.jpg" | asset_url }}') repeat;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .engrave.phone-case,.engrave.phone-case-bundle {
+        top: 32%;
+        left: 0%;
+        right: 0%;
+        text-align: center;
+        font-size: .95em;
+      }
+      .engrave.phone-case.cart-engrave {
+        font-size: 1.4em;
+      }
+      .engrave.phone-case-bundle.cart-engrave {
+        font-size: 1.4em;
+      }
+      .engrave.card-case,.engrave.card-case-bundle {
+        bottom: 32.5%;
+        left: 0%;
+        right: 0%;
+        text-align: center;
+        font-size: 1.08em;
+      }
+      .checkout-engrave.engrave.laptop-case {
+    font-size: 0.2rem;
+    top: -5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+     .checkout-engrave.engrave.sling-bag {
+  display:none;
+}
+      .engrave.card-holder,.engrave.card-holder-bundle {
+        bottom: 28%;
+        left: 0%;
+        right: 0%;
+        text-align: center;
+        font-size: 1.1em;
+      }
+      .engrave.zipped-wallet {
+        top: 31%;
+        left: 0%;
+        right: 0%;
+        text-align: center;
+        font-size: 1em;
+      }
+      .engrave.clutches {
+        font-size: 0.3rem;
+        top: 52%;
+        right: 25%;
+     }
+      tr.product.shown[data-product-id="4707696443473"] .engrave.clutches {
+    	right: 20%;
+	  }
+      .engrave.bifold-wallet {
+        right: 5%;
+        bottom: 21.5%;
+        font-size: .5em;
+      }
+      .engrave.pocket-bifold, .engrave.backpacks {
+        display:none;
+      }
+/*       for airpods */
+      .engrave.airpods,.engrave.airpods-bundle-set {
+    	text-align: center;
+    	top: 40%;
+    	left: 50%;
+    	transform: translateX(-50%);
+    	font-size: 1.25em;
+    	position: absolute;
+		}
+      .checkout-engrave.engrave.mini-tote {
+          top: 55%;
+          font-size: 0.15rem;
+          left: 60%;
+      }
+
+      .product-image-fix .engrave.bifold-wallet {
+        display: none;
+      }
+
+
+      .zodiac-engrave {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+      }
+      .zodiac-engrave:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        width: 15%;
+        height: 15%;
+        transform: translate(-50%, -50%);
+        background-size: contain;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+      }
+      
+      .product__description__property {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+       .comparative-price {
+    text-decoration: line-through;
+    color: #6f6f6f;
+    font-weight: 300;
+}
+      .product__description__property span {
+        margin-left: .5rem;
+      }
+      .cart-colour {
+        display: inline-block;
+        width: 3em;
+        height: 1em;
+        border-radius: 1em;
+      }
+      .cart-colour.gold {
+        background: linear-gradient(-45deg, #fffbd4, #c1a963, #fffbd4, #c1a963, #fffbd4);
+      }
+      .cart-colour.silver {
+        background: linear-gradient(-45deg, #f4f4f4, #616161, #f4f4f4, #616161, #f4f4f4);
+      }
+.cart-colour.rose {
+    
+    background: linear-gradient(-45deg, #ffc9aa, #eaac88, #f5e7de, #eaac88, #ddc2b3);
+}
+.engrave.rose {
+        color: #f4f4f4;  
+        background: -webkit-linear-gradient(transparent, transparent),url('{{ "rose.jpg" | asset_url }}') repeat;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+          background-position: 80% 35%;
+      }
+.checkout-engrave.engrave.phone-case {
+        font-family:  'Abressco';
+    }
+.is-text {
+     font-family:'Helvetica';
+    }
+.checkout-engrave.engrave.beauty-pouch {
+          font-size: 0.25rem;
+          left: 48%;
+          top: 25%;
+      }
+.checkout-engrave.engrave.micro-cross-body {
+    top: 32%;
+    left: 0;
+    text-align: center;
+    font-size: 0.25rem;
+    width: 100%;
+  }
+.section.section--shipping-method .content-box .content-box__row:nth-child(6) {
+    display: none;
+}
+
+span.product__description__property.order-summary__small-text {
+    text-transform: capitalize;
+}
+.checkout-engrave.engrave.keychain {
+    writing-mode: vertical-rl;
+    font-size: 0.75em;
+    top: 50%;
+    left: 35%;
+}
+
+            .checkout-engrave.engrave.notebook {
+    font-size: 0.5em;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    letter-spacing: 0.2em;
+}
+.checkout-engrave.engrave.sling-phone-case, .checkout-engrave.engrave.card-phone-case {
+    top: 75%;
+    font-size: 0.5em;
+    left: 45%;
+    line-height: 1;
+}
+.checkout-engrave.engrave.crossbody-phone-pouch {
+display:none;
+}
+      
+/*-----------checkout-new-feedback-----------*/
+.checkout-engrave.passport-holder {
+    top: 58%;
+    font-size: 0.75em;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.checkout-engrave.luggage-tag {
+    top: 71%;
+    font-size: 0.6em;
+    left: 50%;
+    transform: translateX(-50%);
+}
+  .checkout-engrave.statement-strap, .checkout-engrave.camera-bag, .checkout-engrave.coin-purse, .checkout-engrave.webbing-strap, .checkout-engrave.soft-tote, .checkout-engrave.mini-hobo-bag, .checkout-engrave.pencil-case {
+  display:none;
+  }
+
+tr.product[data-product-id="7037510320209"] span.product__description__property.order-summary__small-text.shown, tr.product[data-product-id="7037514711121"] span.product__description__property.order-summary__small-text.shown  {
+    display: none;
+}
+      
+/*-----------checkout-new-feedback-----------*/  
+span.cart-colour.Gold {
+    background: linear-gradient(-45deg, #fffbd4, #c1a963, #fffbd4, #c1a963, #fffbd4);
+}
+  span.product__description__property.order-summary__small-text.shown {
+    display: inline-block;
+}
+  span.cart-colour.Silver {
+    background: linear-gradient(-45deg,#f4f4f4,#616161,#f4f4f4,#616161,#f4f4f4);
+}
+  span.cart-colour.Silver {
+    background: linear-gradient(-45deg,#f4f4f4,#616161,#f4f4f4,#616161,#f4f4f4);
+}
+.page--logo-main .main .logo {
+    display: block;
+    text-align: center;
+}
+.page--logo-main .main .logo span.logo__text {
+  font-size: 3em;
+  color: #000;
+}
+.page--logo-main .breadcrumb {
+    justify-content: center;
+}
+.step__footer__continue-btn,
+.edit_checkout .btn {
+    background: #1b1b1b;
+}
+.step__footer__continue-btn:hover,
+  .edit_checkout .btn:hover {
+    background-color: #000;
+}
+  @media (max-width:999px){
+.banner a.logo.logo--left {
+    text-align: center;
+    color: #000;
+}
+.banner a.logo.logo--left span {
+    color: #000;
+}
+header.banner .wrap {
+    max-width: 100%;
+}
+
+header.banner {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.page--logo-main .main .logo {
+    font-size: 0;
+    display: none;
+}
+}
+.checkout-engrave.laptop-bag {
+	display: none;
+}
+.checkout-engrave.small-soft-tote, 
+.checkout-engrave.trifold-wallet {
+  display:none;
+}
+</style>
+    
+    <script>
+      var checkoutImages = {
+        "images": [
+          {%- for item in checkout.line_items -%}
+            {
+              "product_type": "{{ item.product.type }}",
+              "id": "{{ item.variant.id }}",
+              "image": "{{ item.product.featured_image | img_url: '100x100' }}"{% if item.properties %},{% endif %}
+              {%- for prop in item.properties -%}
+                
+                {%- assign prop_check = prop | first -%}
+                {%- assign prop_last = prop | last -%}
+           {%- if prop_last != "" -%}
+
+                {%- if prop_check == "Artwork" -%}
+                  "art": "{{ prop | last }}",
+                {%- endif -%}
+                {%- if prop_check == "Zodiac" -%}
+                  "text": "{{ prop | last }}",
+                {%- endif -%}
+                      {%- if prop_check == "Text" -%}
+                  "text": "{{ prop | last }}",
+                {%- endif -%}
+
+                {%- if prop_check == "Foil Colour" -%}
+                  "foil": "{{ prop | last }}",
+                {%- endif -%}
+
+                {%- if prop_check == "Foil Color" -%}
+                  "foil": "{{ prop | last }}",
+                {%- endif -%}  
+              {%- if prop_check == "CNY" -%}
+                  "CNY": "{{ prop | last }}",
+                {%- endif -%}
+                {%- endif -%}
+
+              {%- endfor -%}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      };
+      $(document).on("page:load page:change", () => {
+          if (Shopify.Checkout.step === "payment_method") {
+         {% if checkout.customer %}
+          ttq.identify({
+          email: '{{- checkout.customer.email -}}',
+          phone: '{{- checkout.customer.phone - }}'
+          })
+          {% endif %}
+          /*
+          Trigger Add Payment Info tracking as the user has
+          already addded their payment info before reaching
+          this step.
+          */
+          ttq.track('AddPaymentInfo');
+          }
+          });
+
+      $(document).on('page:load page:change', function() {
+
+       if (Shopify.Checkout.page === "thank_you") {
+        /*
+        User has already completed their payment and
+        reach the thank you page. It is safe to trigger
+        the Complete Payment / Place an Order code
+        */
+                {% if checkout.customer %}
+          ttq.identify({
+          email: '{{- checkout.customer.email -}}',
+          phone: '{{- checkout.customer.phone - }}'
+          })
+          {% endif %}
+        var contents = [],
+        value = {{ checkout.total_price }} / 100,
+        currency = "{{ checkout.currency }}"
+        {% for line_item in checkout.line_items %}
+        var content = {};
+        content.content_id = '{{ line_item.id }}';
+        content.name = '{{ line_item.product.title }}';
+        content.price = {{ line_item.product.price }} / 100;
+        content.quantity = {{ line_item.quantity }};
+        contents.push(content);
+        {% endfor %}
+      
+        ttq.track('CompletePayment',{
+        contents,
+        value,
+        currency
+        });
+       }
+        
+        $.each(checkoutImages.images, function(index,data) {
+          var product_type = data.product_type.replace(/ /g, '-').toLowerCase();
+          if(data.product_type!="Gift" && data.product_type!= 'Gift Boxes & Tins' && data.product_type!= 'Gift Cards') {
+          var variant_id = data.id;
+          var product_image = data.image;
+          var text = data.text;
+          var foil = data.foil;
+          var art = data.art;
+          var art_series = art != null;
+          var zodiac = data.zodiac;
+          var zodiac_series = zodiac != null;
+          var cny = data.CNY;
+          if(typeof foil != "undefined")
+          {
+            var foil_lower = foil.toLowerCase();
+          }
+          else {
+            var foil_lower = "";
+          }
+          $('tr.product').each(function() {
+           if(!$(this).hasClass('shown')){
+              var el_wrapper = $(this);
+              var image_el = $(this).find('img.product-thumbnail__image');
+              var foil_prop = $(this).find('span.product__description__property');
+              var display_id = $(this).data("variant-id");
+              if (!$(image_el).hasClass("shown")) {
+                if (display_id == variant_id) {
+                  if(data.product_type!="Gift" && data.product_type!= 'Gift Boxes & Tins' && data.product_type!= 'Gift Cards') {
+                  $(image_el).attr('src',product_image).addClass('shown');
+                  }
+                   if(cny == 'tiger') {
+                    $(image_el).parent().append("<div class='cny "+cny.replace(/ /g, '-').toLowerCase()+" "+foil_lower+"'></div>");
+                  }
+                  if (text != "" && data.product_type!="Bifold Wallet") {
+                    if(!art_series && ( text != 'undefined') && text != null) {
+                      $(image_el).parent().append("<div class='checkout-engrave engrave "+ text+" "+product_type+" "+foil_lower+"'>"+text+"</div>");
+                    } else {
+                      if(art_series) {
+                        $(image_el).parent().append("<div class='artwork-engrave "+product_type+" "+art.replace(/ /g, '-').toLowerCase()+" "+foil_lower+"'></div>");
+                      } else if(zodiac_series) {
+                        $(image_el).parent().append("<div class='zodiac-engrave "+product_type+" "+zodiac.replace(/ /g, '-').toLowerCase()+" "+foil_lower+"'></div>");
+                      }
+                    }
+					        var output = '';
+                    $(foil_prop).each(function() {
+  
+                      if (!$(this).hasClass("shown")) {
+                        if(Shopify && Shopify.shop && Shopify.shop.indexOf('-lg') !== -1) output = 'Text Colour: ';
+                        var prop = $.trim($(this).text()).split(":");
+                        // if(output.length > 0 ) {
+                         
+                        if(prop[0].toLowerCase() == 'text' || prop[0].toLowerCase() == 'zodiac' && prop[1] != null) {
+                          output =  'Personalisation:<span class="is-text">'+prop[1]+ '</span>' + output;
+                          $(this).html(output).addClass('shown');
+                        }
+
+                        if(prop[0] == "Foil Color") {
+        
+                          var foil = $.trim(prop[1]);
+                          
+                         	output = '<span class="cart-colour c1 '+ foil +'"></span>';
+                          	$(this).html(output).addClass('shown');
+                        }
+
+                        if(prop[0] == "Foil Colour") {
+        
+                          var foil = $.trim(prop[1]);
+                          
+                         	output = '<span class="cart-colour c2 '+ foil +'"></span>';
+                          	$(this).html(output).addClass('shown');
+                        }  
+
+                      }
+                    });
+                  }
+                  return false;
+                }  else {
+                  $(image_el).addClass('shown').addClass('showddn');
+                }
+              }
+              $(el_wrapper).addClass('shown');
+            }
+          });
+        }
+        });
+      });
+    </script>
+    <script>
+        var html = document.querySelectorAll(".product__description");
+        html.forEach(function(val,ind){
+            var MainElement = val.querySelector(".product__description__name");
+            var Itemproducttitle = MainElement.textContent;
+            var ItemproducttitleSplit = Itemproducttitle.split('-');
+            if(typeof ItemproducttitleSplit[1] != 'undefined')
+            {
+              setTimeout(function(){
+                val.querySelector(".product__description__name").innerHTML = ItemproducttitleSplit[0];
+                // MainElement.closest('.product__description__variant').innerHTML = ItemproducttitleSplit[1];
+                val.querySelector("span.product__description__name.order-summary__emphasis~span.product__description__variant.order-summary__small-text").innerHTML = ItemproducttitleSplit[1];
+              },1500);
+            }
+            else
+            {
+              html.textContent = val.querySelector(".product__description__name").textContent;
+            }
+            if(val.querySelector(".product__description__name").textContent == "The Coin Purse"){
+                val.querySelectorAll('.product__description__property').forEach(function(el) {
+                   el.style.display = 'none';
+                });
+            }
+        });
+    </script>
+
+    
+  </body>
+</html>

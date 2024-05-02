@@ -1,0 +1,146 @@
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-K88NQ53');</script>
+<!-- End Google Tag Manager -->
+<script>
+	function loadDL(){
+		window.dataLayer = window.dataLayer || [];
+		var transactionObj = {
+			"event" : "confirmation",
+			"vendor" : {
+				"google" : {
+					"GA" : {
+						"ecommerce" : {
+							"currencyCode": "{{ shop.currency }}",
+							"purchase" : {
+								"actionField" : {
+									"id" : "{{order.order_number}}",
+									"affiliation" : "{{ shop.name }}",
+									"revenue" : "{{total_price | times: 0.01 | remove:','}}",
+									"shipping" : "{{shipping_price | times: 0.01}}",
+									"tax" : "{{tax_price | times: 0.01}}",
+									"coupon" : "{{discounts[0].code }}"
+								},
+								"products" : []
+							}
+						}
+					},
+					"GA4" : {
+						"ecommerce" : {
+							"items" : []
+						}
+					}
+				},
+				"facebook" : {
+					"currency" : "{{currency}}",
+					"content_ids" : [],
+					"content_names" : [],
+					"content_prices" : [],
+					"content_quantities" : [],
+					"content_type" : "product",
+					"num_items" : "{{line_items.size}}",
+					"value" : {{total_price | times: 0.01 | remove:','}},
+					"orderId" : "{{ order.order_number}}"
+				},
+				"pinterest" : {
+					"order_quantity" : "{{line_items.size}}",
+					"value" : "{{total_price | times: 0.01}}",
+					"currency" : "{{currency}}",
+					"line_items" : []
+				},
+				"schema" : {
+					"page" : {
+						"url" : window.location.pathname,
+						"name" : document.title,
+						"type" : "confirmation"
+					},
+					"transaction" : {
+						"id" : "{{order.order_number}}", 
+						"total" : {{total_price | times: 0.01 | remove:','}},
+						"subtotal" : {{subtotal_price | times: 0.01 | remove:','}},
+						"numOfItems" : "{{line_items.size}}",
+						"tax": {{tax_price |  times: 0.01}},
+						"shipping": {{shipping_price |  times: 0.01}},
+						"revenue" : {{total_price |  times: 0.01}},
+						"currency" : "{{currency }}",
+						"products" : []
+					},
+					"user" : {
+						"id": "{{ customer.id | remove: "'" }}",
+						"email": "{{ customer.email }}",
+						"firstName": "{{ customer.first_name }}",
+						"telephone": "{{ customer.default_address.phone }}",
+						"lastName": "{{ customer.last_name }}",
+						"city": "{{ customer.default_address.city }}",
+						"zip": "{{ customer.default_address.zip }}",
+						"address1": "{{ customer.default_address.address1 }}",
+						"address2": "{{ customer.default_address.address2 }}",
+						"countryCode": "{{ customer.default_address.country_code }}",
+						"province": "{{ customer.default_address.province }}",
+						"type" : {
+							"state" : "{{ customer.id}}" ? "loggedIn" : "Anonymous",
+							"status" : "{{ customer.id}}" ? "loggedIn" : "LoggedOut",
+							"type" : parseInt("{{ customer.orders_count }}") > 1 ? "existing" : parseInt("{{ customer.orders_count }}") == 1 ? "new" : "guest"
+						},
+						"orders" : {
+							"count": "{{ customer.orders_count }}",
+							"totalSpent": "{{ customer.total_spent | divided_by: 100 }}"
+						},
+					}
+				}
+			}
+		}
+		{% for line_item in line_items %}
+			/***************************** GA Analytics ********************************/
+			transactionObj.vendor.google.GA.ecommerce.purchase.products.push({
+				"id": "{{ line_item.sku }}",
+				"name": "{{ line_item.product.title | escape }}",
+				"price": "{{ line_item.price | times: 0.01 }}",
+				"brand": "{{ line_item.vendor | escape  }}",
+				"category": "{{ line_item.product.type | escape  }}",
+				"variant": "{{ line_item.variant.title | escape }}",
+				"quantity": "{{ line_item.quantity | escape }}"
+			});
+			/***************************** GA Analytics ********************************/
+			transactionObj.vendor.google.GA4.ecommerce.items.push({
+				"item_id": "{{ line_item.sku }}",
+				"item_name": "{{ line_item.product.title | escape }}",
+				"price": {{ line_item.price | times: 0.01 }},
+				"item_brand": "{{ line_item.vendor | escape  }}",
+				"item_category": "{{ line_item.product.type | escape  }}",
+				"item_variant": "{{ line_item.variant.title | escape }}",
+				"quantity": {{ line_item.quantity | escape | times: 1 }}
+			})
+			/***************************** FB Analytics ********************************/
+			transactionObj.vendor.facebook.content_ids.push("{{ line_item.sku }}");
+			transactionObj.vendor.facebook.content_names.push("{{ line_item.product.title | escape }}");
+			transactionObj.vendor.facebook.content_quantities.push("{{ line_item.quantity | escape }}");
+			transactionObj.vendor.facebook.content_prices.push("{{ line_item.price | times: 0.01 }}");
+			//transactionObj.vendor.facebook.num_items += parseInt("{{ line_item.quantity | escape }}");
+			/***************************** Pinterest Analytics ************************/
+			transactionObj.vendor.pinterest.line_items.push({
+				"product_id": "{{ line_item.sku }}",
+				"product_name": "{{ line_item.product.title | escape }}",
+				"product_price": "{{ line_item.price | times: 0.01 }}",
+				"product_quantity": "{{ line_item.quantity | escape }}"
+			})
+			transactionObj.vendor.pinterest.order_quantity += parseInt("{{ line_item.quantity | escape }}");
+			/***************************** Transaction Object ************************/
+			transactionObj.vendor.schema.transaction.products.push({
+				"id": "{{ line_item.sku }}",
+				"name": "{{ line_item.product.title | escape }}",
+				"price": {{ line_item.price | times: 0.01 }},
+				"brand": "{{ line_item.vendor | escape  }}",
+				"category": "{{ line_item.product.type | escape  }}",
+				"variant": "{{ line_item.variant.title | escape }}",
+				"quantity": {{ line_item.quantity | escape | times: 1 }}
+			})
+			//transactionObj.vendor.schema.numOfItems += parseInt("{{ line_item.quantity | escape }}");
+		{% endfor %}
+		window.dataLayer.push(transactionObj);
+	};
+	loadDL();
+</script>

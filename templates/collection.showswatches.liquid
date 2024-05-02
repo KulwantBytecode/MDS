@@ -1,0 +1,21 @@
+<div class="newarrival-wrapper page-width">
+<div class="collection-hero">
+<div class="collection-hero__inner page-width">
+<div class="collection-hero__text-wrapper">
+<h2 class="h2 collection-hero__title">
+<span class="visually-hidden">Collection: </span>{{ collection.title }}</h2>
+
+  {%- if collection.metafields.custom.collection_subtitle != blank -%}
+    <div class="collection-hero__description rte">{{ collection.metafields.custom.collection_subtitle }}</div>
+  {%- endif -%}
+
+</div>
+</div>
+</div>
+
+{% section 'datebased-timer' %}
+{% comment %}{% section 'collectionwithslider' %}{% endcomment %}
+{% section 'collection-template-swatches' %}
+
+
+</div>

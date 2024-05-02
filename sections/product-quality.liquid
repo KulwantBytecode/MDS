@@ -1,0 +1,68 @@
+<section class="product-quality-sec">
+<div class="page-width">
+  <div class="product-quality-row">
+<div class="product-quality-col">
+<span>DESIGN</span>
+  <h2>Intricate Craftsmanship</h2>
+    {% if product.metafields.custom.design_description != blank %}
+  <p>{{ product.metafields.custom.design_description }}</p>
+      {% endif %}
+</div>
+ 
+    {% if product.type == 'Nylon Tote' or product.type == 'Nylon Sling Bag' or product.type == 'Nylon Duffle Bag' or product.type == 'Nylon Backpack' %}
+       <div class="product-quality-col">
+<span>QUALITY</span>
+  <h2>Water-Resistant Nylon</h2>
+  <p>Designed to thrive in any weather, our 100% recycled and ultra-lightweight Resilon™ Nylon is water, stain and knock resistant. Constructed from discarded ocean fishing nets, the revolutionary yarn is forever resilient. To learn more, visit our <a href="https://maisondesabre.com/pages/materials">Materials page.</a></p>
+</div>
+<div class="product-quality-col">
+<span>SUSTAINABILITY</span>
+  <h2>Resilon™ Nylon Innovation</h2>
+  <p>The world’s first waterless tanning technology pioneers a new era in leather craftsmanship. Extracting natural moisture from raw hides, our DriTan™ method saves up to 25 million litres of water per year — enough to hydrate 9,000 people for a full year.
+</p>
+</div>
+      {% elsif product.type == 'Silicone Phone Case' %}
+        <div class="product-quality-col">
+<span>Silicone QUALITY</span>
+  <h2>Full grain leather</h2>
+  <p>Our products are crafted from premium full-grain leather sourced exclusively from Gold Rated European tanneries. To learn more about our leather and packaging, visit our <a href="https://maisondesabre.com/pages/materials">Materials page.</a></p>
+</div>
+    <div class="product-quality-col">
+<span>Silicone SUSTAINABILITY</span>
+  <h2>The DriTan™ method,</h2>
+  <p>The DriTan™ method, our entire leather production process is dedicated to conserving resources, minimising waste, and supporting sustainable industry standards.</p>
+</div>
+    {% else %}
+  <div class="product-quality-col">
+  <span>QUALITY</span>
+  <h2>Full-Grain Leather</h2>
+  <p>Our signature hand feel originates from premium full-grain leather, sourced exclusively from LWG-certified European tanneries. To learn more about our leather, visit our <a href="https://maisondesabre.com/pages/materials">Materials page.</a></p>
+  </div>
+    <div class="product-quality-col">
+<span>SUSTAINABILITY</span>
+  <h2>DriTan™ Innovation</h2>
+  <p>The world’s first waterless tanning technology pioneers a new era in leather craftsmanship. Extracting natural moisture from raw hides, our DriTan™ method saves up to 25 million litres of water per year — enough to hydrate 9,000 people for a full year.</p>
+</div>
+      {% endif %}
+     
+  </div>
+</div>
+  </section>
+{% schema %}
+  {
+    "name": "product-quality",
+    "settings": [
+      {
+        "type" : "text",
+        "id" : "text",
+        "label" : "Design Header"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

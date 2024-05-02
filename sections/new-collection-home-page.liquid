@@ -1,0 +1,118 @@
+<div class="new_collection_home page-width">
+<div class="new_collection_home_row">
+<div class="new_collection_home_col">
+<div class="new_collection_home_media">
+  {% assign customcollection = collections[section.settings.collection] %}
+  {% if section.settings.bgimg != blank %}
+      <a href="{{ customcollection.url }}">
+  <img src="{{ section.settings.bgimg | img_url:'master' }}"/>
+      </a>
+  {% endif %}
+</div>
+<div class="new_collection_home_content">
+  <a href="{{ customcollection.url }}">
+    <h2>
+ <span class='link-colllection'> {{ section.settings.btnurl }}</span> <span class='arrow-colllection'>
+   <div class="arrow-right">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 278.6l-160 160C272.4 444.9 264.2 448 256 448s-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L338.8 288H32C14.33 288 .0016 273.7 .0016 256S14.33 224 32 224h306.8l-105.4-105.4c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l160 160C451.1 245.9 451.1 266.1 438.6 278.6z"/></svg>
+    </div>
+ </span>
+    </h2>
+  </a>
+    <div class="mobile_collection_text">
+  {% if section.settings.desc1 != blank %}
+   <p>{{ section.settings.desc1 }}</p>
+  {% endif %}
+    </div>
+</div>
+</div>
+  <div class="new_collection_home_col">
+    {% assign customcollection2 = collections[section.settings.collection2] %}
+<div class="new_collection_home_media">
+  {% if section.settings.bgimg2 != blank %}
+      <a href="{{ customcollection2.url }}">
+  <img src="{{ section.settings.bgimg2 | img_url:'master' }}"/>
+      </a>
+  {% endif %}
+</div>
+<div class="new_collection_home_content">
+    {% comment %}
+  <h2>
+  {{ customcollection2.title }}
+  </h2>
+    {% endcomment %}
+  <a href="{{ customcollection2.url }}">
+    <h2>
+    <span class='link-colllection'> {{ section.settings.btnurl2 }}</span>  <span class='arrow-colllection'>
+  <div class="arrow-right">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 278.6l-160 160C272.4 444.9 264.2 448 256 448s-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L338.8 288H32C14.33 288 .0016 273.7 .0016 256S14.33 224 32 224h306.8l-105.4-105.4c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l160 160C451.1 245.9 451.1 266.1 438.6 278.6z"/></svg>
+    </div>
+    </span>
+      </h2>
+  </a>
+  <div class="mobile_collection_text">
+  {% if section.settings.desc2 != blank %}
+ <p>{{ section.settings.desc2 }}</p>
+  {% endif %}
+  </div>
+</div>
+</div>
+</div>
+</div>
+{% schema %}
+  {
+    "name": "New Collection Home Page",
+    "settings": [
+      {
+        "type" : "text",
+        "id" : "Heading",
+        "label"  :"Heading"
+      },
+      {
+        "type" : "image_picker",
+        "id" : "bgimg",
+        "label" : "Select Image"
+      },
+      {
+          "type" : "collection",
+          "id" : "collection",
+          "label" : "Add Collection"
+        },
+      {
+        "type" : "image_picker",
+        "id" : "bgimg2",
+        "label" : "Select Image"
+      },
+      {
+        "type" : "text",
+        "id" : "btnurl",
+        "label" : "First Collection Button"
+      },
+      {
+        "type" : "richtext",
+        "id" : "desc1",
+        "label" : "First Collection Description"
+      },
+      {
+        "type" : "text",
+        "id" : "btnurl2",
+        "label" : "Second Collection Button"
+      },
+      {
+        "type" : "richtext",
+        "id" : "desc2",
+        "label" : "Second Collection Description"
+      },
+      {
+          "type" : "collection",
+          "id" : "collection2",
+          "label" : "Add Collection"
+        }
+    ],
+"presets":[
+{
+"name":"New Collection Home Page"
+}
+]
+  }
+{% endschema %}

@@ -1,0 +1,54 @@
+<div data-section-id="{{ section.id }}" data-section-type="hero-section" class="{{ section.settings.blog_banner_title }}">
+	<div class="hero hero--medium hero-{{ section.id }} {%- if section.settings.blog_cat_banner -%}hero__overlay{%- endif -%} box ratio-container lazyload js"
+		id="Hero-{{ section.id }}"
+		{%- if section.settings.blog_cat_banner -%}
+			data-bgset="{% include 'bgset', image: section.settings.blog_cat_banner %}"
+			data-sizes="auto"
+			data-parent-fit="cover"
+			style="background-position: center; background-image: url('{{ section.settings.blog_cat_banner | img_url: '300x300' }});"
+		{%- endif -%}>
+		<div class="hero__inner">
+			<div class="page-width">
+				{%- if section.settings.blog_banner_title != blank -%}
+				<h3 class="alpha-title">{{ section.settings.blog_banner_title }}</h3>
+				{%- endif -%}
+
+				{%- if section.settings.blog_banner_desc != blank -%}
+				<div class="rte-setting mega-subtitle">
+					<p>{{- section.settings.blog_banner_desc -}}</p>
+				</div>
+				{%- endif -%}
+			</div>
+		</div>
+	</div>
+	<noscript>
+      <div class="hero hero--medium {% if section.settings.blog_banner_title != blank or section.settings.blog_banner_desc != blank %} hero__overlay{% endif %}"{% if section.settings.blog_cat_banner %} style="background-image: url('{{ section.settings.blog_cat_banner | img_url: '2048x' }}'); background-position: center;"{% endif %}></div>
+    </noscript>
+</div>
+
+
+{% schema %}
+{
+  "name": "Blog Category banner",
+  "class": "index-section index-section--flush index-section--banner blog-category--banner",
+   "settings":[
+   	{
+		"type": "text",
+		"id": "blog_banner_title",
+		"label": "Banner Title",
+		"default": "MDS Blogs"
+	},
+	{
+		"type": "textarea",
+		"id": "blog_banner_desc",
+		"label": "Banner Description",
+		"default": "MDS Blogs Description"
+	},
+   	{
+		"type": "image_picker",
+		"id": "blog_cat_banner",
+		"label": "Blog Banner Image"
+	}
+  ]
+}
+{% endschema %}

@@ -1,0 +1,42 @@
+<section class="Discover-personalised-boxmain">
+    <div class="page-width">
+      <div class="d-flexnavm">
+     <div class="Discover-personalised-lefttext">
+       {% if section.settings.title != blank %}
+       	<h3>{{ section.settings.title }}</h3>
+       {% endif %}
+    </div>
+    <div class="Discover-personalised-righttext">
+      {% if section.settings.desc != blank %}
+      {{ section.settings.desc }}
+      {% endif %}
+    </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% schema %}
+ {
+    "name": "Discover-personalised",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "desc",
+        "label": "Desccription"
+      }
+	],
+    "presets":[
+      {
+        "name": "Discover-personalised",
+        "category": "Custom Content"
+      }
+	]
+ }
+{% endschema %}

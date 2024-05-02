@@ -1,0 +1,68 @@
+<section class="features_pdp_sec">
+<div class="page-width">
+<div class="features_pdp_row">
+<div class="features_pdp_col ">
+<div class="features_pdp_content">
+<div class="features_pdp_content_tab">
+<div class="features_pdp_content_tab_in active" data-rel="tab-1">
+  {% if product.metafields.custom.usp_text != blank %}
+  <h2>Key Features</h2>
+  {% endif %}
+  {% if product.metafields.custom.u_s_p_description != blank %}
+  <p>{{ product.metafields.custom.u_s_p_description }}</p>
+  {% endif %}
+</div>
+</div>
+  <div class="features_pdp_col_tabs">
+    {% if product.metafields.custom.usp_text != blank %}
+  <h3 id="tab-1" class="active" data-usphead="{{ product.metafields.custom.usp_text }}" data-uspimage="{{ product.metafields.custom.u_s_p_first_image | img_url:'master' }}" data-desc='{{ product.metafields.custom.u_s_p_description }}'>{{  product.metafields.custom.usp_text  }}</h3>
+  {% endif %}
+      {% if product.metafields.custom.usp_second_heading != blank %}
+    <h3 id="tab-2" data-usphead="{{ product.metafields.custom.usp_second_heading }}" data-uspimage="{{ product.metafields.custom.u_s_p_secod_image | img_url:'master' }}" data-desc='{{ product.metafields.custom.usp_second_row_content }}'>{{  product.metafields.custom.usp_second_heading }}</h3>
+  {% endif %}
+        {% if product.metafields.custom.usp_third_heading != blank %}
+    <h3 id="tab-3" data-usphead="{{ product.metafields.custom.usp_third_heading }}" data-uspimage="{{ product.metafields.custom.usp_third_image | img_url:'master' }}" data-desc='{{ product.metafields.custom.usp_third_row_content }}'>{{ product.metafields.custom.usp_third_heading }}</h3>
+  {% endif %}
+  </div>
+</div>
+</div>
+<div class="features_pdp_col features_pdp_media">
+  <div class="features_pdp_media_in">
+  <div class="active" data-rel="tab-1">
+  {% if product.metafields.custom.u_s_p_first_image != blank %}
+  <img src="{{ product.metafields.custom.u_s_p_first_image | img_url:'master' }}" alt="{{ product.metafields.custom.u_s_p_first_image }}">
+  {% endif %}
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+<script>
+// new product template JS
+$('.features_pdp_col_tabs h3').hover(function(e){
+  e.preventDefault();
+  $('.features_pdp_col_tabs h3').removeClass('active');
+  $(this).addClass('active');
+  $('.features_pdp_col_tabs:first-child').removeClass('active');
+  var usphead = $(this).attr("data-usphead");
+  var uspimage = $(this).attr("data-uspimage");
+  var uspdesc = $(this).attr("data-desc");
+  // $('.features_pdp_content_tab_in h2').text(usphead);
+  $('.features_pdp_content_tab_in p').text(uspdesc);
+  $('.features_pdp_media_in img').attr("src",uspimage);  
+});
+// ends
+</script>
+{% schema %}
+  {
+    "name": "new-usp-version",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

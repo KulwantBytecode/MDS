@@ -1,0 +1,33 @@
+<div class="mym_page_content">
+  {% section 'section-mym' %}
+  {% section 'section-mym-with-accordion' %}
+  {% section 'section-mym-mission' %}
+</div>
+
+
+{% comment %}
+<div class="mym_page_wrap">
+  {%section 'mym-banner' %}
+  {%section 'mym-rich-text'%}
+  {%section 'mym-icons'%}
+  {%section 'mym' %}
+  {%section 'mym-statics' %}
+  {% comment %} {%section 'home-banner-1' %} {% endcomment %}
+</div>
+{% endcomment %}
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init();
+
+  $(document).ready(function() {
+    $(".accordion").on("click", function() {
+      $(this).parent('.accordion-contianer').siblings().find('.accordion').removeClass("active");
+      $(this).parent('.accordion-contianer').siblings().find('.accordion').next().slideUp();
+      $(this).toggleClass("active");
+      $(this).next().slideToggle(200);
+    });
+  });
+
+</script>

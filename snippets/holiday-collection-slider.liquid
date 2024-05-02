@@ -1,0 +1,38 @@
+<div class="slider-container">
+  <div class="lefty newArrivalsSlider">
+    {% for product in collection.products %}
+    {%- assign available_variants = product.variants | where: "available" -%}
+      {% assign is_zodiac_series = false %}
+      {% if product.tags contains 'customize_zodiac' %}
+        {% assign is_zodiac_series = true %}
+      {% endif %}
+
+      {% assign is_art_series = false %}
+      {% if product.tags contains 'customize_artwork' %}
+        {% assign is_art_series = true %}
+      {% endif %}
+    {% if available_variants.size > 0 %}
+      {% if hideSwatch %}
+        {% assign color_of_year_name = settings.color_of_name %}
+        {% assign is_color_of_year = false %}
+        {% for variant in product.variants %}
+          {% if variant.title == color_of_year_name %}
+            {% assign is_color_of_year = false %}
+          {% endif %}
+    	{%unless variant.sku contains '34'%}
+              <div class="carousel-cell">
+                {% include 'product-card-variant', is_art_series: is_art_series, is_color_of_year: is_color_of_year %}
+              </div>
+    		{%endunless%}
+        {% endfor %}
+    
+      {% else %}
+        
+        <div class="carousel-cell">
+          {% include 'product-card-swatch', is_art_series: is_art_series, is_color_of_year: is_color_of_year, vtitle: variant.title %}
+        </div>
+      {% endif %}
+     {% endif %}
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,36 @@
+{%- render 'colour-wheel' -%}
+
+{% schema %}
+{
+  "name": "Product Color Wheel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "collection",
+      "id": "collection_handle",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "filter_prefix",
+      "label": "Filter Prefix",
+      "default": "color"
+    },
+    {
+      "type": "textarea",
+      "id": "visible_colours",
+      "label": "Visible Colors",
+      "info": "Press [Enter] for a new colour variant"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Color Wheel"
+    }
+  ]
+}
+{% endschema %}

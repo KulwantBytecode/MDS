@@ -1,0 +1,36 @@
+{% comment %}
+<section class="holiday-idea-hero-section">
+<div class="page-width">
+  <div class="section-header-col">
+    <h2 class="h2 collection-hero__title {% if page.url contains 'sustainability-pledge'%} hide {% endif%}" >{{ page.title }}</h2>
+  </div>
+  <div class="content-main">
+    {{ page.content }}
+  </div>
+</div>
+</section>
+{% endcomment %}
+
+<div class="collection-hero">
+  <div class="collection-hero__inner page-width">
+    <div class="collection-hero__text-wrapper">
+      <h2 class="h2 collection-hero__title {% if page.url contains 'sustainability-pledge'%} hide {% endif%}">
+        {{ page.title }}
+      </h2>
+      <div class="collection-hero__description rte">{{ page.content }}</div>
+    </div>
+  </div>
+</div>
+
+
+
+<section class="holiday-gift-collections-list holiday_slider_col">
+{% section 'datebased-timer' %}
+{% section 'collectionwithslider' %}
+{% section 'holidaygift-slider' %}
+{% comment %}
+{% section 'holiday-gift-collection-first' %}
+{% section 'holiday-gift-collection-second' %}
+{% section 'holiday-gift-collection-all' %}
+{% endcomment %}
+</section>

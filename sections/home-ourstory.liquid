@@ -1,0 +1,213 @@
+<section class="home-ourstory-section">
+   <div class="page-width">
+     <div class="grid grid--gapless grid--1-col grid--2-col-tablet">
+       <div class="grid__item">
+          <div class="our-story-content-nav">
+            <p class="tagline-text">{{section.settings.subtitle}} </p>
+            <h2> {{section.settings.title}} </h2>
+            
+            <div class="container">
+               {% for block in section.blocks  %}
+              <!--<div class="ourstory-tab-section accordionm">
+                <div class="section-header">
+                  <div class="section-text storytoggle-section toggle-btn"
+                  data-toggle-content="story{{forloop.index}}" data-toggle-icon="icon-toggle{{forloop.index}}" data-video="getvid{{forloop.index}}" content-ty="{{block.settings.media_type}}">
+                    <h3> <i class="fas fa-plus accr" id="icon-toggle{{forloop.index}}"></i> {{block.settings.title}}</h3>
+                  </div>
+                 
+                </div>
+                <div class="section-content body-part" id="story{{forloop.index}}">
+                  <div>
+                   <p> {{block.settings.body_text}}</p>
+                     {% if block.settings.media_type == "video" and block.settings.media_type != "" %}
+                	<div class="video-pix-box-in">
+                      <video id="getvid{{forloop.index}}" src="{{ block.settings.video_filename | asset_url }}" {% if section.settings.vdm1 == 'yes' %}autoplay {% endif %} {% if section.settings.vdm2 == 'yes' %}loop {% endif %}  {% if section.settings.vdm3 == 'yes' %}muted {% endif %}>
+                        <source src="{{block.settings.media_type}}" type="video/mp4"  />
+                      </video>
+                    </div>
+                    {% else %}
+                    <div class="image-box-in" ><img src="{{block.settings.image | img_url : 'master'}}" alt="{{block.settings.image.alt}}" id="getvid{{forloop.index}}"></div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div> -->
+              
+              <!-- New code by nav -->
+              
+              <div class="accordion-container">
+                  <div class="set">
+                    {%- assign selected_image = block.settings.image | img_url : 'master' -%}
+                    {%- assign selected_video = block.settings.video_filename | asset_url -%}
+                      <a href="javascript:void(0);" data-toggle-content="story{{forloop.index}}" data-video-src="{{ selected_video }}" data-img-src="{{ selected_image }}">
+                      <h3> <i class="fas fa-plus accr" id="icon-toggle{{forloop.index}}"></i> {{block.settings.title}}</h3>
+                      </a>
+                   
+                    <div class="content">
+                     {{block.settings.body_text}}
+                     {% if block.settings.media_type == "video" and block.settings.media_type != "" %}
+                	<div class="video-pix-box-in">
+                      <video id="getvid{{forloop.index}}" src="{{ block.settings.video_filename | asset_url }}" {% if section.settings.vdm1 == 'yes' %}autoplay {% endif %} {% if section.settings.vdm2 == 'yes' %}loop {% endif %}  {% if section.settings.vdm3 == 'yes' %}muted {% endif %}>
+                        <source src="{{block.settings.media_type}}" type="video/mp4"  />
+                      </video>
+                    </div>
+                    {% else %}
+                    <div class="image-box-in" ><img src="{{block.settings.image | img_url : 'master'}}" alt="{{block.settings.image.alt}}" id="getvid{{forloop.index}}"></div>
+                    {% endif %}
+                    </div>
+                  </div>
+                </div>
+              
+              {% endfor %}
+            
+              
+            </div>
+         
+         </div>
+       </div>
+       
+       <div class="grid__item">
+          <div class="accrodian-change-images">
+            
+             <img src="{{section.settings.image | img_url : 'master'}}" alt="{{section.settings.image.alt}}" class="ourwork_feafult">
+             <div class="our_video-work" style="display:none">
+             <video class="videosrc-our" src="" {% if section.settings.vdm1 == 'yes' %}autoplay {% endif %} {% if section.settings.vdm2 == 'yes' %}loop {% endif %}  {% if section.settings.vdm3 == 'yes' %}muted {% endif %}>
+               <source src="" type="video/mp4" class="videosrc-our" />
+               </video>
+            </div>
+         </div>
+       </div>
+     </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Home-Our Story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+          "type": "radio",
+          "label": "Video option (Mutued)",
+          "id": "vdm1",
+          "options": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "default": "yes"
+        },
+
+      {
+          "type": "radio",
+          "label": "Video option (Autoplay) ",
+          "id": "vdm2",
+          "options": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "default": "yes"
+        },
+{
+          "type": "radio",
+          "label": "Video option (loop)",
+          "id": "vdm3",
+          "options": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ],
+          "default": "yes"
+        }
+
+
+
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "label": "Body Text"
+        },
+        {
+          "type": "radio",
+          "label": "Media Type",
+          "id": "media_type",
+          "options": [
+            {
+              "label": "Image",
+              "value": "image"
+            },
+            {
+              "label": "Video",
+              "value": "video"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "video_filename",
+          "label": "Video Filename",
+          "info": "Upload video file in assets and paste the filename here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home-Our Story"
+    }
+  ]
+}
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

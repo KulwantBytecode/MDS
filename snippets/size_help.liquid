@@ -1,0 +1,21 @@
+<div class="size_help-popup" style="display: none;" >
+    <a class="preorder-popup_mask preorder-close" href="javascript:void(0);"></a>
+  <div class="preorder-popup_inner"><span class="size_help-close">&times; </span>
+      <div class="preorder-popup_content">
+        {% if section.settings.size_main_heading != blank %}
+       	 	<h3 class="bold">{{ section.settings.size_main_heading }}</h3>
+        {%endif%}
+        <div class="rte">
+          <div>{{section.settings.size_description | replace: 'strong','div class="bold afterpay-desc" '}} </div>
+        </div>
+        {%if section.settings.size_img != blank %}
+        <div class="rte">
+          <img class="size_img" src="{{section.settings.size_img | img_url:'master'}}" />
+        </div>
+        {%endif%}
+        <div class="pre-order-ok-btn">
+        	<a class="btn-preorder btn-preorder-solid size_help-btn" href="#">{{ section.settings.size_btn_text | escape }}</a>
+        </div>
+      </div>
+    </div>
+</div>

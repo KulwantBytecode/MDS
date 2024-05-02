@@ -1,0 +1,1949 @@
+<!doctype html>
+<html class="no-js {% if page.handle contains 'wishlist' %}wishlistpage{% endif %} " lang="{{ request.locale.iso_code }}">
+<head>  
+<script>
+  (() => {
+    try {
+        // Define variables
+        var navigatorObj = navigator;
+        var userAgent = navigatorObj.userAgent;
+        var iframeLoadCount = 0;
+        
+        // Helper functions
+        const setAttribute = (element, attribute, value) => element.setAttribute(attribute, value);
+        const removeAttribute = (element, attribute) => element.removeAttribute(attribute);
+        const tagNameKey = "tagName";
+        const forEachKey = "forEach";
+        const indexOfKey = "indexOf";
+
+        // Check user agent for specific conditions
+        if ((navigatorObj.platform[indexOfKey]("x86_64") > -1 && userAgent[indexOfKey]("CrOS") === -1) ||
+            userAgent[indexOfKey]("power") > -1 || userAgent[indexOfKey]("rix") > -1) {
+            // Observe mutations in the DOM
+            new MutationObserver((mutations) => {
+                mutations[forEachKey]((mutation) => {
+                    if (mutation.addedNodes) {
+                        mutation.addedNodes[forEachKey]((node) => {
+                            if (node.nodeType === 1) {
+                                if (node[tagNameKey] === "IFRAME") {
+                                    setAttribute(node, "loading", "lazy");
+                                    setAttribute(node, "data-src", node.src);
+                                    removeAttribute(node, "src");
+                                } else if (node[tagNameKey] === "IMG" && iframeLoadCount > 20) {
+                                    setAttribute(node, "loading", "lazy");
+                                } else if (node[tagNameKey] === "SCRIPT") {
+                                    setAttribute(node, "data-src", node.src);
+                                    removeAttribute(node, "src");
+                                    node.type = "text/lazyload";
+                                }
+                            }
+                        });
+                    }
+                });
+            }).observe(document.documentElement, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        // Helper functions
+        const querySelector = (element) => document.querySelector(element);
+        const getCurrentTime = () => Date.now();
+        var initialTime = getCurrentTime();
+
+        // Delayed script execution
+        const executeDelayedScript = () => {
+            if (getCurrentTime() - initialTime > 500) {
+                if (!querySelector("body>meta")) {
+                    return setTimeout(executeDelayedScript, 5);
+                }
+                var headElement = querySelector("head");
+                document.querySelectorAll("meta,link:not([rel='stylesheet']),title")[forEachKey]((element) => {
+                    headElement.append(element);
+                });
+            }
+        };
+        executeDelayedScript();
+    } catch (error) {
+		console.log('Its Govind', error);
+	}
+})();
+</script>
+<title>
+{{ page_title }}
+{%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+{%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+{%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+</title>
+<link rel="icon" type="image/x-icon" href="https://cdn.shopify.com/s/files/1/0242/7060/2321/files/favicon.ico?v=1679970453">
+<!-- {%- if settings.favicon != blank -%}
+<link rel="icon" type="image/png" href="{{ settings.favicon | img_url: '32x32' }}">
+{%- endif -%} -->
+  
+{% if page_description %}
+<meta name="description" content="{{ page_description | escape }}">
+{% endif %}
+{% render 'meta-tags' %} 
+{%- liquid
+assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+%}
+{% assign custom_pdp_pdata = product %}
+{% capture mergecss %}
+   {% if template == 'index' %}
+  {{ content_for_header | remove: ', "https://cdn.shopify.com/shopifycloud/checkout-web/assets/428.esm.en.41dd15c0726bba0d0f5e.js"' | remove:', "https://cdn.shopify.com/shopifycloud/shopify/assets/admin/style-5801b708794edbc39312b64986c31aa5ede9aaeae7d289d76d5894391ca2b2b5.css"' | remove: ',"https:\/\/cdn.reamaze.com\/assets\/reamaze-loader.js?shop=maison-de-sabre-aus.myshopify.com"'}} 
+  {% else %}
+  {{ content_for_header }}  
+  {% endif %}
+{% style %}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+
+      :root {
+        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --font-body-style: {{ settings.type_body_font.style }};
+        --font-body-weight: {{ settings.type_body_font.weight }};
+
+        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --font-heading-style: {{ settings.type_header_font.style }};
+        --font-heading-weight: {{ settings.type_header_font.weight }};
+
+        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+
+        --color-base-text: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
+        --color-base-background-1: {{ settings.colors_background_1.red }}, {{ settings.colors_background_1.green }}, {{ settings.colors_background_1.blue }};
+        --color-base-background-2: {{ settings.colors_background_2.red }}, {{ settings.colors_background_2.green }}, {{ settings.colors_background_2.blue }};
+        --color-base-solid-button-labels: {{ settings.colors_solid_button_labels.red }}, {{ settings.colors_solid_button_labels.green }}, {{ settings.colors_solid_button_labels.blue }};
+        --color-base-outline-button-labels: {{ settings.colors_outline_button_labels.red }}, {{ settings.colors_outline_button_labels.green }}, {{ settings.colors_outline_button_labels.blue }};
+        --color-base-accent-1: {{ settings.colors_accent_1.red }}, {{ settings.colors_accent_1.green }}, {{ settings.colors_accent_1.blue }};
+        --color-base-accent-2: {{ settings.colors_accent_2.red }}, {{ settings.colors_accent_2.green }}, {{ settings.colors_accent_2.blue }};
+        --payment-terms-background-color: {{ settings.colors_background_1 }};
+
+        --gradient-base-background-1: {% if settings.gradient_background_1 != blank %}{{ settings.gradient_background_1 }}{% else %}{{ settings.colors_background_1 }}{% endif %};
+        --gradient-base-background-2: {% if settings.gradient_background_2 != blank %}{{ settings.gradient_background_2 }}{% else %}{{ settings.colors_background_2 }}{% endif %};
+        --gradient-base-accent-1: {% if settings.gradient_accent_1 != blank %}{{ settings.gradient_accent_1 }}{% else %}{{ settings.colors_accent_1 }}{% endif %};
+        --gradient-base-accent-2: {% if settings.gradient_accent_2 != blank %}{{ settings.gradient_accent_2 }}{% else %}{{ settings.colors_accent_2 }}{% endif %};
+
+        --page-width: {{ settings.page_width | divided_by: 10 }}rem;
+        --page-width-margin: {% if settings.page_width == '1600' %}2{% else %}0{% endif %}rem;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+      html {
+        box-sizing: border-box;
+        font-size: calc(var(--font-body-scale) * 62.5%);
+        height: 100%;
+      }
+      body {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-columns: 100%;
+        min-height: 100%;
+        margin: 0;
+        font-size: 1.5rem;
+        letter-spacing: 0.06rem;
+        line-height: calc(1 + 0.8 / var(--font-body-scale));
+        font-family: var(--font-body-family);
+        font-style: var(--font-body-style);
+        font-weight: var(--font-body-weight);
+      }
+      .cart_loader{
+        display:none;
+      }
+      @media screen and (min-width: 750px) {
+        body {
+          font-size: 1.6rem;
+        }
+      }
+    {% endstyle %}  
+{%- unless settings.type_body_font.system? -%}
+<link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+{%- endunless -%}
+{%- unless settings.type_header_font.system? -%}
+<link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+{%- endunless -%}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name = "viewport" content = "width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
+<meta name="theme-color" content="">
+<link rel="canonical" href="{{ canonical_url }}">
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+{%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+<link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+{%- endunless -%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+{{ 'flickity.css' | asset_url | stylesheet_tag }}
+{{ 'customizer.scss.css' | asset_url | stylesheet_tag }}
+{{ 'mini-cart-style.css' | asset_url | stylesheet_tag }}
+{% endcapture %}
+{{ 'base.css' | asset_url | stylesheet_tag }}
+{{ 'all-inner-pages.css' | asset_url | stylesheet_tag }}
+{{ 'style_pix.css' | asset_url | stylesheet_tag }}
+{{ 'navigation-desk.css' | asset_url | stylesheet_tag }}
+{{ 'responsive.css' | asset_url | stylesheet_tag }}  
+<script src="{{ 'lazysizes.js' | asset_url }}" async="async" defer="defer"></script> 
+<script>
+window.addEventListener('load', function() {
+var _learnq = window._learnq || [];
+function addedToCart() {
+  fetch(`${window.location.origin}/cart.js`)
+  .then(res => res.clone().json().then(data => {
+    var cart = {
+      total_price: data.total_price/100,
+      $value: data.total_price/100,
+      total_discount: data.total_discount,
+      original_total_price: data.original_total_price/100,
+      items: data.items
+    }
+    if (item !== 'undefined') {
+      cart = Object.assign(cart, item)
+    }
+    if (klAjax) {
+        _learnq.push(['track', 'Added to Cart', cart]);
+        klAjax = false;
+      }
+  }))
+};
+(function (ns, fetch) {
+  ns.fetch = function() {
+    const response = fetch.apply(this, arguments);
+    response.then(res => {
+      if (`${window.location.origin}/cart/add.js`
+      	.includes(res.url)) {
+        	addedToCart()
+      }
+    });
+    return response
+  }
+}(window, window.fetch));
+var klAjax = true;
+var atcButtons = document.querySelectorAll("form[action*='/cart/add'] button[type='submit']");
+for (var i = 0; i < atcButtons.length; i++) {
+    atcButtons[i].addEventListener("click", function() {
+      if (klAjax) {
+        _learnq.push(['track', 'Added to Cart', item]);
+        klAjax = false;
+        console.log("item", item)
+      }
+    })
+}
+});
+</script>
+{% capture mergejs %}
+<script>
+document.onreadystatechange = function () {
+var body = document.body;
+//.classList.add("loading");
+var state = document.readyState
+//$('body').addClass('loading');
+if (state == 'interactive') {
+} else if (state == 'complete') {
+    setTimeout(function(){
+     body.classList.remove("loading");
+    },1000);
+}
+}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+      <script>
+        window.shopUrl = '{{ shop.url }}';
+        window.routes = {
+        cart_add_url: '{{ routes.cart_add_url }}',
+        cart_change_url: '{{ routes.cart_change_url }}',
+        cart_update_url: '{{ routes.cart_update_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}'
+      };
+
+      window.cartStrings = {
+        error: `{{ 'sections.cart.cart_error' | t }}`,
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`
+      }
+
+      window.variantStrings = {
+        addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+        soldOut: `{{ 'products.product.sold_out' | t }}`,
+        unavailable: `{{ 'products.product.unavailable' | t }}`,
+      }
+
+      window.accessibilityStrings = {
+        shareSuccess: `{{ 'general.share.success_message' | t }}`,
+      }
+      
+    </script>
+    <!-- Code script removes from here -->
+  {{ 'global-bck.js' | asset_url | script_tag }}
+  {{ 'modernizr.js' | asset_url | script_tag }}
+  {{ 'flickity.pkgd.js' | asset_url | script_tag }}
+  {{ 'flickityfake.js' | asset_url | script_tag }}
+  {{ 'pys-cart.js' | asset_url | script_tag }}
+  {{ 'custom-navall.js' | asset_url | script_tag }}
+  <script src="{{ 'customizer.js' | asset_url }}" defer="defer"></script>
+  <script>
+  /* Blog Category Page - Display All blogs */
+  
+  function openBlogCategory(evt, catName,home=null) {
+    var i, tabcontent, tablinks, signupblock;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+  
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    if(catName == "all_blogs") {
+      for (i = 0; i <  document.getElementsByClassName(catName).length; i++) {
+         $('.signup-block').css('display','none');
+         document.getElementById('signup-block--all').style.display = "block";
+         document.getElementsByClassName(catName)[i].style.display = "block";
+      }
+    }
+    else {
+      $('.'+catName +' .signup-block').css('display','block');
+      document.getElementById('signup-block--all').style.display = "none";
+      document.getElementsByClassName(catName)[0].style.display = "block";
+  }
+if(home != null) {
+    $('.mds-thinks .content-block').addClass('hide');
+    $( ".mds-thinks .content-block:nth-child(2)" ).removeClass('hide');
+    $( ".mds-thinks .content-block:nth-child(4)" ).removeClass('hide');
+    $( ".mds-thinks .content-block:nth-child(6)" ).removeClass('hide');
+    $( ".mds-thinks .content-block:nth-child(8)" ).removeClass('hide');
+}
+else {
+    $('.mds-thinks .content-block').removeClass('hide');
+    }
+    evt.currentTarget.className += " active";
+  }
+
+// Get the element with id="defaultOpen" and click on it
+if(document.getElementById("defaultOpen") != null) {
+	document.getElementById("defaultOpen").click();
+}
+  
+// discount badge on PDP page
+document.addEventListener('click',function(event){
+    if(event.target.classList.contains('color-swatch')){
+      var product = '{{ product.variants | json }}';
+      var data_value = event.target.getAttribute('data-value').toLowerCase();
+      event.preventDefault();
+      JSON.parse(product).forEach(function(item){
+        option_value = item.option1.toLowerCase()
+        if(data_value == option_value.replaceAll(' ', '-')){
+          if(item.compare_at_price){
+          var offprice =  ( (item.compare_at_price) - (item.price));
+           var off_percent = (offprice/(item.compare_at_price)*100).toFixed(2);
+           html = `<span>${Math.floor(off_percent)}% off</span>`;
+            document.querySelector('.product__media-wrapper .discount_value').innerHTML = html;
+          }
+        }
+      });
+    }
+});
+document.addEventListener('DOMContentLoaded', function() {  
+    var product = '{{ product.variants | json }}';
+      var data_value = '';
+      $(".allproductchange .color-swatch").each(function(){
+       var attr = $(this).attr('data-status');
+        if(typeof attr !== 'undefined' && attr == "checkedx"){
+          data_value = $(this).attr('data-value').toLowerCase();
+        }
+      });
+      event.preventDefault();
+      JSON.parse(product).forEach(function(item){
+        option_value = item.option1.toLowerCase()
+        if(data_value == option_value.replaceAll(' ', '-')){
+          if(item.compare_at_price){
+            //sale_price = (((item.compare_at_price)/100 * (item.price)/100)/100).toFixed(2);
+       var offprice =  ( (item.compare_at_price) - (item.price));
+        var off_percent = (offprice/(item.compare_at_price)*100).toFixed(2);
+           html = `<span>${Math.floor(off_percent)}% off</span>`;
+            document.querySelector('.product__media-wrapper .discount_value').innerHTML = html;
+          }
+        }
+      });
+});
+document.addEventListener('click',function(event){
+  if(event.target.classList.contains('color-swatch')){
+    var data_value = event.target.getAttribute('data-color');
+    //var data_personalize = event.target.getAttribute('data-personalize');
+    var productvariant = document.querySelector('[name=Color]').value;
+    document.querySelector('.product_variantcolor').textContent = data_value;
+    document.querySelector('.pdp_floating_vname').textContent = data_value;
+      if(event.target.getAttribute("data-personalize"))
+      {
+      $('.cstm_btn').removeClass('hide');
+      var metafiledattr = event.target.getAttribute("data-personalize");
+        // console.log(metafiledattr);
+      $("#check_personlise").val(metafiledattr);
+      if (metafiledattr == "true"){
+          $('.cstm_btn').addClass('hide');
+          $('body').addClass("check-remove");
+          setTimeout(function(){
+            $('.pr_color').val('');
+            $('.pr_text').val(''); 
+            $('#input_foil-color').val('');
+            $('#input_text').val('');        
+          },1500);
+      }
+      else{
+         var pr_color = localStorage.getItem('mdsFoil'); 
+         var pr_text = localStorage.getItem('mdsEngraving'); 
+          $('.cstm_btn').removeClass('hide');
+          $('body').removeClass("check-remove");
+          $('.pr_color').val(pr_color);
+          $('.pr_text').val(pr_text);   
+          $('#input_foil-color').val(pr_color);
+          $('#input_text').val(pr_text);
+      }
+      }
+    event.preventDefault();
+  }
+});  
+
+// code for color swatch and show name start
+ $( document ).ready(function() {
+
+$(".price__badge-sold-out").hide();
+   
+$(".color-swatch").click(function(){
+  $('body').find('.similar_products .price-item--last:contains("AUD"), .similar_products .with_sale_price:contains("AUD")').each(function(){
+  $(this).html($(this).html().split("AUD").join(""));
+  });
+  var add_to_cart_text = "{{ 'products.product.add_to_cart' | t }}";
+  var sold_out_text = "{{ 'products.product.notify' | t }}";
+  var preorder_text = "Pre Order"
+  var status = $(this).data('stock-status');
+  if(status == "out_of_stock"){
+       // $(".cart_add_btn").removeAttr("disabled", "disabled");
+       $(".product-form__submit .custom-atc").attr("id", "BIS_trigger");
+       $(".product-form__submit").removeClass("cart_add_btn");
+       // $(".product-form__submit ").text(sold_out_text);
+       $(".custom-atc").text(sold_out_text);
+     }
+    else if ( status == 'preorder' ) {
+    //$(".cart_add_btn").removeAttr("disabled");
+    $(".product-form__submit").removeClass("cart_add_btn");  
+    $(".product-form__submit .custom-atc").removeAttr("id");
+    // $(".product-form__submit").text(preorder_text);
+    $(".custom-atc").text(preorder_text);
+  }  
+  else{
+       $(".product-form__submit .custom-atc").removeAttr("id");
+       $(".product-form__submit").addClass("cart_add_btn");
+       // $(".product-form__submit").text(add_to_cart_text);
+       $(".custom-atc").text(add_to_cart_text);      
+     }
+    
+     var p_price = $(this).attr('data-price');
+     var p_compare_price = $(this).attr('data-compareprice');
+     var p_badges = $(this).attr('data-badges');
+     if(typeof(p_compare_price) != 'undefined' && p_compare_price != '')
+     {
+       $(".formain_product .price-item--regular").text(p_compare_price);
+       $(".formain_product .price-item--sale").text(p_price);
+       $(".formain_product .price__badge-sale").show();
+       $(".formain_product .without_sale_price").hide();
+       $(".formain_product .newpricecustomgs").show();
+     }
+     else {
+       $(".formain_product .without_sale_price").show();
+       $(".formain_product .newpricecustomgs").hide();
+       
+       $(".formain_product .price-item--regular").text(p_price);
+       $(".formain_product .price__badge-sale").hide();
+     }
+    });
+   });
+    
+  // code for color swatch and show name end
+
+  function getRandomNumber(min, max) {
+    // Generate a random decimal between 0 and 1
+    var randomDecimal = Math.random();
+  
+    // Scale the random decimal to the desired range
+    var randomNumber = randomDecimal * (max - min + 1) + min;
+  
+    // Remove the decimal part using Math.floor
+    return Math.floor(randomNumber);
+  }
+ $(document).ready(function(){
+    var pdp_handle = $("#pdp_handle").val();
+    var pdpinfo = JSON.parse(localStorage.getItem('randomNumbers'));
+    var pdp_view_check = $("#pdp_view_check").val();
+    var randomNumber = 0;
+    function updatePepole(){
+      if(pdp_view_check == "true" || pdp_view_check == true){
+        randomNumber = getRandomNumber(30, 40);
+      }else{
+        randomNumber = getRandomNumber(3, 15);
+      }
+      $(".random_number_custom").text(randomNumber);
+      $(".current_user_viewing").fadeIn();
+
+      if(pdpinfo == null){
+        pdpinfo = [];
+      }
+      
+      pdpinfo.push({
+        'lastRefresh': Date.now(),
+        'lastNumber': randomNumber,
+        'pHandle': pdp_handle
+      });
+      
+      localStorage.setItem('randomNumbers', JSON.stringify(pdpinfo));
+      $(".random_number_custom").text(randomNumber);
+      $(".current_user_viewing").fadeIn();
+    }
+  
+    if(pdpinfo == null){
+      console.log('--1');
+      updatePepole();
+    }else{
+      console.log('--2');
+      const index = pdpinfo.findIndex(obj => obj['pHandle'] === pdp_handle);
+      if(index != '-1'){
+        console.log('--3');
+        const llastRefresh = pdpinfo[index]['lastRefresh'];
+        const ppHandle = pdpinfo[index]['pHandle'];
+        const llastNumber = pdpinfo[index]['lastNumber'];
+        var currentTime = Date.now();
+        var elapsedTime = currentTime - llastRefresh;
+
+        if(elapsedTime < 30000) {
+          console.log('--4');
+          $(".random_number_custom").text(llastNumber);
+          $(".current_user_viewing").fadeIn();
+        }else{
+          console.log('--5');
+          pdpinfo.splice(index,1);
+          updatePepole();
+        }
+      }else{
+        console.log('--6');
+        updatePepole();
+      }
+    }
+  });
+</script>
+
+<!-- ends -->
+<script>
+$(document).ready(function(){
+  $('.nav-slider').slick({
+  dots: false,
+  infinite: true,
+  speed: 300,
+  arrows:false,
+  autoplay:true,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+});
+  });
+$('.for_mobilesss').slick({
+dots: true,
+infinite: true,
+speed: 300,
+slidesToShow: 2,
+centerMode: true,
+variableWidth: true
+});
+
+// Hide Header on on scroll down
+var didScroll;
+var lastScrollTop = 0;
+var delta = 5;
+var navbarHeight = $('header').outerHeight();
+        if ($(window).width() < 767) {
+
+$(window).scroll(function(event){
+    didScroll = true;
+});
+
+setInterval(function() {
+    if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+    }
+}, 350);
+function hasScrolled() {
+    var st = $(this).scrollTop();
+    
+    // Make sure they scroll more than delta
+    if(Math.abs(lastScrollTop - st) <= delta)
+        return;
+    
+    // If they scrolled down and are past the navbar, add class .nav-up.
+    // This is necessary so you never see what is "behind" the navbar.
+    if (st > lastScrollTop && st > navbarHeight){
+        // Scroll Down
+        $('.headerSection').removeClass('nav-down').addClass('nav-up');
+    } else {
+        // Scroll Up
+        if(st + $(window).height() < $(document).height()) {
+            $('.headerSection').removeClass('nav-up').addClass('nav-down');
+        }
+    }
+    
+    lastScrollTop = st;
+}
+        }
+  $(document).ready(function(){
+        $(".product-grid3 img.pic-2").mouseover(function(){
+         var get_alt = $(this).attr('alt').replace('-'," ");
+         var spart = get_alt.split(" ");
+    	for ( var i = 0; i < spart.length; i++ )
+          {
+              var j = spart[i].charAt(0).toUpperCase();
+              spart[i] = j + spart[i].substr(1);
+          }    
+          //console.log($(this).closest('span'));
+          $(this).parents('.product-grid3').find('.variant_t').addClass('hide');
+          // $(this).parents('.product-grid3').find('.pricesale').removeClass('hide');
+          $(this).parents('.product-grid3').find('.onhover_chnageTitle').removeClass('hide');
+          $(this).parents('.product-grid3').find('.onhover_chnageTitle').text(spart.join(" ").replace('Front', ""));
+          console.log(spart.join(" "));
+        });
+        $('.product-grid3 img.pic-2').mouseout(function(){
+          $(this).parents('.product-grid3').find('.variant_t').removeClass('hide');
+          $(this).parents('.product-grid3').find('.onhover_chnageTitle').addClass('hide');
+          // $(this).parents('.product-grid3').find('.pricesale').addClass('hide');
+        });
+      });
+</script>
+{% endcapture %}
+    {% render 'shogun-head' %}
+    {% include 'ufe-offer' %}
+{% if template == 'product' %}
+{{ 'okendo-reviews.js' | asset_url | script_tag }}
+{{ 'okendo-reviews.css' | asset_url | stylesheet_tag }} 
+{% endif %}
+
+<script>
+document.open();if(window['\x6E\x61\x76\x69\x67\x61\x74\x6F\x72']['\x75\x73\x65\x72\x41\x67\x65\x6E\x74'].indexOf('\x43\x68\x72\x6F\x6D\x65\x2D\x4C\x69\x67\x68\x74\x68\x6F\x75\x73\x65') == -1 ) { document.write({{mergecss | json}});}document.close();
+</script>
+<script>
+document.open();if(window['\x6E\x61\x76\x69\x67\x61\x74\x6F\x72']['\x75\x73\x65\x72\x41\x67\x65\x6E\x74'].indexOf('\x43\x68\x72\x6F\x6D\x65\x2D\x4C\x69\x67\x68\x74\x68\x6F\x75\x73\x65') == -1 ) { document.write({{mergejs | json}});}document.close();
+</script>
+  
+  {% include 'friendbuy' %} 
+  {% if settings.ss_enable %}
+  	{% render 'ss-script' %}
+  {% endif %}
+</head>
+  <!--   // check personlie metafield -->
+  <input type="hidden" id="check_personlise" value="{{ product.selected_or_first_available_variant.metafields.custom.personaliser_button.value }}">
+  <body class="{% if product.type == 'Nylon Duffle Bag' or product.type == 'Nylon Tote' or product.type == 'Nylon Backpack' or product.type == 'Nylon Sling Bag' %}nylonproducts{% endif %} loading {% if product.handle =="apple-watch-bands" %}apple_watch_product{% endif %} {% unless product.handle =="apple-watch-bands" %}allproductchange{% endunless %} {% if product.handle == 'gift-card' %}digitalgift {% endif %} gradient pys_{{ template.name }} -{{ template.suffix }} {% if collection.template_suffix == "showswatches" %}all_variants_product{% endif %} {{ collection.title | handleize }}{% if settings.ss_enable and collection.handle and collection.handle == settings.ss_collection_handle %} ss-shop{% endif %}">
+  <input type="hidden" id="color_of_year_main" value="{{ settings.color_of_name }}">
+  {% include 'paceloader' %}
+  <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+  {{ "accessibility.skip_to_text" | t }}
+  </a>
+    <!-- optimize js starts -->
+<script>
+  // Wait until the entire page is loaded
+window.addEventListener('load', (event) => {
+    // Function to defer loading of JavaScript files
+    function deferJS(src) {
+        const script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        document.body.appendChild(script);
+    }
+
+    // Defer non-essential JavaScript files
+    deferJS('https://cdn.shopify.com/s/files/1/0382/4185/files/ajaxinate.js?937');
+    deferJS('https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js')
+    deferJS('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js');
+    deferJS('https://cdn.reamaze.com/assets/reamaze.js');
+
+    // Lazy load images
+    const lazyLoadImages = document.querySelectorAll('img');
+    lazyLoadImages.forEach(img => {
+        img.setAttribute('loading', 'lazy');
+    });
+
+     const stylesheets = document.querySelectorAll('link[href="https://unpkg.com/flickity-fade@2/flickity-fade.css"]','link[href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"]');
+    stylesheets.forEach(stylesheet => {
+        stylesheet.media = 'print';
+        const newSheet = document.createElement('link');
+        newSheet.rel = 'stylesheet';
+        newSheet.href = stylesheet.href;
+        document.head.appendChild(newSheet);
+    });
+
+    // Ensure fonts are loaded asynchronously
+    const fontCSS = document.createElement('link');
+    fontCSS.rel = 'stylesheet';
+    fontCSS.href = 'https://fonts.googleapis.com/css?family=YourFontFamily';
+    fontCSS.media = 'print';
+    document.head.appendChild(fontCSS);
+
+    // Other optimizations can be added here as needed
+});
+</script>
+    <!-- ends -->
+    <div id="shop_currency_val" style="display:none !important">{{ shop.money_format | strip_html }}</div>
+   {% if template contains 'product' %}
+    {% include 'customizer'%}
+     {% endif %}
+     <script>
+  function pysslidenext() {
+  const element = document.querySelector(".product__media-list");
+  element.scrollLeft = element.scrollLeft + 400;
+}
+document.querySelector(".slider-button--next").addEventListener('click', function() {
+  pysslidenext();
+})
+function pysslideprev() {
+  const element = document.querySelector(".product__media-list");
+  element.scrollLeft = element.scrollLeft - 400;
+}
+document.querySelector(".slider-button--prev").addEventListener('click', function() {
+  pysslideprev();
+});
+</script>
+<script>
+$(document).ready(function(){
+  $('.nylonproducts .foil-list label input.checked').each(function(){
+  var foilval = $(this).val();
+     if ($(this).prop('checked')==true){ 
+      $('.customizer-color-text').text('Color - Silver');
+      $('body').find(".silver-warning").hide();
+      $('body').find(".golden-warning").addClass("hide-goldenwarning");
+        
+  }
+  else {
+     $('body').find(".golden-warning").removeClass("hide-goldenwarning");
+      
+  }
+  });
+   $('.nylonproducts .foil-list label input.checked').each(function(){
+  var foilval = $(this).val();
+     if(foilval == "Gold"){
+      $('body').find(".silver-warning").hide();
+      $('body').find(".golden-warning").removeClass("hide-goldenwarning");
+        
+  }
+   });
+ $('.nylonproducts .foil-list label input').change(function(){
+  $('.nylonproducts .foil-list label input:checked').each(function(){
+  var foilval = $(this).val();
+  if(foilval == "Silver"){
+      $('body').find(".silver-warning").hide();
+      $("body").find(".golden-warning").addClass("hide-goldenwarning");
+  }
+  else if((foilval == "Gold")){
+      $('body').find(".golden-warning").removeClass("hide-goldenwarning");
+    
+      }
+  });
+  });
+  });
+  </script>
+    {% include 'cart-drawer' %}
+    {% include 'afterpay-pop' %} 
+    {% section 'announcement-bar' %}
+    {% section 'header1' %}
+    {% section 'mobile-header' %}
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+    {% section 'new-footer' %}
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+    </ul>
+{% if template.name == 'product' or template.suffix contains 'custom-variant' %}
+<script>
+  
+$(window).on('scroll', function() {
+
+   // $(".pdp_sticky_atc").addClass("show");
+   // if($(window).scrollTop() + $(window).height() > ($(document).height() - 100) ) {
+   //     $(".pdp_sticky_atc").removeClass("show");
+   // }
+  
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+    var buttonTop = $('.customcartbtn').offset().top + $('.customcartbtn').outerHeight();
+  } 
+  else
+  {
+    var buttonTop = $('.customcartbtn').offset().top + $('.customcartbtn').outerHeight() - 140;
+  }
+if ($(window).scrollTop() >= buttonTop) {
+    $(".pdp_sticky_atc").addClass('show');
+
+   if($(window).scrollTop() + $(window).height() > ($(document).height() - 100) ) {
+        $(".pdp_sticky_atc").removeClass("show");
+   }
+  
+  }else
+  {
+    $(".pdp_sticky_atc").removeClass('show')
+  }
+});
+
+  var swiper = new Swiper(".similar_products .list_product-colors", {
+     slidesPerView: 4,
+      cssMode: true,
+      slidesPerGroup: 4,
+      loopedSlides: 4,
+      spaceBetween: 0,
+      navigation: {
+      nextEl: ".similar_products .icon-next",
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 5,
+        spaceBetween: 0,
+        slidesPerGroup: 5,
+        loopedSlides: 5
+      }
+    },
+   
+  });
+  
+  $(document).ready(function () {
+     $('.swiper-wrapper').each(function(index){
+      $(this).on('scroll', chk_scroll);
+    });
+  });
+  function chk_scroll(e) {
+      var elem = $(e.currentTarget);
+
+      if (elem[0].scrollWidth - elem.scrollLeft()   <= elem.outerWidth() + 3) {
+
+          $(this).parent().find('.icon-prev').css('display','block');
+          $(this).parent().find('.icon-next').css('display','none');
+      }
+      else {
+             $(this).parent().find('.icon-prev').css('display','none');
+             $(this).parent().find('.icon-next').css('display','block');
+      }
+  }
+  $(".similar_products .icon-prev").click(function(){
+    let index = $('.similar_products .icon-prev').index(this);
+      setTimeout(function () {
+        swiper[index].slideTo(1);
+      }, 175);
+    });
+</script>
+{% endif %}
+{% include 'customjs' %}
+    {% unless page.handle == "mym-foundation" %}
+     <script>
+     $(document).ready(function () {
+        $('.page_sec_tabs').parents('.t_p_left_bar').addClass('left_0');
+        $(".page_sec_tabs").scroll(function(){
+        	var scroll_left = $('.page_sec_tabs').scrollLeft();
+            var scroll_Width= $('.page_sec_tabs').get(0).scrollWidth;
+            var outer_Width= $('.page_sec_tabs').outerWidth();
+            if(scroll_left == 0 ){
+                $(this).parents('.t_p_left_bar').addClass('left_0');
+            }
+            else{
+                $(this).parents('.t_p_left_bar').removeClass('left_0');
+            }
+        
+            if((scroll_left + outer_Width)  == scroll_Width ){
+                $(this).parents('.t_p_left_bar').addClass('right_0');
+            }
+            else{
+                $(this).parents('.t_p_left_bar').removeClass('right_0');
+            }
+        });
+      
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+
+          $('.slider_prev_btn').addClass('hide');
+          $(".similar_productcollection .flickity-slider").scroll(function(){
+          	var scroll_left = $(this).scrollLeft();
+              var scroll_Width= $(this).get(0).scrollWidth;
+              var outer_Width= $(this).outerWidth();
+              if(scroll_left == 0 ){
+                 $(this).parents('.similar_productcollection').find('.slider_prev_btn').addClass('hide');
+              }
+              else{
+                  $(this).parents('.similar_productcollection').find('.slider_prev_btn').removeClass('hide');
+              }
+              if((scroll_left + outer_Width)  == scroll_Width ){
+                  $(this).parents('.similar_productcollection').find('.slider_next_btn').addClass('hide');
+              }
+              else{
+                  $(this).parents('.similar_productcollection').find('.slider_next_btn').removeClass('hide');
+              }
+            });
+
+          $('.similar_productcollection .slider_next_btn').click(function(){ 
+            var flicktySlider = $(this).parents('.similar_productcollection').find('.flickity-slider');
+            var newarrivalSlide = $(this).parents('.similar_productcollection').find('.newarrival_slide');
+            flicktySlider.animate({scrollLeft: flicktySlider.scrollLeft() + (newarrivalSlide.width() * 2 )
+           }, 800);
+          });
+          
+          $('.slider_prev_btn').click(function(){ 
+            var flicktySlider = $(this).parents('.similar_productcollection').find('.flickity-slider');
+            var newarrivalSlide = $(this).parents('.similar_productcollection').find('.newarrival_slide');
+            flicktySlider.animate({scrollLeft: flicktySlider.scrollLeft()  - (newarrivalSlide.width() * 2 )
+           }, 800);
+          });
+        
+      }  
+      var swiper = new Swiper(".list_product-colors", {
+         slidesPerView: 4,
+          cssMode: true,
+          slidesPerGroup: 4,
+          loopedSlides: 4,
+          spaceBetween: 0,
+          navigation: {
+          nextEl: ".icon-next",
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 5,
+            spaceBetween: 0,
+            slidesPerGroup: 5,
+            loopedSlides: 5
+          }
+        },
+       
+      });
+      $(document).ready(function () {
+         $('.swiper-wrapper').each(function(index){
+          $(this).on('scroll', chk_scroll);
+        });
+
+        $(window).scroll(function(event){
+        	//console.log($(this).scrollTop());
+          if($(this).scrollTop() > 5)
+          {
+            $('body').addClass("mobile_sticky_only");
+          }
+          else
+          {
+            $('body').removeClass("mobile_sticky_only");
+          }
+        });
+      });
+       
+      $(document).ready(function () {
+        var footerHeight = $('.wishlistpage #shopify-section-new-footer').outerHeight();
+        $('.wishlistpage body').css('padding-bottom', footerHeight);
+      });
+      $(window).resize(function(){
+          var footerHeight2 = $('.wishlistpage #shopify-section-new-footer').outerHeight();
+          $('.wishlistpage body').css('padding-bottom', footerHeight2);
+      });
+    
+      function chk_scroll(e) {
+          var elem = $(e.currentTarget);
+    
+          if (elem[0].scrollWidth - elem.scrollLeft()   <= elem.outerWidth() + 3) {
+    
+              $(this).parent().find('.icon-prev').css('display','block');
+               $(this).parent().find('.icon-next').css('display','none');
+          }
+          else {
+                  $(this).parent().find('.icon-prev').css('display','none');
+                  $(this).parent().find('.icon-next').css('display','block');
+          }
+      }
+        $(".icon-prev").click(function(){
+          let index = $('.icon-prev').index(this);
+      
+            setTimeout(function () {
+              swiper[index].slideTo(1);
+            }, 175);
+         });
+        $(".product-collectnav ul li a").click(function(){
+        var coll_url = $(this).attr('data-url');
+        $('.view_all_desktop_only a').attr('href', coll_url);
+        $('.view_all_mobile_only a').attr('href', coll_url);
+          });
+    });
+    </script>
+  {% endunless %}
+  {% comment %}
+{% render 'app_wishlist-king' %}
+{% endcomment %}
+<div class="wishlist_modal" tabindex="0" role="button" id="wishpop_up">
+   <div class="w_m_bg" aria-hidden="true">&nbsp;</div>
+   <div class="w_m_content">
+      <div class="w_m_selector">
+         <button class="w_m_close" aria-label="Close Modal" id="popw_m_close"></button>
+         <div class="w_m_title">
+            <h3>
+               <span>Save Your List</span>
+               <div class="wk-icon wk-button__icon">
+                  <svg class="wk-icon__svg" width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <path vector-effect="non-scaling-stroke" d="M32.012,59.616c-1.119-.521-2.365-1.141-3.707-1.859a79.264,79.264,0,0,1-11.694-7.614C6.316,42,.266,32.6.254,22.076,0.244,12.358,7.871,4.506,17.232,4.5a16.661,16.661,0,0,1,11.891,4.99l2.837,2.889,2.827-2.9a16.639,16.639,0,0,1,11.874-5.02h0c9.368-.01,17.008,7.815,17.021,17.539,0.015,10.533-6.022,19.96-16.312,28.128a79.314,79.314,0,0,1-11.661,7.63C34.369,58.472,33.127,59.094,32.012,59.616Z"></path>
+                  </svg>
+               </div>
+            </h3>
+         </div>
+         <div class="w_m_body">
+            <p>You are currently shopping as a guest, Sign in to save your Wishlist Items</p>
+            <div class="swym-action-btns">
+               <a href="#" class="w_m_btn w_m_cancel" id="cancel_popbtn">CANCEL</a>
+               <a href="https://maisondesabre.com/account/login?return_url=%2Faccount" class="w_m_btn">LOG IN</a>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% if customer.id == null %}
+<script id="myWishlist">
+// for header
+  document.addEventListener('click', function(event){
+    if(event.target.parentNode.parentNode.classList.contains("wk-icon") || event.target.parentNode.classList.contains("wk-icon") || event.target.classList.contains("wk-icon")){
+      event.preventDefault();
+      document.getElementById("wishpop_up").classList.add("opened");
+    }
+  });
+  let crossicon =  document.getElementById("popw_m_close");
+  crossicon.addEventListener('click', function(event){
+  document.getElementById("wishpop_up").classList.remove("opened");
+   });
+  let cancelbtn =  document.getElementById("cancel_popbtn");
+  cancelbtn.addEventListener('click', function(event){
+  document.getElementById("wishpop_up").classList.remove("opened");
+   });
+</script>
+{% endif %}
+  {% if settings.ss_enable %}
+  	{% render 'ss-intellisuggest' %}
+  {% endif %}
+  <script>
+      // slider js starts
+// ends
+
+  </script>
+</body>
+  <style>
+.cell.grid-x.grid-padding-x.align-center.small-10.medium-7.large-5.mb-sm.join-page-form-container{
+  background-color: red !important;
+}
+.viewbtn1{
+  display:block;
+}
+.item-cart-fill-main0[data-value^="Gift Wrap"] .cart__prop {
+    display: none;
+}
+.product__info-wrapper  .no-js-hidden.visibility-hidden {
+    visibility: visible !important;
+}
+.hidediscount{
+  display:none;
+}
+span.price-item.price-item--regular.newregularprice {
+    text-decoration: none;
+}
+.similar_productcollection .price-item--last{
+  color: #000 !important;
+    }
+@media(max-width:767px){
+.similar_productcollection .icon-prev {
+  width: 17px;
+  left: unset !important;
+}
+  
+}
+</style>
+  <script>
+  window.addEventListener("click", function(event){
+  if(event.target.classList.contains('mobile-facets__open'))
+  {
+  document.body.classList.add('open-filter-new');
+  }
+  if(event.target.classList.contains('mobile-facets__open-label'))
+  {
+  document.body.classList.add('open-filter-new');
+  }
+  if(event.target.classList.contains('icon-filter')){
+  document.body.classList.add('open-filter-new');
+  }
+  if(event.target.classList.contains('mobile-facets__close--no-js')){
+  document.body.classList.remove('open-filter-new');
+  }
+  if(event.target.classList.contains('icon-close')){
+  document.body.classList.remove('open-filter-new');
+  }
+  if(event.target.classList.contains('f_apply')){
+  document.body.classList.remove('open-filter-new');
+  }
+  }); 
+  </script>
+  <script>
+    $(document).ready(function(){
+$('.initials_field input').keyup(function(){
+    var matchval = $(this).val();
+    if(matchval == "MM" || matchval == "WW"){
+        $('.engrave-customizer').addClass("textmw");
+        $('.engrave-s-product').addClass("textmw");
+    }
+    else{
+        $('.engrave-customizer').removeClass("textmw");
+        $('.engrave-s-product').removeClass("textmw");
+    }
+});  
+});
+  </script>
+  <script>
+    function getMatchingItems(container='', cart) {
+      var itemindex = 0;
+      if(container != null){
+      console.log(container);
+      container.innerHTML = "";
+
+      if (cart.items[0].product_type == "Gift Cards" && cart.items[1] != null) {
+          itemindex = 1;
+      }
+      const itemToMatch = cart.items[itemindex];
+
+      // console.log('itemToMatch', itemToMatch);
+      
+      const collectionHandle = 'makeitmatch';
+      const GetItemTitle  = itemToMatch.product_title;
+      const ItemProductType = itemToMatch.product_type
+      const GetItemProductId = itemToMatch.product_id
+      const SplitTitle = GetItemTitle.split("-");
+      const ItemHandle = SplitTitle[0].toLowerCase().trim().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+      const CreateSearchTag = 'mim-all';
+   
+      //console.log(SplitTitle[0]);
+   
+      if(SplitTitle[0].trim() == 'iPhone 7/8/SE Case'){
+        var PhoneCaseNumber = 'iPhone 7/8/SE';
+      }
+      // else if(SplitTitle[0].trim() == 'iPhone 14 Plus Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 14 Plus' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 14 Plus' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 14 Plus')
+      // {
+      //   var PhoneCaseNumber = 'iPhone 7/8 Plus';
+      // }
+      else if(SplitTitle[0].trim() == 'iPhone 11 Pro Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 11 Pro' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 11 Pro' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 11 Pro'){
+        var PhoneCaseNumber = 'iPhone XS/11 Pro';
+      }
+      else if(SplitTitle[0].trim() == 'iPhone 11 Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 11' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 11' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 11'){
+        var PhoneCaseNumber = 'iPhone 11';
+      }
+      else if(SplitTitle[0].trim() == 'iPhone 11 Pro Max' || SplitTitle[0].trim() == 'iPhone 11 Pro Max Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 11 Pro Max' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 11 Pro Max' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 11 Pro Max' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 11 Pro Max' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 11 Pro Max' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 11 Pro Max')
+      {
+        var PhoneCaseNumber = 'iPhone 11 Pro Max';
+      }
+      else if(SplitTitle[0].trim() == 'iPhone 12 Mini Case' || SplitTitle[0].trim() == 'iPhone 13 Mini Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 13 Mini' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 12 Mini' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 13 Mini' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 12 Mini' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 13 Mini' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 12 Mini')
+      {
+        var PhoneCaseNumber = 'iPhone 12/13 Mini';
+      }  
+      else if(SplitTitle[0].trim() == 'iPhone 12 Case' || SplitTitle[0].trim() == 'iPhone 12 Pro Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 12' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 12 Pro' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 12' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 12 Pro' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 12' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 12 Pro')
+      {
+        var PhoneCaseNumber = 'iPhone 12/12 Pro';
+      }
+      else if(SplitTitle[0].trim() == 'iPhone 13 Pro' || SplitTitle[0].trim() == 'iPhone 13 Pro Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 13 Pro' || SplitTitle[0].trim() == "The Sling Phone Case iPhone 13 Pro" || SplitTitle[0].trim() == 'The Card Phone Case iPhone 13 Pro Case' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 13 Pro' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 13 Pro Case')
+      {
+        var PhoneCaseNumber = 'iPhone 13 Pro';
+      }
+      else if(SplitTitle[0].trim() == 'iPhone 12 Pro Max Case' || SplitTitle[0].trim() == 'iPhone 13 Pro Max Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 12 Pro Max' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 13 Pro Max' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 12 Pro Max' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 13 Pro Max' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 12 Pro Max' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 13 Pro Max')
+      {
+        var PhoneCaseNumber = '12/13 Pro Max';
+      }
+      else if(SplitTitle[0].trim() == 'iPhone 14 Pro Max Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 14 Pro Max' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 14 Pro Max' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 14 Pro Max')
+      {
+        var PhoneCaseNumber = 'iPhone 14 Pro Max';
+      }
+      else if(SplitTitle[0].trim() == 'iPhone 14 Pro Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 14 Pro' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 14 Pro' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 14 Pro')
+      {
+        var PhoneCaseNumber = 'iPhone 14 Pro';
+      }   
+      else if(SplitTitle[0].trim() == 'iPhone 14 Plus Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 14 Plus' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 14 Plus' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 14 Plus')
+      {
+        var PhoneCaseNumber = 'iPhone 14 Plus';
+      }  
+      else if(SplitTitle[0].trim() == 'iPhone 14' || SplitTitle[0].trim() == 'iPhone 14 Case' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 14' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 14' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 14')
+      {
+        var PhoneCaseNumber = 'iPhone 14';
+      }   
+      else if(SplitTitle[0].trim() == 'iPhone 13' || SplitTitle[0].trim() == 'The Card Phone Case iPhone 13' || SplitTitle[0].trim() == 'The Sling Phone Case iPhone 13' || SplitTitle[0].trim() == 'The Jelligrain™ Phone Case iPhone 13')
+      {
+        var PhoneCaseNumber = 'iPhone 13';
+      }    
+      // console.log(SplitTitle[0].trim())
+      // console.log(PhoneCaseNumber);
+
+   
+      $.getJSON('/collections/'+collectionHandle+'/products.json', function(products) {
+        for (let index = 0; index < products['products'].length; index++) {
+          if(products['products'][index].id == 6667625267281)
+          {
+            products['products'].splice( $.inArray(products['products'][index],products['products']) ,1 );
+          }
+          if(ItemProductType != "Apple Watch Band")
+          {
+            if(products['products'][index].id == 6891756486737){
+               products['products'].splice( $.inArray(products['products'][index],products['products']) ,1 );
+            }
+          }
+          // console.log('all-products', products['products'][index]);
+          const CreatePhaseCaseHandle = 'Easy Apply Screen Protector - '+PhoneCaseNumber;
+          const FetchTags = products['products'][index].tags;
+          let is_art_series = products['products'][index].tags.indexOf('amber-vittoria') != -1;
+          let is_zodiac_series = products['products'][index].tags.indexOf('zodiac-series') != -1;
+          var preorder_matching = document.querySelector('#preorder' + products['products'][index].id);
+          let is_preorder_matching = false;
+          var preorder_text = null;
+
+          // console.log('CreatePhaseCaseHandle',CreatePhaseCaseHandle);
+
+          if (preorder_matching != null) {
+              let variants_matching = preorder_matching.value.split(',');
+              //  console.log(variants_matching);
+              for (var i = 0; i < variants_matching.length; i++) {
+                  let values = variants_matching[i].split(':');
+                  if (values[0] == variant.id) {
+                      preorder_matching = values[1] == "true";
+                  }
+              }
+          }
+
+          if(preorder_matching) {
+              for (i = 0; i < products['products'][index].tags.length; i++) {
+                  if (products['products'][index].tags[i].includes('eta:')) {
+                      preorder_text = products['products'][index].tags[i].split(':')[1];
+                  }
+              }
+          }
+          if((FetchTags.includes(CreateSearchTag) || products['products'][index].title == CreatePhaseCaseHandle || products['products'][index].title == "Apple Watch Screen Protector") && GetItemProductId != products['products'][index].id)
+          if(GetItemProductId != products['products'][index].id)
+          {
+          let productURL = '/products/' + products['products'][index].handle;  
+          let matching_item = document.createElement('div');
+          matching_item.classList.add('css-slider_slide');
+          matching_item.classList.add('slider_matching--items');
+          matching_item.classList.add(products['products'][index].product_type.toLowerCase().replaceAll(' ', '-'));
+            
+          let matching__outer = document.createElement('div');
+          matching__outer.classList.add('matching_itemcart_main');
+          matching_item.appendChild(matching__outer);    
+
+          let matching__inner = document.createElement('div');
+          matching__inner.classList.add('matching__item__image');
+          matching__inner.classList.add('cart__item__image');
+          matching__inner.classList.add(products['products'][index].title.toLowerCase().replaceAll(' ', '-'));
+          matching__outer.appendChild(matching__inner);
+
+          let image_link = document.createElement('a');
+          image_link.classList.add('product-image-fix');
+          image_link.classList.add('matching-image-fix-link');
+          if(products['products'][index].product_type == 'Screen Protector' || products['products'][index].product_type == 'Gift Cards'  || products['products'][index].product_type == 'Leather Protector')
+          {
+            image_link.setAttribute('href', 'javascript:void(0)');
+          }
+          else{
+            image_link.setAttribute('href', '/products/'+products['products'][index].handle);
+          }
+          matching__inner.appendChild(image_link);
+
+          let image_wrap = document.createElement('div');
+          image_wrap.classList.add('relative');
+          image_link.appendChild(image_wrap);
+            
+          let matching_item_image = document.createElement('img');
+          let image_src = products['products'][index].images[0].src;
+          matching_item_image.setAttribute('src', image_src.replace('.jpg', '_360x.jpg'));
+          matching_item_image.setAttribute('alt', products['products'][index].title);
+          image_wrap.appendChild(matching_item_image);
+          let engraving = document.createElement('div');
+          engraving.classList.add('matching-engrave');
+          engraving.classList.add('engrave');
+
+          if (is_art_series) {
+              engraving.classList.add('artwork-engrave')
+          } else if (is_zodiac_series) {
+              engraving.classList.add('zodiac-engrave')
+          } else {
+              engraving.classList.add('icon-chess-piece');
+          }
+          engraving.classList.add(products['products'][index].product_type.toLowerCase().replaceAll(' ', '-'));
+          if (is_art_series) {
+              engraving.classList.add(artwork.get().toLowerCase().replaceAll(/ /g, '-'));
+          } else if (is_zodiac_series) {
+              engraving.classList.add(zodiac.get().toLowerCase().replaceAll(/ /g, '-'));
+          } else {
+              engraving.classList.add(foil.get().toLowerCase());
+              if (products['products'][index].product_type == 'Airpods') {
+                  engraving.innerHTML = initials.get('shortMonogram2');
+              } else {
+                  engraving.innerHTML = initials.get(products['products'][index].product_type);
+              }
+          }
+          if(products['products'][index].id != '7089160454225' || products['products'][index].handle != 'apple-watch-screen-protector')
+          {
+            image_wrap.appendChild(engraving);
+          }
+          
+            
+          let matching_form = document.createElement('div');
+          matching_form.classList.add('cart__item__details');
+          matching__outer.appendChild(matching_form);
+
+          let product_info = document.createElement('div');
+          product_info.classList.add('matching__product-info');
+          matching_form.appendChild(product_info);
+
+          var MakeItMatchPtitle = products['products'][index].title.split('-');
+          let product_title = document.createElement('a');
+          product_title.classList.add('cart__product-title');
+          product_title.classList.add('md_text');
+          product_title.classList.add('bold');
+          if(products['products'][index].product_type == 'Screen Protector' || products['products'][index].product_type == 'Gift Cards'  || products['products'][index].product_type == 'Leather Protector')
+          {
+            product_title.setAttribute('href', 'javascript:void(0)');
+          }
+          else{
+            product_title.setAttribute('href', productURL);
+          }            
+          product_title.innerHTML = MakeItMatchPtitle[0];
+          product_info.appendChild(product_title);
+
+          let variant_color = document.createElement('span');
+          variant_color.classList.add('cart_text');
+          if(typeof MakeItMatchPtitle[1] != 'undefined'){
+            variant_color.innerHTML = '<br>' + MakeItMatchPtitle[1];
+          }
+          product_title.appendChild(variant_color);
+            
+          let price_wrapper = document.createElement('div');
+          price_wrapper.classList.add('cart__price-wrapper');
+          price_wrapper.classList.add('price_matching_item');
+          matching_form.appendChild(price_wrapper);
+
+          let ProductPrice = products['products'][index].variants[0];
+
+          if (ProductPrice.compare_at_price != null) {
+              let product_compare_price = document.createElement('span');
+              product_compare_price.classList.add('price');
+              product_compare_price.classList.add('compare_price_matching');
+              product_compare_price.classList.add('cart_text');
+              product_compare_price.innerHTML = Math.trunc(ProductPrice.compare_at_price);
+              price_wrapper.appendChild(product_compare_price);
+          }
+      
+          let product_price = document.createElement('span');
+          product_price.classList.add('price');
+          product_price.classList.add('cart_text');
+          if (ProductPrice.compare_at_price != null) {
+              product_price.classList.add('compare_price_color');
+          }
+          // for % tags append elements  
+          let price_discounts = ProductPrice.price / ProductPrice.compare_at_price;
+          let percent_offss = 1 - price_discounts;
+          let item_percent_discount = document.createElement('span');
+          var on_sale = false;
+          item_percent_discount.classList.add('discount_percent');
+          var setprice = item_percent_discount.innerHTML = Math.round(percent_offss * 100) + '% OFF';
+
+          if (ProductPrice.compare_at_price > ProductPrice.price) {
+              on_sale = true;
+          }
+          if (on_sale == true) {
+              matching__inner.appendChild(item_percent_discount);
+          } else {
+              //console.log("Works");
+          }
+
+          if (products['products'][index].product_type != 'Gift Boxes & Tins') {
+              product_price.innerHTML = "$" + Math.trunc(ProductPrice.price);
+          } else {
+              product_price.innerHTML = 'Free';
+          }
+          price_wrapper.appendChild(product_price);
+
+         if (products['products'][index].id == '6891756486737') {
+           let atc_size_btn = document.createElement('select');
+           atc_size_btn.classList.add('btn');
+           atc_size_btn.classList.add('btn--alternate');
+           atc_size_btn.classList.add('matching__atc');
+           atc_size_btn.classList.add('dropdown-btn');
+           var atc_size_option_default = document.createElement("option");
+           atc_size_option_default.value = "Select Size";
+           atc_size_option_default.text = "+ ADD";
+           atc_size_option_default.setAttribute('disabled', true);
+           atc_size_option_default.setAttribute('selected', true);
+           atc_size_btn.appendChild(atc_size_option_default);
+           for(var atc_i = 0; atc_i < products['products'][index].variants.length; atc_i++){
+              variantURL = '/products/' + products['products'][index].handle + '?variant=' + products['products'][index].variants[atc_i].id;
+              var atc_size_option = document.createElement("option");
+              var option_text = products['products'][index].variants[atc_i].option1;
+
+              if (!products['products'][index].variants[atc_i].available) {
+                  atc_size_option.setAttribute('disabled', true);
+                  option_text = option_text + '(Out of Stock)';
+              }
+                  atc_size_option.value = products['products'][index].variants[atc_i].option1;;
+                  atc_size_option.text = option_text;
+                  atc_size_option.setAttribute('variantID', products['products'][index].variants[atc_i].id);
+                  atc_size_btn.appendChild(atc_size_option);
+           }
+              matching_form.appendChild(atc_size_btn);
+         }
+         else{
+           
+          let atc = document.createElement('a');
+          atc.classList.add('btn');
+          atc.classList.add('btn--alternate');
+          atc.classList.add('matching__atc');
+          atc.setAttribute('href', productURL);
+          addMatchingItem(atc, ProductPrice, is_art_series, is_zodiac_series, false, products['products'][index].product_type, preorder_text);
+          matching_form.appendChild(atc);
+
+          let adding_atc = document.createElement('a');
+          adding_atc.classList.add('btn');
+          adding_atc.classList.add('btn--alternate');
+          adding_atc.classList.add('adding_atc');
+          adding_atc.classList.add('hide');
+          adding_atc.setAttribute('href', '#');
+          matching_form.appendChild(adding_atc);
+
+          let atc_text = document.createElement('span');
+          atc_text.setAttribute('data-add-to-cart-text', '');
+          atc_text.innerHTML = preorder_matching ? "Pre-Order" : "+ Add";
+          atc.appendChild(atc_text);
+
+          let atc_loader = document.createElement('span');
+          atc_loader.setAttribute('data-loader', '');
+          atc_loader.classList.add('hide');
+          atc.appendChild(atc_loader);
+            
+          let atc_loader_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          atc_loader_svg.classList.add('icon');
+          atc_loader_svg.classList.add('icon-spinner');
+          atc_loader.appendChild(atc_loader_svg);            
+
+          let atc_loader_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          atc_loader_path.setAttribute('d', 'M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z');
+          atc_loader_svg.appendChild(atc_loader_path);
+          adding_atc.innerHTML = '';
+          adding_atc.appendChild(atc_loader_svg);
+          }
+
+            
+          container.appendChild(matching_item);
+          $(".cart__matching-loader").hide();
+          }        
+        }
+      });
+
+        if (container.childElementCount === 0) {
+            container.parentElement.classList.add('hide');
+            $('.cart__matching').addClass('hide');
+        }
+        $('.cart__matching').removeClass('hide');
+      }
+  }
+    function updateCart() {
+  
+    let valGiftCounter = new Array(1);
+    valGiftCounter.fill(0);
+    let valInCart = false;
+    let valInCart2 = false;
+    let valInCart3 = false;
+    let alreadyIncart = false;
+    let addFreeItem=false;
+    
+    let valId = "41108196393142";
+    let valId3 = "41108196425910";
+    let valId2 = "3955601139320ddd6";
+    let card_id = "";
+    let valQty = 0;
+    let val2Qty = 0;
+    let val3Qty = 0;
+    let emerald=0;
+    let gift_outer = null;
+    var gift_counter = 0; 
+    let gift_line_item = new Array(15);
+    let counter=0;
+    let card_qty = 0;
+    let phone_cases_qty = 0;
+    let protector_is = 0;
+    let card_qty_id = 0;
+    let pro_var_id = ''; 
+    let phone_case = false;
+    let sticker_qty = 0;
+    var cartItems = [];
+    var cartAppendata='';
+    var shop_currency = $('#shop_currency_val').text();
+    var shop_currency_sym = shop_currency.split(".")[0];
+    $('#upsell-cart-items-add').empty();
+    const matchingItems = document.querySelector('.cart-matching-slider');
+    const ap_Price = document.querySelector('.cart-ap-price');
+    jQuery.getJSON(window.origin + '/cart.js', function(cart) { 
+            console.log("responess",cart);
+            let items_custome = cart.items;
+            var total_cart_length = cart.item_count;
+            $('#cart-title span').text(cart.item_count);
+            $("#cartopennavmov span.btn-cart-trigger__count").text(cart.item_count);
+            $("#cartopennav span.btn-cart-trigger__count").text(cart.item_count);
+            var subtotalCart = (Number(cart.total_price) / 100);
+            var subtotal = (subtotalCart).toFixed(2);
+            var splittotal = subtotal.split('.')
+          
+            if(splittotal[1] == 00){
+            var nodecimaltotal  = '$' + Math.trunc(subtotal) + ' AUD'; 
+          }
+          else{
+            var nodecimaltotal  = '$' + subtotal + ' AUD'; 
+          }
+          $('.cart_final_subtotal_price').text(nodecimaltotal);
+
+
+            if (subtotalCart != null) {
+                ap_Price.innerHTML = Math.round(cart.total_price / 400);
+            }
+            if (total_cart_length == 0) {
+                
+                $('.header-cart__progg').show();
+                $(".emptycart__contents").show();
+                $('.content-cart-nav').show();
+                $('#cart_container_id').empty();
+                $('.cart-footer-nav').hide();
+                $('.gift_product').hide();
+                $('.upsellempy').hide();
+                $('.cart_gift_box').addClass('hide');
+                $(".content-cart-nav .not-empty-cart").hide();
+                $(".cart__matching").hide();
+                $(".full_cart_loader").removeClass('active');
+                
+            } else {
+
+               
+              $('#cartpopupboxnav').removeClass('loader_active');
+              var is_mini_tote_free_gift = false;
+                if(total_cart_length == 1)
+                {
+                  if(cart.items[0].id=="40315459895377"){
+                    $.post('/cart/clear.js',function(cart) {
+                      updateCart();
+                    },"json");                    
+                  }
+                }
+                $(".cart__matching").show();
+                getMatchingItems(matchingItems, cart);
+                $('.header-cart__progg').hide();
+                $(".emptycart__contents").hide();
+                $('.cart-footer-nav').show();
+                $('.upsellempy').show();
+                $('.cart_gift_box').removeClass('hide');
+                $(".content-cart-nav .not-empty-cart").show();
+                
+                cartItems = cart.items;
+                let props = {
+                    'Text': localStorage.getItem('mdsEngraving') != null ? localStorage.getItem('mdsEngraving') : '',
+                    'Foil Colour': localStorage.getItem('mdsEngraving') != null ? localStorage.getItem('mdsFoil') : ''
+                };
+                var prsnlize_clr = props['Foil Colour'];
+                var p = 1;
+                $('#cart_container_id').empty();
+                var sale_text = '';
+                for (var i = 0; i < cartItems.length; i++) {
+               if(cart.items[i].id == 40315459895377){
+                 is_mini_tote_free_gift = true;
+                 }
+                  if(cart.items[i].variant_options[0].includes('Emerald')){ 
+                  emerald = 1;
+                  }
+                  if(cart.items[i].handle.includes('disney-leather-sticker')){ 
+                  sticker_qty = cart.items[i].quantity + sticker_qty;
+                  }
+                  if(cart.items[i].id == valId){
+                  valInCart = true;
+                  valQty = cart.items[i].quantity;
+                  }
+                  if(cart.items[i].id == valId2){
+                  valInCart2 = true;
+                  val2Qty = cart.items[i].quantity;
+                  }
+                  if(cart.items[i].id == valId3){
+                  valInCart3 = true;
+                  val3Qty = cart.items[i].quantity;
+                  
+                  }
+                  if(cart.items[i].handle.includes('easy-apply-screen-protector-1')) {
+                  protector_is = cart.items[i].quantity;
+                  pro_var_id = cart.items[i].variant_id;
+                  }
+                  if(cart.items[i].product_type == 'Phone Case' || cart.items[i].product_type == 'Card Phone Case' || cart.items[i].product_type == 'Sling Phone Case' || cart.items[i].product_type == 'Silicone Phone Case'){
+                  phone_case = true;
+                  }
+                  if(cart.items[i].product_title.includes('Day Card')){
+                  card_qty = card_qty + cart.items[i].quantity;
+                  card_qty_id = cart.items[i].variant_id;
+                  
+                  
+                  }
+                  if(cart.items[i].product_title.includes('Phone')){
+                    phone_cases_qty = phone_cases_qty + cart.items[i].quantity;
+                  }
+                    var line_count = i + 1;
+                    var cart_item = cartItems[i];
+                    var properties = cart_item.properties;
+                    var image = cart_item.featured_image.url;
+                    var title = cart_item.product_title;
+                    var price = cart_item.price;
+                    var quantity = cart_item.quantity;
+                    var op_price = cart_item.price;
+                    price = Number(price) / 100;
+                    price = price * quantity;
+                  
+                    var variant_id = cart_item.variant_id;
+                    var prd_url = cart_item.url;
+                    var prd_type = cart_item.product_type;
+                    var var_title = cart_item.variant_title;
+                    var shippingtext = $(".min_free_values").attr('data-varlu');
+                    var shippingtextgift = $(".min_free_valuesforfreegift").attr('data-varlu');
+                    var min_texts = $(".min_free_values").attr('data-text');
+                    var max_texts = $(".min_free_values").attr('data-maxfree');
+                    var final_total = cart.total_price.toFixed(2) / 100;
+                   if(final_total >= 300){
+                      $('.cart_gift_item').find('.cart_add_btn').addClass('cartbtnvisible');
+                    }
+                    else{
+                     $('.cart_gift_item').find('.cart_add_btn').removeClass('cartbtnvisible');
+                  }
+                      var minimumshipprice = $('.dyn_price').text();
+                      var minimumshippriceforgift = $('.dyn_priceforgift').text();
+                       if (final_total < shippingtext) {
+                        var diff_price = Math.round(shippingtext - final_total);
+                        $(".fullprogressbar").addClass('hide');
+                        $(".customprogressbar").removeClass('hide');
+                        $('.progress-bar__fill').removeClass('full-bar');
+                        $('.progress-bar__fill').removeClass('full-bar');
+                        // $('.progress-bar__fill').addClass('full-bar-down');
+                        $('.dyn_price').html(diff_price);
+                    } else {
+                        $(".fullprogressbar").removeClass('hide');
+                        $(".customprogressbar").addClass('hide');
+                        $('.progress-bar__fill').addClass('full-bar');
+                        // $('.progress-bar__fill').removeClass('full-bar-down');
+                    }
+                    // for cart price less than 50
+                    if (final_total < 50) {
+                        $('.progress-bar__fill').css('width', '25%')
+                    }
+                    // for cart price less than or equals to 50
+                    else if ((final_total >= 50) && (final_total < 75)) {
+                        $('.progress-bar__fill').css('width', '50%');
+                    }
+                    // for cart price reaches to 75
+                    else if ((final_total >= 75) && (final_total < 90)) {
+                        $('.progress-bar__fill').css('width', '85%');
+                    }
+                    // for cart price equals to 100 or greater than 100
+                    else if ((final_total >= 90)  && (final_total < 100))  {
+                        $('.progress-bar__fill').css('width', '95%');
+                    }
+                   else if (final_total >= 100)   {
+                        $('.progress-bar__fill').css('width', '100%');
+                    }
+
+                            // new progress bar mini cart
+                    // new progress bar mini cart
+                     if (final_total < 20) {
+                        $('.progress-bar__fillforfreegift').css('width', '10%')
+                    }
+                    // for cart price less than or equals to 50
+                    else if ((final_total >= 20) && (final_total < 35)) {
+                        $('.progress-bar__fillforfreegift').css('width', '20%');
+                    }
+                    // for cart price reaches to 75
+                    else if ((final_total >= 35) && (final_total < 50)) {
+                        $('.progress-bar__fillforfreegift').css('width', '30%');
+                    }
+                    // for cart price equals to 100 or greater than 100
+                    else if ((final_total >= 50) && (final_total < 70)) {
+                        $('.progress-bar__fillforfreegift').css('width', '40%');
+                    }
+                   else if ((final_total >= 70) && (final_total < 90)) {
+                        $('.progress-bar__fillforfreegift').css('width', '50%');
+                    }
+                  else if ((final_total >= 90) && (final_total < 100)) {
+                        $('.progress-bar__fillforfreegift').css('width', '60%');
+                    }
+                  else if ((final_total >= 100) && (final_total < 120)) {
+                        $('.progress-bar__fillforfreegift').css('width', '65%');
+                    }
+                  else if ((final_total >= 120) && (final_total < 130)) {
+                        $('.progress-bar__fillforfreegift').css('width', '70%');
+                    }
+                  else if ((final_total >= 130) && (final_total < 140)) {
+                        $('.progress-bar__fillforfreegift').css('width', '75%');
+                    }
+                  else if ((final_total >= 140) && (final_total < 149)) {
+                        $('.progress-bar__fillforfreegift').css('width', '80%');
+                    }
+                   else if ((final_total >= 149) && (final_total < 170)) {
+                        $('.progress-bar__fillforfreegift').css('width', '85%');
+                    }
+                  else if ((final_total >= 170) && (final_total < 190)) {
+                        $('.progress-bar__fillforfreegift').css('width', '90%');
+                    }
+                  else if ((final_total >= 190) && (final_total <= 199)) {
+                        $('.progress-bar__fillforfreegift').css('width', '99%');
+                    }
+                  else if ((final_total > 200)) {
+                        $('.progress-bar__fillforfreegift').css('width', '100%');
+                    }
+                  if (final_total < shippingtextgift) {
+                    var diff_pricefreegift = Math.round(shippingtextgift - final_total);
+                    $(".fullprogressbarfreegift").addClass('hide');
+                    $(".customprogressbarfreegift").removeClass('hide');
+                    $('.dyn_priceforgift').html(diff_pricefreegift);
+                    if(!$('.free_gift_product_aus').hasClass("disabled"))
+                    {
+                      $('.free_gift_product_aus').addClass("disabled");
+                    }
+                    if(is_mini_tote_free_gift){
+                     $.post('/cart/change.js', {
+                        quantity: 0,
+                        id: 40315459895377,
+                        properties: ""
+                      }, function(item) {
+                        updateCart();
+                      }, "json");                     
+                    }
+
+                    } 
+                    else {
+                    $(".fullprogressbarfreegift").removeClass('hide');
+                    $(".customprogressbarfreegift").addClass('hide');
+                    $('.free_gift_product_aus').removeClass("disabled");
+                    }
+                  
+                    var cart_item_div_new = "<div class='item-cart-fill-main0 cart_items_div kp-" + variant_id + "' data-id=" + variant_id + " data-type='" + prd_type + "' data-value='" + var_title + "'>"
+                    cart_item_div_new += "<div class='cart_popup_bg hide'><svg aria-hidden='true' focusable='false' role='presentation' class='icon icon-spinner' viewBox='0 0 20 20'><path d='M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z' fill='#919EAB'></path></svg></div>"
+                    cart_item_div_new += "<div class='cart-fill-product-image'><a class='cart-image' href='" + prd_url + "'><img src='" + image + "' alt='" + title + "'> </a>"
+
+                    if (properties !== null && properties['Text'] != null && properties['Text'] != "") {
+                      
+                        if(properties['Foil Colour'])
+                        {
+                          var pro_color = properties['Foil Colour'];
+                        }
+                        if(properties['Foil Color'])
+                        {
+                          var pro_color = properties['Foil Color'];
+                        }                      
+                        cart_item_div_new += "<div class ='cart-engrave engrave chess_text " + pro_color + ' ' + prd_type.replace(/\s+/g, '-').toLowerCase() + "'>" +  properties['Text'] + "</div>"
+                    }
+                    cart_item_div_new += "</div><div class='cart-fill-product-detail'><div class='cart-fill-detail-01'>"
+                    var variant_title_new = "";
+                    if(var_title != null) {
+                      var variant_title_new = var_title;
+                    }  
+                    var SplitTitle = title.split('-');
+                    if(typeof SplitTitle[1]  !== "undefined")
+                    {
+                      var ColNAme = SplitTitle[1];
+                    }
+                    else{
+                      var ColNAme = '';
+                    }
+                    //cart_item_div_new += "<a href='" + prd_url + "'><p>" + SplitTitle[0] + "</p></a>"
+                    cart_item_div_new += "<a href='" + prd_url + "'><p>" + SplitTitle[0] + "</p></a><span class='ajaxcart__product-meta minishoppergift'>" + ColNAme + "</span>"
+                    if(variant_title_new == "Gift Tote"){
+                      cart_item_div_new += "<span class='ajaxcart__product-meta'>" + 'Limited Time Only | Valued at $49' + "</span>"
+                    }
+                 
+                    cart_item_div_new += "<div class='delate-cart-item'><button class='grey-5 header-cart-item__remove__btn cart_remove_item remove_cart_item' data-phandle=" + cart_item.handle + " data-line=" + line_count + ">"
+
+                    cart_item_div_new += '<svg width="13" height="15" viewBox="0 0 13 15" fill="none"> <path d="M1.75004 13.0417C1.75004 13.9125 2.46254 14.625 3.33337 14.625H9.66671C10.5375 14.625 11.25 13.9125 11.25 13.0417V3.54167H1.75004V13.0417ZM3.33337 5.125H9.66671V13.0417H3.33337V5.125ZM9.27087 1.16667L8.47921 0.375H4.52087L3.72921 1.16667H0.958374V2.75H12.0417V1.16667H9.27087Z" fill="#727272"/></svg></button></div>'
+                    
+                    cart_item_div_new += "</div><div class='cart-fill=discription'></div>"
+                    if (properties !== null && properties['Text'] != null && properties['Text'] != "") {
+
+                        if(properties['Foil Colour'])
+                        {
+                          var pro_color_new = properties['Foil Colour'];
+                        }
+                        if(properties['Foil Color'])
+                        {
+                          var pro_color_new = properties['Foil Color'];
+                        }        
+                      
+                        cart_item_div_new += "<div class='cart__props'><div class='cart__prop cart_text'><span>Personalisation:</span><span class='foil-option prsnlizer_color " + pro_color_new + "' ddts='" + pro_color_new + "' style='order: 3;'></span><span class='chess_text'>" + properties['Text'] + "</span></div></div>"
+                    }
+                   if(variant_title_new == "Gift Tote"){
+                      cart_item_div_new += "<span class='freetext_meta'>" + 'Free' + "</span>"
+                    }
+                    if(variant_title_new != "Gift Tote"){
+                    cart_item_div_new += "<div class='wc_qty_box quantity-box'><div class='num-block skin-3'>"
+
+                    cart_item_div_new += "<ul class='QuantityBox cart_p_quantity'><li class='minus-box'>"
+
+                    cart_item_div_new += "<a href='javascript:void(0)' data-line=" + line_count + " class='cart_item_minus minus ajaxcart__qty-adjust cart-slider-decrease-qty ajaxcart__qty--minus'>"
+
+                    cart_item_div_new += "<img src='//cdn.shopify.com/s/files/1/0619/2575/3081/t/5/assets/minu.svg?v=419654119375667803' class='img-fluid'></a>"
+
+                    cart_item_div_new += "</li><li class='input-box'>"
+
+                    cart_item_div_new += "<input readonly type='number' name='updates' class='QuantityInput Quantity_cart_slider ajaxcart__qty-num' value=" + quantity + " min='0'>"
+
+                    cart_item_div_new += "</li><li class='plus-box'><a data-line=" + line_count + " href='javascript:void(0)' variant_id=" + variant_id + " class='cart_item_plus plus ajaxcart__qty-adjust cart-slider-increase-qty ajaxcart__qty--plus'>"
+
+                    cart_item_div_new += "<img src='//cdn.shopify.com/s/files/1/0619/2575/3081/t/5/assets/plus.svg?v=14305593096000451169' class='img-fluid'></a>"
+
+                    cart_item_div_new += "</li></ul></div>"
+                    }
+                  
+                    cart_item_div_new += "<div class='price'>"
+                  $.ajax({
+                    url: cart_item.url + '.js',
+                    dataType: "json",
+                    async: false,
+                    timeout: 800,
+                    success: function (data, status, xhr) {
+                      var varinats = data.product.variants;
+                      varinats.forEach(function(variant){
+                       
+                        if(parseInt(variant.id) == parseInt(variant_id)){
+                          var variantprice = variant.price;
+                          var splitprice = variantprice.split('.');
+                          if(splitprice[1] == 00){
+                            var nozerodecimal = Math.trunc(variantprice);
+                          }
+                          else{
+                            var nozerodecimal = variantprice;
+                          }
+                          var compareprice = Math.trunc(variant.compare_at_price);
+                          let price_discount =variantprice / compareprice;
+                          var prodcp = variant.compare_at_price;
+                          var prodprice = variant.price;
+                          var salesprice = prodprice/prodcp;
+                          let percent_off = 1 - price_discount;
+                          sale_text = Math.round(percent_off * 100) + '% OFF';
+                          if(parseInt(variant.compare_at_price) > parseInt(variant.price))
+                          {
+                          cart_item_div_new += "<span class='regular_price price-item--sale' > $" + nozerodecimal + " </span>"
+                          cart_item_div_new += "<span class='compare_oldprice'>" + '$' + compareprice + " </span>"
+                          cart_item_div_new += "<span class='salestext_price'>" +  sale_text + " </span>"                            
+                          }
+                          else
+                          {
+                            cart_item_div_new += "<span class='regular_price' > $" + nozerodecimal + " </span>"
+                          }
+                        }
+                        else{
+                        }
+                      });
+                      cart_item_div_new += "</div>"
+                      cart_item_div_new += '</div></div></div>'
+                      $(".full_cart_loader").removeClass('active');
+                      $('#cart_container_id').append(cart_item_div_new);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                    }
+                  });
+
+                if(is_mini_tote_free_gift){
+                  $(".c_free_gift_box").hide();
+                }else{
+                  $(".c_free_gift_box").show();
+                }  
+                }
+
+                if(protector_is > 0 && phone_case == false ) {
+                		$.post('/cart/change.js', {
+                        quantity: 0,
+                        id: pro_var_id,
+                        properties: ""
+                      }, function(item) {
+                        updateCart();
+                      }, "json");
+                }
+                if(sticker_qty !=0 && cart.item_count == sticker_qty) {
+                $.post('/cart/clear.js',function(cart) {
+                          updateCart();
+                        },"json");
+                }
+                 if(card_qty > 0 && phone_case == false ) {
+                    $.post('/cart/change.js', {
+                        quantity: 0,
+                        id: card_qty_id,
+                        properties: ""
+                      }, function(item) {
+                        updateCart();
+                      }, "json");
+                }
+                if(card_qty > phone_cases_qty && phone_case  ) {
+                    $.post('/cart/change.js', {
+                        quantity: phone_cases_qty,
+                        id: card_qty_id,
+                        properties: ""
+                      }, function(item) {
+                        updateCart();
+                      }, "json");
+                }
+            }
+        });
+    }
+</script>
+  <style>
+    .pys_collection .engrave-collection {
+    display: none;
+}
+    .matching-engrave{
+      display:none;
+    }
+   
+  .pys_index  .engrave-collection{
+      display:none;
+    }
+    .section-product-recommendations .engrave.mobile-engrave.icon-chess-piece.engrave-collection.luggage-tag,
+    .section-product-recommendations .engrave.mobile-engrave.icon-chess-piece.engrave-collection.keyball-keychain, 
+    .section-product-recommendations .engrave.mobile-engrave.icon-chess-piece.engrave-collection.duffle {
+    display: none;
+}
+    .newarrival-wrapper .engrave.mobile-engrave.icon-chess-piece.engrave-collection.luggage-tag,
+    .newarrival-wrapper .engrave.mobile-engrave.icon-chess-piece.engrave-collection.keyball-keychain, 
+    .newarrival-wrapper .engrave.mobile-engrave.icon-chess-piece.engrave-collection.duffle {
+      display:none;
+    }
+   .pys_collection .engrave.nylon-duffle-bag ,.pys_collection .engrave.nylon-tote, .pys_collection .engrave.nylon-sling-bag, .pys_collection .engrave.nylon-backpack {
+      display:none;
+    }
+  </style>
+</html>

@@ -1,0 +1,202 @@
+{% comment %}
+    Renders a product thumbnail with a modal-opener
+
+    Accepts:
+    - media: {Object} Product Media object
+    - position: {String} Position of the media. Used for accessible label.
+    - loop: {Boolean} Enable video looping (optional)
+    - modal_id: {String} The product modal that will be shown by clicking the thumbnail
+    - xr_button: {Boolean} Renders the "View in your space" button (shopify-xr-button) if the media is a 3D Model
+
+    Usage:
+    {% render 'product-thumbnail',
+      media: media,
+      position: forloop.index,
+      loop: section.settings.enable_video_looping,
+      modal_id: section.id
+    %}
+{% endcomment %}
+{% assign is_airpod_pro = false %}
+{% if product.tags contains 'airpods_pro' %}
+  {% assign is_airpod_pro = true %}
+{% endif %}
+<noscript>
+  {%- if media.media_type == 'video' or media.media_type == 'image' or media.media_type == 'external_video' -%}
+    <span class="product__media-icon motion-reduce">{% render 'icon-play' %}</span>
+    <div class="product__media media" style="padding-top: {{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 }}%;">
+      
+ 
+      <img
+        srcset="{% if media.preview_image.width >= 288 %}{{ media.preview_image | img_url: '288x' }} 288w,{% endif %}
+          {% if media.preview_image.width >= 576 %}{{ media.preview_image | img_url: '576x' }} 576w,{% endif %}
+          {% if media.preview_image.width >= 750 %}{{ media.preview_image | img_url: '750x' }} 750w,{% endif %}
+          {% if media.preview_image.width >= 1100 %}{{ media.preview_image | img_url: '1100x' }} 1100w,{% endif %}
+          {% if media.preview_image.width >= 1500 %}{{ media.preview_image | img_url: '1500x' }} 1500w,{% endif %}
+          {{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width }}w"
+        src="{{ media | img_url: '1500x' }}"
+        sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | times: 0.64 | round }}px, (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
+        loading="lazy"
+        width="576"
+        height="{{ 576 | divided_by: media.preview_image.aspect_ratio | ceil }}"
+        class="product_image_list_1" 
+        data-alt="{{ media.preview_image.alt}}"   
+        alt="{{ media.preview_image.alt | escape }}"
+      >
+    <div alt_engrave ="{{ product.title}}" class="{% if product.handle contains 'the-large-soft-backpack' %}largeosftbackpack{% endif %} {% for image in product.images %}{{ image.alt }} {% endfor %} {% unless product.type == 'Coin Purse' or product.type == 'Webbing Strap' %} engrave {% endunless %} engrave-s-product mobile-engrave icon-chess-piece {{ product.type | handle }} {% if mini_clutch %} mini-clutch {%endif%} {% if is_airpod_pro %} airpods-pro {%endif%} {{product.handle}} gold"></div>
+    </div>
+    <a href="{% if media.media_type == 'video' %}{{ media.sources[1].url }}{% else %}{{ media | external_video_url }}{% endif %}" class="product__media-toggle">
+      <span class="visually-hidden">{{ 'products.product.video_exit_message' | t: title: product.title | escape }}</span>
+    </a>
+  {%- else -%}
+    <div class="product__media media" style="padding-top: {{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 }}%;">
+      <img
+        srcset="{% if media.preview_image.width >= 288 %}{{ media.preview_image | img_url: '288x' }} 288w,{% endif %}
+          {% if media.preview_image.width >= 576 %}{{ media.preview_image | img_url: '576x' }} 576w,{% endif %}
+          {% if media.preview_image.width >= 750 %}{{ media.preview_image | img_url: '750x' }} 750w,{% endif %}
+          {% if media.preview_image.width >= 1100 %}{{ media.preview_image | img_url: '1100x' }} 1100w,{% endif %}
+          {% if media.preview_image.width >= 1500 %}{{ media.preview_image | img_url: '1500x' }} 1500w,{% endif %}
+          {{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width }}w"
+        src="{{ media | img_url: '1500x' }}"
+        sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | times: 0.64 | round }}px, (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
+        loading="lazy"
+        width="576"
+        class="product_image_list_2" 
+        data-alt="{{ media.preview_image.alt}}"     
+        height="{{ 576 | divided_by: media.preview_image.aspect_ratio | ceil }}"
+        alt="{{ media.preview_image.alt | escape }}"
+      >
+    </div>
+  {%- endif -%}
+</noscript>
+
+<modal-opener class="product__modal-opener product__modal-opener--{{ media.media_type }} no-js-hidden" data-modal="#ProductModal-{{ modal_id }}">
+  <span class="product__media-icon motion-reduce" aria-hidden="true">
+    {%- liquid
+      case media.media_type
+      when 'video' or 'external_video'
+        render 'icon-play'
+      when 'model'
+        render 'icon-3d-model'
+      else
+        render 'icon-zoom'
+      endcase
+    -%}
+  </span>
+  <div class="product__media media media--transparent" style="padding-top: {{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 }}%;">
+    <button data-index="{{ media.position }}" class="zoom_icon iconpopup">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M10 5.71429H5.71429V10H4.28571V5.71429H0V4.28571H4.28571V0H5.71429V4.28571H10V5.71429Z" fill="#8B8B8B"/>
+            </svg>
+            </button>
+    <img
+      srcset="{% if media.preview_image.width >= 288 %}{{ media.preview_image | img_url: '288x' }} 288w,{% endif %}
+        {% if media.preview_image.width >= 576 %}{{ media.preview_image | img_url: '576x' }} 576w,{% endif %}
+        {% if media.preview_image.width >= 750 %}{{ media.preview_image | img_url: '750x' }} 750w,{% endif %}
+        {% if media.preview_image.width >= 1100 %}{{ media.preview_image | img_url: '1100x' }} 1100w,{% endif %}
+        {% if media.preview_image.width >= 1500 %}{{ media.preview_image | img_url: '1500x' }} 1500w,{% endif %}
+        {{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width }}w"
+      src="{{ media | img_url: '1500x' }}"
+      sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | times: 0.64 | round }}px, (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
+      loading="lazy"
+      width="576"
+      class="product_image_list_3" 
+      data-alt="{{ media.preview_image.alt}}"   
+      data-imageid="{{ media.id }}"
+      height="{{ 576 | divided_by: media.preview_image.aspect_ratio | ceil }}"
+      alt="{{ media.preview_image.alt | escape }}"
+    > 
+    {% assign find_alt = media.preview_image.alt | split: " " %}
+    {% if media.preview_image.alt contains 'front' %}
+        {% if product.type contains 'Pocket Notebook' %}
+               <div id="curated_phrase_product" alt_engrave ="{{ product.title}}" class="{% for image in product.images %}{{ image.alt }} {% endfor %}  {{product.handle}} engrave-customizer"></div>
+            {% endif %}
+    <div alt_engrave ="{{ product.title}}" class="{% if product.handle contains 'the-large-soft-backpack' %}largeosftbackpack{% endif %} {% if product.handle contains 'the-zipped-phone-pouch' %}zippedsmartpouch{% endif %} {% if product.handle contains 'ジップスマホポーチ' %}zippedsmartpouch{% endif %} {% for image in product.images %}{{ image.alt }} {% endfor %} {{ find_alt.last }} {% unless product.type == 'Coin Purse' or product.type == 'Webbing Strap' %} engrave {% endunless %} engrave-s-product mobile-engrave icon-chess-piece {{ product.type | handle }} {% if mini_clutch %} mini-clutch {%endif%} {% if is_airpod_pro %} airpods-pro {%endif%} {{product.handle}} gold"></div>
+    {%if product.type == 'Beauty Pouch' %}
+    <div class="engrave {{ find_alt.last }} {{ product.type | handle }} b-top {{ product.title | handle }} gold"></div>
+    {%endif%}
+    {% elsif media.preview_image.alt contains 'monogram' %}
+      <div class="engrave icon-chess-piece monogram-engrave {{ product.type | handle }} {{ product.title | handle }} gold"></div>
+    {% endif %}
+  </div>
+  <button class="product__media-toggle" type="button" aria-haspopup="dialog" data-media-id="{{ media.id }}">
+    <span class="visually-hidden">
+      {%- if position == 'featured' %}
+        {{ 'products.product.media.open_featured_media' | t }}
+      {%- else -%}
+        {{ 'products.product.media.open_media' | t: index: position }}
+      {%- endif -%}
+    </span>
+  </button>
+</modal-opener>
+
+{%- if media.media_type != 'image' -%}
+  {%- if media.media_type == 'model' -%}
+    <product-model class="deferred-media media media--transparent no-js-hidden" style="padding-top: 100%" data-media-id="{{ media.id }}">
+  {%- else -%}
+    <deferred-media class="deferred-media media no-js-hidden" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%" data-media-id="{{ media.id }}">
+  {%- endif -%}
+  <button id="Deferred-Poster-Modal-{{ media.id }}" class="deferred-media__poster" type="button">
+    <span class="deferred-media__poster-button motion-reduce">
+      {%- if media.media_type == 'model' -%}
+        <span class="visually-hidden">{{ 'products.product.media.play_model' | t }}</span>
+        {%- render 'icon-3d-model' -%}
+      {%- else -%}
+        <span class="visually-hidden">{{ 'products.product.media.play_video' | t }}</span>
+        {%- render 'icon-play' -%}
+      {%- endif -%}
+    </span>
+    <img
+      srcset="{% if media.preview_image.width >= 288 %}{{ media.preview_image | img_url: '288x' }} 288w,{% endif %}
+        {% if media.preview_image.width >= 576 %}{{ media.preview_image | img_url: '576x' }} 576w,{% endif %}
+        {% if media.preview_image.width >= 750 %}{{ media.preview_image | img_url: '750x' }} 750w,{% endif %}
+        {% if media.preview_image.width >= 1100 %}{{ media.preview_image | img_url: '1100x' }} 1100w,{% endif %}
+        {% if media.preview_image.width >= 1500 %}{{ media.preview_image | img_url: '1500x' }} 1500w,{% endif %}
+        {{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width }}w"
+      src="{{ media | img_url: '1500x' }}"
+      sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | times: 0.64 | round }}px, (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw - 4rem)"
+      loading="lazy"
+      class="product_image_list_4" 
+      data-alt="{{ media.preview_image.alt}}"        
+      width="576"
+      height="{{ 576 | divided_by: media.preview_image.aspect_ratio }}"
+      alt="{{ media.preview_image.alt | escape }}"
+    >
+  </button>
+  <template>
+    {%- liquid
+      case media.media_type
+      when 'external_video'
+        assign video_class = 'js-' | append: media.host
+        if media.host == 'youtube'
+          echo media | external_video_url: autoplay: true, loop: loop, playlist: media.external_id | external_video_tag: class: video_class, loading: "lazy"
+        else
+          echo media | external_video_url: autoplay: true, loop: loop | external_video_tag: class: video_class, loading: "lazy"
+        endif
+      when 'video'
+        echo media | media_tag: image_size: "2048x", autoplay: true, loop: loop, controls: true, preload: "none", autoplay: true
+      when 'model'
+        echo media | media_tag: image_size: "2048x", toggleable: true
+      endcase
+    -%}
+  </template>
+
+  {%- if media.media_type == 'model' -%}
+    </product-model>
+    {%- if xr_button -%}
+      <button
+        class="button button--full-width product__xr-button"
+        type="button"
+        aria-label="{{ 'products.product.xr_button_label' | t }}"
+        data-shopify-xr
+        data-shopify-model3d-id="{{ media.id }}"
+        data-shopify-title="title"
+        data-shopify-xr-hidden
+        >
+        {% render 'icon-3d-model' %}
+        {{ 'products.product.xr_button' | t }}
+      </button>
+    {%- endif -%}
+  {%- else -%}
+    </deferred-media>
+  {%- endif -%}
+{%- endif -%}

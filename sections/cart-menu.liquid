@@ -1,0 +1,300 @@
+{% assign new_cart_price =  cart.total_price | divided_by: 100 | plus:0 %}
+{% assign min_free_shipping = settings.min_free_shipping_threshold | plus:0 %}
+{% assign different_amount = min_free_shipping | minus: new_cart_price | plus:0 %}
+<input type="hidden" value="val">
+    <div id="cartMenu" class="menu">
+        <div class="menu-mask"></div>
+        <div class="menu-body">
+            <div class="menu-header">
+                <a class="menu-close" href="javascript:void(0);">&times;</a>
+                <h3 class="text-center md_text">{{ 'cart.general.title' | t }}
+                    (<span data-cart-count class="cart-counter">{{ cart.item_count }}</span>)</h3>
+                <div
+                    class="cart-banner">
+                    <!-- for less than 150  -->
+                    <div class="progress-bar shippinglessthan150">
+                        <div class="progress-bar__notifications d1">
+                            <p class="p1 fullprogressbar">{{ settings.unlocked-Free-shipping }}
+                                <span class="cart-item-col">{{ settings.unlocked-Free-shipping2 }}</span>
+                                {{ settings.unlocked-Free-shipping3 }}</p>
+                            <p class="p1 customprogressbar" id="updateshipping">{{ settings.free_shipping_threshold_text | replace: "[min_free_shipping]", different_amount }}.</p>
+                        </div>
+                        <div class="progress-bar__indicator">
+                            <span class="progress-bar__fill"></span>
+                        </div>
+                    </div>
+                    <!--               ends -->
+                    {% comment %}
+                        <p class="hide">
+                        {% assign banner_text = 'cart.general.banner' | t %}
+                        {{ banner_text | replace_first : '1' , '<span class="bold"> 1 </span>'  | replace_first : 'extra' , '<label class="extra-underline">extra</label>' }}
+                        </p>
+                        <p class="hide">
+                        {{ 'cart.general.banner' | t }}
+                        </p>
+                    {% endcomment %}
+                    {% comment %}
+                        {% if new_cart_price == 0 %}
+                        {% assign width = '0%' %}
+                        {% elsif  new_cart_price < min_free_shipping %}
+                        {% assign width = '75%' %}
+                        <div class="progress-bar test2 {{ cart.total_price }}" total-shippig="{{ free_shipping_threshold_text }}">
+                        <div class="progress-bar__notifications d1">
+                        <p class="p1" id="updateshipping" data-val="{{ settings.free_shipping_threshold_text | replace: "[min_free_shipping]", different_amount }}">{{ settings.free_shipping_threshold_text | replace: "[min_free_shipping]", different_amount }}.</p>
+                        </div>
+                        <div class="progress-bar__indicator"><span class="progress-bar__fill" style="width:{{ width }}; height: 100%;display: block;background-color: #33496E;"></span></div>
+                        </div>
+                        {% else %}
+                        {% assign width = '100%' %}
+                        <div class="progress-bar test3 {{ cart.total_price }}">
+                        <div class="progress-bar__notifications d2">
+                        <p class="p1">{{ settings.unlocked-Free-shipping }} <span class="cart-item-col">{{ settings.unlocked-Free-shipping2 }}</span> {{ settings.unlocked-Free-shipping3 }}</p>
+                        </div>
+                        <div class="progress-bar__indicator"><span class="progress-bar__fill" style="width: {{ width }};height: 100%;display: block;background-color: #33496E;"></span></div>
+                        </div>
+                        {% endif %}
+                    {% endcomment %}
+                    {% comment %}
+                        <div class="progressbar__cart">
+                        <span class="progressbar__cart--fill"></span>
+                        </div>
+                    {% endcomment %}
+                </div>
+            </div>
+            <div class="emptycart__contents"></div>
+            <div class="menu-content">
+                <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+                    <div class="cart__contents">
+                        {% if cart.item_count > 0 %}
+                            {%- include 'icon-spinner' -%}
+                        {% endif %}
+                    </div>
+                    <div class="main_emptycart hide">
+                        {% if cart.item_count == 0 %}
+                            <div class="cart-banner">
+                                <div class="progress-bar">
+                                    <div class="progress-bar__notifications topd">
+                                    <p class="p1">{{ settings.free_shipping_threshold_text | replace: "[min_free_shipping]", different_amount }}</p>
+                                    </div>
+                                    <div class="progress-bar__indicator">
+                                        <span class="progress-bar__fill" style="width:0%;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <p class="general-cart-empty text-black">
+                            {% if section.settings.empty_cart_text !=blank %}
+                                {{ section.settings.empty_cart_text }}
+                            {% else %}
+                                {{ 'cart.general.empty' | t }}
+                            {% endif %}
+                        </p>
+                        {% for block in section.blocks %}
+                            <a class="product-image-fix emptycart-image-fix-link" href="{{ block.settings.collection_url }}">
+                                <div class="emptycart__collection">
+                                    <div class="relative_empty-cart">
+                                        <span class="emptycart__collection--title cart_text">
+                                            {{ block.settings.collection_name }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <div class="cart__has-items{% if cart.item_count <= 0 %} hide{% endif %}">
+                        <div class="cart__matching">
+                            <a href="javascript:void(0);" class="matching-heading open text-center text-black">{{ 'cart.matching.title' | t }}</a>
+                            <div class="css-slider cart-matching-slider" style="display:flex;">
+                                <div class="cart__matching-loader">
+                                    {%- include 'icon-spinner' -%}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div
+                class="checkout-wrap">
+                <!--   GIFT WRAP STARTS  	 -->
+                {% assign product = all_products[settings.gift-product] %}
+                {% for variant in product.variants %}
+                    {% assign current_variant = product.selected_or_first_available_variant %}
+                    {%- assign compare_at_price = variant.compare_at_price -%}
+                    {%- assign price = variant.price -%}
+                {% endfor %}
+                {% if settings.showgiftproduct %}
+                    {% assign is_gift_cart = false %}
+                    {% for item in cart.items %}
+                        {% if item.title == 'Make it a Gift - Gift Wrap' %}
+                            {% assign is_gift_cart = true %}
+                        {% endif %}
+                    {% endfor %}
+                    <div class="cart_gift_box">
+                        <div class="cart_gift_item">
+                            <div class="c_g_item_left">
+                                <figure>
+                                    <img class="active" src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title | escape }}"></figure>
+                                </div>
+                                <div class="c_g_item_middle">
+                                    <div class="c_g_pro_title">{{ product.title }}</div>
+                                    <div class="text-box" data-maxlength="65">{{ product.description }}</div>
+                                </div>
+                                <div class="c_g_item_right">
+                                    <div class="cart__price-wrapper price_matching_item">
+                                        <span class="price price__upsell">
+                                            <span class="upsell_deiscount">
+                                                {{ product.selected_or_first_available_variant.price | money }}</span>
+                                            <span class="free_puzzle">
+                                                {{ product.selected_or_first_available_variant.compare_at_price }}
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <form class="gift-cart-form">
+                                        <input type="hidden" id="gift_vid" value="{{ product.variants.first.id }}">
+                                            <button type="submit" name="add" aria-label="Add to cart" class="btn btn--alternate matching__atc upsell_item--add btn product-form__cart-submit btn--secondary-accent cus_ad_to_cart" id="cus_ad_to_cart" aria-haspopup="dialog" data-add-to-cart="">
+                                                <span data-add-to-cart-text="">+ Add</span>
+                                                <span data-loader="" class="hide"></span>
+                                               
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!--    ENDS    -->
+                        <form action="{{ routes.cart_url }}" method="post" novalidate>
+                            <input class="js-form-discount" type="hidden" name="discount" value="">
+                                <div class="cart-discount cart-status hide">
+                                    <span class="text-left text-grey">Discount
+                                    </span>
+                                    <span class="text-right cart-discount_amount sale__color"></span>
+                                </div>
+                                {% comment %}
+                                    <div class="cart-shipping cart-status">
+                                    <span class="text-left text-grey">{{ 'cart.shipping.title' | t }}</span>
+                                    <span class="text-right sale__color">{{ 'cart.shipping.price' | t }}</span>
+                                    </div>
+                                {% endcomment %}
+                                <div class="cart-subtotal cart-status bold">
+                                    <span class="text-left cart-subtotal__title">{{ 'cart.general.subtotal' | t }}</span>
+                                    <span class="text-right cart-subtotal__price">{{ cart.total_price | money }}</span>
+                                </div>
+                                <div class="cart-status cart-afterpay">
+                                    <p>
+                                        OR 4 easy payments of $<span class="cart-ap-price">0.00</span>
+                                        with{% include 'afterpay-icon' %}
+                                    </p>
+                                </div>
+                                <div class="cart__submit-controls">
+                                    <button type="submit" id="cart__submit" name="checkout" class="btn btn--payment cart__submit cart__submit-control btn-customizer btn-blue">
+                                        <span>{{ 'cart.general.checkout' | t }}</span>
+                                    </button>
+                                    <button type="button" name="checkout" class="btn btn--payment cart__submit cart__submit-control hide checkout-loading" disabled='disabled'>
+                                        <span>
+                                            <svg class="icon icon-spinner">
+                                                <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z"></path>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="cart__payment-icons hide">
+                                    {% unless shop.enabled_payment_types == empty %}
+                                        <ul class="payment-icons list--inline">
+                                            {% include 'payment-icons' %}
+                                        </ul>
+                                    {% endunless %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .progress-bar__indicator {
+                        background-color: #e0e0e0;
+                        border-radius: 20px;
+                        height: 8px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                </style>
+                <script>
+                    // const cart_empty = "{{ 'cart.general.empty' | t }}";
+                    const cart_add = "{{ 'cart.general.add' | t }}";
+                    const shop_all_button = '<a class="btn btn--alternate btn--pill" href=" {{ routes.collections_url }}" aria-label="Shop Products">Shop Products</a>';
+                </script>
+                <script>
+                    $("#cart__submit").click(() => {
+                        var contents = [];
+                        var value = 0;
+                        var currency = 'AUD';
+                        jQuery.getJSON('/cart.js', function (cart) { // now have access to Shopify cart object
+                            value = cart.total_price / 100;
+                            currency = cart.currency;
+                            for (var i = 0; i < cart.items.length; i++) {
+                                var content = {};
+                                content.content_id = cart.items[i].id;
+                                content.name = cart.items[i].product_title;
+                                content.price = cart.items[i].price / 100;
+                                content.quantity = cart.items[i].quantity;
+                                contents.push(content);
+                            }
+                        }).done(function () {
+                            {% if customer %}
+                                ttq.identify({email: "{{ customer.email }}", phone: "{{ customer.phone }}"}){% endif %}
+                            ttq.track('InitiateCheckout', {contents, value, currency});
+                        });
+                    });
+                </script>
+    {% schema %}
+    {
+      "name": "Empty Cart Settings",
+      "max_blocks": 7,
+      "settings": [
+          {
+          "type":"text",
+          "id": "empty_cart_text",
+          "label" : "Empty Cart text"
+          },
+          {
+          "type":"image_picker",
+          "id": "img",
+          "label" : "Valentine Card Image"
+          },
+          {
+          "type":"text",
+          "id": "heading_val",
+          "label" : "Valentine Card Heading",
+          "default": "Valentine Gift Box"
+          },
+          {
+          "type":"richtext",
+          "id": "text",
+          "label" : "Valentine Card Description"
+          },
+        {
+        "type":"text",
+        "id": "btn",
+        "label" : "Button Text",
+        "default": "+Add"
+        }
+      ],
+      "blocks": [
+        {
+        "type": "link_list",
+        "name": "Add Collection",
+        "settings": [
+          {
+          "type": "text",
+          "id": "collection_name",
+          "label": "Collection Name"
+          },
+          {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Collection Link"
+          }
+         ]
+       }
+      ]
+    }
+    {% endschema %}

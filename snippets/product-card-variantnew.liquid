@@ -1,0 +1,219 @@
+{%- assign variant_image = variant.image -%}
+{%- assign img_url = variant_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+{%- assign max_height = 345 -%}
+
+<div class="grid-view-item{% unless variant.available %} grid-view-item--sold-out{% endunless %} product-card {{ product.type | handle }}" data-product-card>
+  
+  <a class="target-link"  href="{{ variant.url }}" >
+    {% assign variant_handle = variant.option1 | handleize %}
+	
+    {% assign is_new = false %}
+    {% assign new_variant_handles = '' %}
+    
+    {% assign is_stocked = false %}
+    {% assign is_stocked_handles = '' %}
+    
+    {% assign is_best = false %}
+    {% assign best_variant_handles = '' %}
+
+    {% assign on_sale = false %}
+    {% assign sale_text = '' %}
+	
+    {% assign out_of_stock = false %}
+    {%if variant.inventory_quantity <= 0 and variant.title contains 'Lavender' %}
+      {% assign out_of_stock = true %}
+    {%endif%}
+	 {% assign earth = false %}
+
+   {%if variant.title contains 'Emerajjjld' %}
+    {% assign earth = true %}
+    
+     {%endif%}
+    {%- assign compare_at_price = variant.compare_at_price -%}
+    {%- assign price = variant.price -%}
+    {% if compare_at_price > price %}
+      {% assign on_sale = true %}
+      {% assign percent_off = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | money_without_currency | times: 100 | remove: '.0' %}
+      {% assign sale_text = percent_off | append: '% OFF' %}
+      {%if product.type contains 'Set'%}
+    		{% assign sale_text =  compare_at_price | minus: price  | money_without_currency | round  | replace: '.00', '' | replace: 'AUD', '' | prepend: 'SAVE $'   %}
+      {%endif%}
+    {% endif %}
+    {% for tag in product.tags %}
+      {% if tag == 'new' %}
+        {% assign is_new = true %}
+      {% endif %}
+      {% if tag contains 'new:' %}
+        {% comment %} If there is already a variant then add a comma before adding the next variant {% endcomment %}
+        {% if new_variant_handles != '' %}
+          {% assign new_variant_handles = new_variant_handles | append: ',' %}
+        {% endif %}
+        {% assign handle = tag | replace: 'new: ', '' | replace: 'new:', '' %}
+        {% assign new_variant_handles = new_variant_handles | append: handle %}
+      {% endif %}
+    
+    {% if tag == 'restocked' %}
+        {% assign is_stocked = true %}
+      {% endif %}
+      {% if tag contains 'restocked:' %}
+        {% if is_stocked_handles != '' %}
+          {% assign is_stocked_handles = is_stocked_handles | append: ',' %}
+        {% endif %}
+        {% assign handle = tag | replace: 'restocked: ', '' | replace: 'restocked:', '' %}
+        {% assign is_stocked_handles = is_stocked_handles | append: handle %}
+      {% endif %}
+
+      {% if tag == 'best-seller' %}
+        {% assign is_best = true %}
+      {% endif %}
+      {% if tag contains 'best-seller:' %}
+        {% comment %} If there is already a variant then add a comma before adding the next variant {% endcomment %}
+        {% if best_variant_handles != '' %}
+          {% assign best_variant_handles = best_variant_handles | append: ',' %}
+        {% endif %}
+        {% assign handle = tag | replace: 'best-seller: ', '' | replace: 'best-seller:', '' %}
+        {% assign best_variant_handles = best_variant_handles | append: handle %}
+      {% endif %}
+    {% endfor %}
+
+    {% assign new_variants = new_variant_handles | split: ',' %}
+    {% if new_variant_handles != '' %}
+      {% if new_variant_handles contains ',' %}
+        {% for handle in new_variants %}
+          {% if handle == variant_handle %}
+            {% assign is_new = true %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% if new_variant_handles == variant_handle %}
+          {% assign is_new = true %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+    
+    {% assign stocked_variants = is_stocked_handles | split: ',' %}
+    {% if is_stocked_handles != '' %}
+      {% if is_stocked_handles contains ',' %}
+        {% for handle in stocked_variants %}
+          {% if handle == variant_handle %}
+            {% assign is_stocked = true %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% if is_stocked_handles == variant_handle %}
+          {% assign is_stocked = true %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% assign best_variants = best_variant_handles | split: ',' %}
+    {% if best_variant_handles != '' %}
+      {% if best_variant_handles contains ',' %}
+        {% for handle in best_variants %}
+          {% if handle == variant_handle %}
+            {% assign is_best = true %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% if best_variant_handles == variant_handle %}
+          {% assign is_best = true %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+    {%assign is_beauty = false %}
+    {% if product.type == 'Beauty Pouch' %}
+      {%assign is_beauty = true %}
+    {%endif%}
+      {%assign new_tag =  "products.tags.bests" | t %}
+{%if product.type contains 'Airpods'%}
+{%assign new_tag =  "Trending" %}
+     {%elsif product.type contains 'Keychain' or product.type contains 'Sling' or product.type contains 'Backpacks' or product.type contains 'Notebook' or product.type contains 'Phone Pouch'%}
+    {%assign new_tag =  "New" %}
+{%endif%}
+        {% assign is_airpod_pro = false %}
+			{% if product.tags contains 'airpods_pro' %}
+  				{% assign is_airpod_pro = true %}
+		  {% endif %}
+    <div class="product-tag-list">
+      {% if is_new and earth == false %}
+        <span class="product-tag tag-new">{{new_tag}}</span>
+      {% endif %}
+      {% if is_stocked and earth == false %}
+        <span class="product-tag tag-stocked">{{ "products.tags.stocked" | t }}</span>
+      {% endif %}
+      {% if is_best and earth == false %}
+        <span class="product-tag tag-best">{{ "products.tags.best_seller" | t }}</span>
+      {% endif %}
+      {% if earth %}
+                <img class="earth_tag" src="{{ 'earthday.png' |  asset_img_url : 'master' }}" />
+      {% endif %}
+      {% if on_sale and earth == false %}
+        {% comment %} Get a default sale text based on discounted price {% endcomment %}
+        <span class="product-tag tag-sale">{{ sale_text }}</span>
+      {% endif %}
+       {% if out_of_stock %}
+        {% comment %} Get a default sale text based on discounted price {% endcomment %}
+        <span class="product-tag tag-out-of-stock">Sold Out</span>
+      {% endif %}
+      <span var-titles="{{ variant.title }}" class="product-tag colorofyear">{{ settings.color_of_year }}</span>
+    </div>
+    <div class="product-card__image-with-placeholder-wrapper product-image-fix {{ variant.option1 | handle }}" data-image-with-placeholder-wrapper>
+      <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+        <img class="grid-view-item__image lazyload active data-flickity-lazyload"
+          alt="{{ variant_image.alt }}"
+          data-src="{{ img_url }}"
+          data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+          data-aspectratio="{{ variant_image.aspect_ratio }}"
+          data-sizes="auto"
+          data-image>
+          {%if hover_img %}
+            {% for image in product.images %}
+                {% if image.alt contains '' %}
+                {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                  <img class="grid-view-item__image lazyload hover-img active {{ image.alt }} hide"
+                  alt="{{ variant_image.alt }}"
+                  data-src="{{ img_url }}"
+                  data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                  data-aspectratio="{{ variant_image.aspect_ratio }}"
+                  data-sizes="auto"
+                  data-image>
+                {%endif%}
+            {%endfor%}
+          {%endif%}
+        {% if is_art_series == true %}
+          <div class="artwork-engrave {{ product.type | handle }}"></div>
+        {% else %}
+          <div class="t1 engrave {{ product.type | handle }} {% if is_airpod_pro %} airpods-pro {%endif%} gold {% if variant.option1 == "Barneys New York Edition"%} nomonogramshows{% endif %}"></div>
+          {%if is_beauty %}
+          <div class="t2 engrave {{ product.type | handle }} b-top {{ product.title | handle }} gold"></div>
+          {%endif%}
+        {% endif %}
+      </div>
+
+      <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
+    </div>
+
+    <noscript>
+      {% capture image_size %}{{ max_height }}x{{ max_height }}{% endcapture %}
+      <img class="grid-view-item__image" src="{{ variant_image.src | img_url: image_size, scale: 2 }}" alt="{{ variant_image.alt }}" style="max-width: {{ max_height | times: variant_image.aspect_ratio }}px;">
+    </noscript>
+  
+    {% unless hide_title %}
+      <div class="h5 grid-view-item__title product-card__title" aria-hidden="true">{%if lavender%}The  {{ product.type  }} {%if product.type contains 'Airpods'%} Case {%endif%} {%else%} {{ product.metafields.custom.product_title_cards }} {%endif%}</div>
+  {% unless collection.handle == 'new-collection' or template.name == 'index' %}   
+      <div class="h5 grid-view-item__title product-card__title" aria-hidden="true"> {%if product.type contains 'Watch'%}     <span>{{ variant.option2 }}</span> {%else%}   <span>{{ variant.option1 }}</span> {%endif%}</div>
+      {% endunless %}
+    
+      {% endunless %}
+       <div class="price-holiday-tag">
+         <span class="compare_price pric">
+      {{ product.selected_or_first_available_variant.compare_at_price | money  }}
+         </span>
+      <span class="product_price">
+      {{ product.selected_or_first_available_variant.price | money }}
+      </span>
+       </div>
+    
+           
+  </a>
+</div>

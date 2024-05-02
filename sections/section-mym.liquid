@@ -1,0 +1,67 @@
+<div class="page-width">
+  <div class="page_title_block">
+     <div class="page_sub_title"  data-aos="fade-up">{{ section.settings.title }}</div>
+     <h2 data-aos="fade-up" data-aos-delay="300">{{ section.settings.description }}</h2>
+  </div>
+</div>
+
+<div class="i_p_usp_sec">
+  <div class="page-width"> 
+      {% for block in section.blocks %}
+      <div class="i_p_usp_block">
+        <div class="i_p_usp_left"  data-aos="fade-right">
+          <figure>
+             {{ block.settings.image | img_url: 'master' | img_tag }}
+          </figure>
+        </div>
+        <div class="i_p_usp_right"  data-aos="fade-left">
+          <div class="i_p_usp_right_inner">
+            <h4>{{ block.settings.usp_title }}</h4>
+            {{ block.settings.usp_description }}
+          </div>
+        </div>
+      </div>  
+      {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Mym Section",
+    "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        }
+    ],
+    "blocks": [
+       {
+         "name": "USP Section",
+         "type": "USPSECTION",
+         "settings": [
+           {
+             "type": "image_picker",
+             "id": "image",
+             "label": "Image"
+           },          
+           {
+             "type": "text",
+             "id": "usp_title",
+             "label": "Usp Title"
+           },
+           {
+             "type": "html",
+             "id": "usp_description",
+             "label": "Usp Description"
+           }           
+         ]
+       }
+    ]    
+  }
+{% endschema %}

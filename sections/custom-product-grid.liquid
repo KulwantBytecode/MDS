@@ -1,0 +1,361 @@
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
+<link rel="preload" href="{{ 'component-rte.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>{{ 'component-rte.css' | asset_url | stylesheet_tag }}</noscript>
+{%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+  <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+
+<div class="page-width" id="main-collection-filters" data-id="{{ section.id }}">
+  {% if settings.ss_enable %}
+    <div id="searchspring-toolbar"></div>
+  {% else %} 
+    <div class="applied_filters_list">
+        <div class="a_f_item">
+            Phone Cases
+            <span class="fiter_close">
+                <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 0.906428L8.09357 0L4.5 3.59357L0.906428 0L0 0.906428L3.59357 4.5L0 8.09357L0.906428 9L4.5 5.40643L8.09357 9L9 8.09357L5.40643 4.5L9 0.906428Z" fill="black" />
+                </svg>
+                      
+            </span>
+        </div>
+        <div class="a_f_item">  
+            Blue
+            <span class="fiter_close">
+                <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 0.906428L8.09357 0L4.5 3.59357L0.906428 0L0 0.906428L3.59357 4.5L0 8.09357L0.906428 9L4.5 5.40643L8.09357 9L9 8.09357L5.40643 4.5L9 0.906428Z" fill="black" />
+                 </svg>
+            </span>
+        </div>
+    </div>
+    <div>
+        {% render 'facets', sectionBlock: section.blocks, results: collection, enable_filtering: false, enable_sorting: section.settings.enable_sorting, collapse_on_larger_devices: section.settings.collapse_on_larger_devices %}
+    </div>
+  {% endif %}
+</div>
+{%- endif -%}
+
+<div id="ProductGridContainer">
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    {%- if settings.ss_enable == false and collection.products.size == 0 -%}
+      <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+        <div class="loading-overlay gradient"></div>
+         <div class="title-wrapper center">
+          <h2 class="title title--primary">
+            {{ 'sections.collection_template.empty' | t }}<br>
+            {{ 'sections.collection_template.use_fewer_filters_html' | t: link: collection.url, class: "underlined-link link" }}
+          </h2>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="collection page-width">
+        <div class="loading-overlay gradient"></div>
+      <div class="col_pro_wrap">
+        <div class="col_filters">
+          {% if settings.ss_enable %}
+            <div id="searchspring-sidebar"></div>
+          {% else %}
+            <div class="col_filter_block f_category_block">
+                <h5>Category</h5>
+                <ul>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="checkbox" name="category" value="Phone Cases (28)" />
+                            <span>Phone Cases <span>(28)</span></span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="checkbox" name="category" value="Bags & Backpacks (16)" />
+                            <span>Bags & Backpacks <span>(16)</span></span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="checkbox" name="category" value="Tech Accessories (12)" />
+                            <span>Tech Accessories <span>(12)</span></span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="checkbox" name="category" value="Travel & Lifestyle (6)" />
+                            <span>Travel & Lifestyle <span>(6)</span></span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="checkbox" name="category" value="Wallets (14)" />
+                            <span>Wallets <span>(14)</span></span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="col_filter_block f_colour_block">
+                <h5>Colour</h5>
+                <ul class="f_colour_list">
+                    {% for block in section.blocks %} {% case block.type %} {% when 'color_select' %}
+                    <li>
+                        <label>
+                            <input type="checkbox" name="col-filter-colors" value="{{ block.settings.color_select }}" />
+                            <span class="f_color_option">
+                                <span style="background-color:{{ block.settings.color_select }};"></span>
+                            </span>
+                        </label>
+                    </li>
+                    {% endcase %} {% endfor %}
+                </ul>
+            </div>
+            <div class="col_filter_block f_price_block">
+                <h5>Price Range</h5>
+                <ul>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="radio" name="category" value="Phone Cases (28)" />
+                            <span>$10 to $40</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="radio" name="category" value="Bags &amp; Backpacks (16)" />
+                            <span>$40 to $80</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="radio" name="category" value="Tech Accessories (12)" />
+                            <span>$80 to $120</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="fitler_item">
+                            <input type="radio" name="category" value="Travel &amp; Lifestyle (6)" />
+                            <span>$120 and above</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <button class="clear_filters">CLEAR ALL FILTERS</button>
+          {% endif %}
+        </div>
+      <div class="col_products">
+        {% if settings.ss_enable %}
+          <div id="searchspring-content"></div>
+        {% else %}
+          <ul id="product-grid"
+             data-id="{{ section.id }}"
+             class="{{ collection.products_count }}
+             Huratips-Loop grid grid--2-col product-grid
+             {% if collection.products_count < 4 %} grid--{{ collection.products_count }}-col-tablet{% else %}
+              {% if collection.products_count == 4 %} grid--4-col-desktop{% else %} grid--2-col-tablet grid--one-half-max grid--3-col-desktop grid--one-third-max{% endif %}
+              {% endif %}">
+              {%- for product in collection.products -%}
+                <li class="grid__item">
+                  {% assign count_size = product.metafields.custom.product_gradient_color.value | size %}
+                  {% for gcolor in product.metafields.custom.product_gradient_color.value %}
+                    {% if forloop.index0 == 0 %}
+                      {% assign color_1 = gcolor %}
+                      {% elsif forloop.index0 == 1 %}
+                      {% assign color_2 = gcolor %}
+                    {% endif %}
+                  {% endfor %} 
+                  {% assign singlecolor = product.metafields.custom.single_variant_color.value %}
+                  <input type="hidden" class="custom_product_data" data-is_limited="{{ product.metafields.custom.show_limited_edition }}"  data-singlecolor="{{ singlecolor }}"  data-product_id="{{ product.id }}" {% if product.metafields.custom.product_gradient_color %} data-color1="{{ color_1 }}" data-color2="{{ color_2 }}" {% endif %} data-title="" data-product_url="{{ product.url }}" />
+                  {% render 'custom-product-card',
+                    collection: collection,
+                    variant: variant,
+                    product_card_product: product,
+                    media_size: section.settings.image_ratio,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    add_image_padding: section.settings.add_image_padding,
+                    show_vendor: section.settings.show_vendor,
+                    show_image_outline: section.settings.show_image_outline,
+                    show_rating: section.settings.show_rating
+                  %}
+                </li>
+              {%- endfor -%}
+            </ul>
+            <div id="Huratips-Pagination">
+                {% if paginate.next %}
+                <a href="{{ paginate.next.url }}" class="coll_loading">
+                  Loading
+                </a>
+                {% endif %}  
+            </div>
+          {% endif %}
+      </div>
+      </div>
+        {% if collection.metafields.custom.collection_bottom_text != blank %}
+          <div class="collection_desc_pix">
+        {{ collection.metafields.custom.collection_bottom_text }}
+          </div>
+          {% endif %}
+          
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+ <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var endlessScroll = new Ajaxinate({
+      container: '.Huratips-Loop',
+      pagination: '#Huratips-Pagination',
+      loadingText: 'Loading <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-spinner" viewBox="0 0 20 20"><path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" fill="#919EAB"></path></svg>',
+      callback: function () {
+      var swiper = new Swiper(".list_product-colors", {
+         slidesPerView: 4,
+          cssMode: true,
+          slidesPerGroup: 4,
+          loopedSlides: 4,
+          spaceBetween: 0,
+          navigation: {
+          nextEl: ".icon-next",
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 5,
+            spaceBetween: 0,
+            slidesPerGroup: 5,
+            loopedSlides: 5
+          }
+        },
+       
+      });   
+
+      $('.swiper-wrapper').each(function(index){
+          $(this).on('scroll', chk_scroll);
+      });        
+
+      function chk_scroll(e) {
+            var elem = $(e.currentTarget);
+
+            if (elem[0].scrollWidth - elem.scrollLeft()   <= elem.outerWidth() + 3) {
+     
+              $(this).parent().find('.icon-prev').css('display','block');
+              $(this).parent().find('.icon-next').css('display','none');
+            }
+            else {
+              $(this).parent().find('.icon-prev').css('display','none');
+              $(this).parent().find('.icon-next').css('display','block');
+            }
+        }
+        $(".icon-prev").click(function(){
+          let index = $('.icon-prev').index(this);
+   
+            setTimeout(function () {
+              swiper[index].slideTo(1);
+            }, 175);
+         });
+
+
+        
+      }
+      
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "t:sections.main-collection-product-grid.name",
+  "class": "spaced-section collection-grid-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 16,
+      "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-collection-product-grid.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-collection-product-grid.settings.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_image_padding",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.add_image_padding.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_outline",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.show_image_outline.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
+      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "collapse_on_larger_devices",
+      "default": false,
+      "label": "t:sections.main-collection-product-grid.settings.collapse_on_larger_devices.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show Collection Description"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,119 @@
+<div class="tabs">
+<div class="tab-shadow"></div>
+  <div class="tabs-center">
+
+    {% unless section.settings.hide_all_tab %}
+    <button class="lg_text tablinks" onclick="openBlogCategory(event, 'mds-thinks','true')" id="defaultOpen">Home</button>
+    {% endunless %}
+
+    {% for block in section.blocks %}
+
+      {%assign blog_block = blogs[block.settings.blog_cat] %}
+
+      <button class="lg_text tablinks {% if blog_block.articles == blank %}hide{% endif %}" {% if section.settings.hide_all_tab and forloop.first %} id="defaultOpen" {% else %} id="{{blog_block.handle}}"{% endif %} onclick="openBlogCategory(event, '{{blog_block.handle}}')">{{ block.settings.top_title }}</button>
+      
+    {% endfor %}
+ 
+  </div>
+</div>
+
+<div class="page-width">
+    
+    <div class="signup-block--all" id="signup-block--all">
+        <h2  class="xl_text">{{ section.settings.all_title }}</h2>
+        <p>{{ section.settings.all_desc }}</p>
+    </div>
+
+
+    {% for block in section.blocks %}
+
+      {%assign blog_block = blogs[block.settings.blog_cat] %}
+      
+      <div class="{{blog_block.handle}} tabcontent all_blogs">
+        
+        
+      {% for article in  blog_block.articles %}
+          
+        <div class="signup-block {% unless forloop.first %}hide{%endunless%}">
+            <h2 class="xl_text">{{ block.settings.top_title }}</h2>
+            <p>{{ block.settings.top_desc }}</p>
+          </div>
+            <div class="content-block">
+                <a href="{{ article.url }}" class="image-block-link">
+                    <div class="image-block" 
+                    {% if article.image %}
+                    style="background-image: url('{{ article.image.src | img_url: '1024x1024' }}');"
+                    {% endif %}
+                    >
+                    <div class="title_tag">{{blog_block.title}}</div>
+                    </div>
+                </a>
+                <div class="content-read-more">
+                  <h2 class="xl_text">{{ article.title | link_to: article.url }}</h2>
+                  <p>
+                    {% if article.excerpt.size != blank %}
+                      {{ article.excerpt }}
+                    {% else %}
+                      {{ article.content | strip_html | truncate: 150 }}
+                    {% endif %}
+                  </p>
+
+                  <a href="{{ article.url }}" class="read_more">Read More</a>
+                </div>
+            </div>
+        {% endfor %}
+      </div>
+{% endfor %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Select Blog Categories",
+  "settings": [
+        {
+           "type": "checkbox",
+           "id": "hide_all_tab",
+           "label": "Hide ALL tab from filter",
+           "default": false
+        },
+        {
+          "type": "text",  
+          "id": "all_title",
+          "label": "All Section Title",
+          "default": "All Blog Title"
+        },
+        {
+          "type": "textarea",  
+          "id": "all_desc",
+          "label": "All Section Description",
+          "default": "All Section Description. Add here."
+        }
+      ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Blog Category",
+      "settings": [
+        {
+          "type": "text",  
+          "id": "top_title",
+          "label": "Title Text",
+          "default": "The Blog"
+        },
+        {
+          "type": "textarea",  
+          "id": "top_desc",
+          "label": "Description Text",
+          "default": "Sign Up for free express shipping on your first order, access to exclusive product releases, events and news."
+        },
+        {
+          "type": "blog",  
+          "id": "blog_cat",
+          "label": "Blog Category to display articles"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

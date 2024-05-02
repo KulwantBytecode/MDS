@@ -1,0 +1,211 @@
+<section class="home-blog-section-nav-M desktop-blog-section">
+  <div class="page-width">
+    <div class="blog-heading-sect-navm">
+       <div class="nlog-head-ttl-naveen-M">
+         {% if section.settings.title != blank %}
+         	<h2>{{ section.settings.title }}</h2>
+         {% endif %}
+      </div>
+      <div class="view-all-blog-NaveenMBtn">
+        {% if section.settings.btn_title != blank %}
+        	<a href="{% if section.settings.btn_url != blank %}{{ section.settings.btn_url }}{% else %}javascript:void(0){% endif %}">{{ section.settings.btn_title }}</a>
+        {% endif %}
+      </div>
+    </div>
+     <div class="Home-blog-main-boxNaveenM">
+       
+       <div class="product-collection-left-nav">
+         <div class="blog-image-bigg">
+           {% if section.settings.left_side_img != blank %}
+           <img src="{{ section.settings.left_side_img | img_url: 'master' }}" alt="{{ shop.name }}">
+           {% endif %}
+         </div>
+         <div class="blog-content-bigg">
+           {% if section.settings.left_side_title != blank %}
+           <h3>{{ section.settings.left_side_title }}</h3>
+           {% endif %}
+         </div> 
+       </div>
+       
+       <div class="product-collection-right-nav">
+         <div class="blog-listtt-Navm">
+           <ul>
+             {% for article in blogs[section.settings.blog].articles  limit : 3 %}
+             
+               <li> 
+                 <div class="blog-lists-box-main">
+                   <div class="blog-image-navm">
+                     <img src="{{ article.image | img_url : 'master' }}" alt="{{ article.title }}">
+                   </div>
+                   <div class="blog-content-navm">
+                     <h4>{{ article.title | truncate: 20 }}</h4>
+                     <p>
+                       {%- if article.excerpt.size > 0 -%}
+                          {{ article.excerpt | strip_html | truncate: 20 }}
+                        {%- else -%}
+                          {{ article.content | strip_html | truncate: 20 }}
+                        {%- endif -%}
+                       
+                       <a href="{{ article.url }}"> Read more </a> </p>
+
+                   </div>
+                 </div>
+               </li>
+             
+             {% endfor %}
+             
+             {% comment %}
+           <li> 
+             <div class="blog-lists-box-main">
+                <div class="blog-image-navm">
+                  <img src="{{ 'HEADER_1512x_200bfd30-3feb-4ca6-9a71-441c12df0bb1_1440x.webp' | asset_url }}" alt="">
+               </div>
+               <div class="blog-content-navm">
+                 <h4> The Mini Tote In Tokyo Featuring Hal Hirata </h4>
+                 <p> Hello Tokyo! Get up close and personal with The Mini Tote, the ‘it bag’ that has off... <a href="#"> Read more </a> </p>
+                 
+               </div>
+             </div>
+           </li>
+           <li> 
+             <div class="blog-lists-box-main">
+                <div class="blog-image-navm">
+                  <img src="{{ 'HEADER_3350x_6543cc30-022d-456d-ad8d-dece9a531bb1_1440x.webp' | asset_url }}" alt="">
+               </div>
+               <div class="blog-content-navm">
+                 <h4> The Mini Tote In New York Featuring The Young Emperors </h4>
+                 <p> The Mini Tote In New York Featuring The Young Emperors  <a href="#"> Read more </a> </p>
+                
+               </div>
+             </div>
+           </li>
+           <li> 
+             <div class="blog-lists-box-main">
+                <div class="blog-image-navm">
+                  <img src="{{ 'HEADER_fc43cf41-3d88-471a-8e5a-b7dacc75fcaf_1440x.webp' | asset_url }}" alt="">
+               </div>
+               <div class="blog-content-navm">
+                 <h4> The Mini Tote In Sydney Featuring Tanja Gacic </h4>
+                 <p> Join Creative Director Tanja Gacic as she takes us behind the scenes on the morni... <a href="#"> Read more </a> </p>
+                 
+               </div>
+             </div>
+           </li>
+             {% endcomment %}
+        
+           </ul>
+         </div>
+       </div>
+       
+    </div>
+  </div>
+</section>
+
+<section class="mobile-blog-section">
+      <div class="blog-heading-sect-navm">
+       <div class="nlog-head-ttl-naveen-M">
+         {% if section.settings.title != blank %}
+         	<h2>{{ section.settings.title }}</h2>
+         {% endif %}
+      </div>
+      <div class="view-all-blog-NaveenMBtn">
+        {% if section.settings.btn_title != blank %}
+        	<a href="{% if section.settings.btn_url != blank %}{{ section.settings.btn_url }}{% else %}javascript:void(0){% endif %}">{{ section.settings.btn_title }}</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="mobile-blog-homepage owl-carousel">
+      <div class="carousel-cell">
+        <div class="product-collection-left-nav">
+         <div class="blog-image-bigg">
+           <img src="{{ 'Store_Image_1x1_341c7981-3552-4a3c-b8f3-509283355eb6_2160x.webp' | asset_url }}" alt="">
+         </div>
+         <div class="blog-content-bigg">
+           <h3> Our platform celebrates the unique stories for those who are fulfilling their purpose, and empowering others to do the same on their journey. </h3>
+         </div> 
+       </div>
+      </div>
+       <div class="carousel-cell">
+         <div class="blog-lists-box-main">
+           <div class="blog-image-navm">
+             <img src="{{ 'HEADER_1512x_200bfd30-3feb-4ca6-9a71-441c12df0bb1_1440x.webp' | asset_url }}" alt="">
+           </div>
+           <div class="blog-content-navm">
+             <h4> The Mini Tote In Tokyo Featuring Hal Hirata </h4>
+             <p> Hello Tokyo! Get up close and personal with The Mini Tote, the ‘it bag’ that has off... <a href="#"> Read more </a> </p>
+
+           </div>
+        </div>
+      </div>
+      <div class="carousel-cell">
+         <div class="blog-lists-box-main">
+           <div class="blog-image-navm">
+             <img src="{{ 'HEADER_3350x_6543cc30-022d-456d-ad8d-dece9a531bb1_1440x.webp' | asset_url }}" alt="">
+           </div>
+           <div class="blog-content-navm">
+             <h4> The Mini Tote In New York Featuring The Young Emperors </h4>
+             <p> The Mini Tote In New York Featuring The Young Emperors  <a href="#"> Read more </a> </p>
+
+           </div>
+        </div>
+      </div>
+      <div class="carousel-cell">
+        <div class="blog-lists-box-main">
+          <div class="blog-image-navm">
+            <img src="{{ 'HEADER_fc43cf41-3d88-471a-8e5a-b7dacc75fcaf_1440x.webp' | asset_url }}" alt="">
+          </div>
+          <div class="blog-content-navm">
+            <h4> The Mini Tote In Sydney Featuring Tanja Gacic </h4>
+            <p> Join Creative Director Tanja Gacic as she takes us behind the scenes on the morni... <a href="#"> Read more </a> </p>
+
+          </div>
+        </div>
+      </div>
+      
+  </div>
+</section>
+
+
+{% schema %}
+ {
+    "name": "Home-blog-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "btn_title",
+        "label": "Button Title"
+      },
+      {
+        "type": "url",
+        "id": "btn_url",
+        "label": "Button URl"
+      },
+      {
+        "type": "image_picker",
+        "id": "left_side_img",
+        "label": "Left Side Image"
+      },
+      {
+        "type": "text",
+        "id": "left_side_title",
+        "label": "Left Side Title"
+      },
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "Blog"
+      }
+	],
+    "presets":[
+      {
+        "name": "Home-blog-section",
+        "category": "Custom Content"
+      }
+	]
+ }
+{% endschema %}

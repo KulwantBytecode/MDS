@@ -1,0 +1,48 @@
+<section class="giveaway-works">
+  <div class="page-width">
+    <h2>{{ section.settings.heading }}</h2>
+    <div class="giveaway-works-row">
+      {% for block in section.blocks %}
+        <div class="giveaway-works-col">
+          <p>
+            {{ block.settings.desc }}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Giveaway Works",
+    "settings": [
+      {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        }
+    ],
+       "blocks": [
+  {
+     "name": "Work Section",
+     "type": "header",
+     "limit":3,
+    "settings": [
+      {
+        "type": "html",
+        "label": "Description",
+        "id": "desc"
+      }
+    ]
+  }
+],
+    "presets":
+      [
+        {
+        "name":"Giveaway Works"
+        }
+      ]
+
+  }
+{% endschema %}

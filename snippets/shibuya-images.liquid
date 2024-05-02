@@ -1,0 +1,193 @@
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+{% assign is_airpods = false %}
+ {% if product_card_product.type == 'Mini Tote' or product_card_product.type contains 'Watch' or product_card_product.type contains 'Sling Bag' or  product_card_product.type contains 'Phone Pouch' or product_card_product.type contains 'Backpacks' or product_card_product.type contains 'Camera Bag' or product_card_product.type contains 'Vanity Bag' or product_card_product.type contains 'Soft Tote' or product_card_product.type contains 'Luggage Tag' or product_card_product.type contains 'Webbing Strap' or product_card_product.type contains 'Coin Purse' or product_card_product.type contains 'statement strap' or product_card_product.type == 'Mini Hobo Bag' %}
+   {%unless is_airpod_pro%}
+    {% assign is_shortMonogram = true %}
+    {%endunless%}
+ {% endif %}
+
+ {%if product_card_product.type == 'Airpods'%}
+    {%unless is_airpod_pro%}
+      {% assign is_airpods = true %}
+      {%endunless%}
+ {%endif%}
+
+
+<div class="card-wrapper" p-id = "v-{{variant.id}}">
+  <div class="card-information pr-information">
+    <div class="card-information__wrapper custom-price"  data-product-id="{{ product_card_product.id }}">
+        <a href="{{ product_card_product.url }}" class="full-unstyled-link">
+          <h3 class="card-information__text h5">
+     {%if product.title contains '12' and gift_collection %} Phone Cases {%else%} {{ product.metafields.custom.product_title_cards }} {%endif%}
+          </h3>
+        </a>
+      {%- if show_rating and product_card_product.metafields.reviews.rating.value != blank -%}
+        {% liquid
+          assign rating_decimal = 0 
+          assign decimal = product_card_product.metafields.reviews.rating.value.rating | modulo: 1 
+          if decimal >= 0.3 and decimal <= 0.7
+            assign rating_decimal = 0.5
+          elsif decimal > 0.7
+            assign rating_decimal = 1
+          endif 
+        %}
+        <div class="rating" role="img" aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product_card_product.metafields.reviews.rating.value, rating_max: product_card_product.metafields.reviews.rating.value.scale_max }}">
+          <span aria-hidden="true" class="rating-star color-icon-{{ settings.accent_icons }}" style="--rating: {{ product_card_product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product_card_product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"></span>
+        </div>
+        <p class="rating-text caption">
+          <span aria-hidden="true">{{ product_card_product.metafields.reviews.rating.value }} / {{ product_card_product.metafields.reviews.rating.value.scale_max }}</span>
+        </p>
+        <p class="rating-count caption">
+          <span aria-hidden="true">({{ product_card_product.metafields.reviews.rating_count }})</span>
+          <span class="visually-hidden">{{ product_card_product.metafields.reviews.rating_count }} {{ "accessibility.total_reviews" | t }}</span>
+        </p>      
+      {% endif %}
+      {% comment %}{% render 'price', product_card_product: product, price_class: '' %}{% endcomment %}
+        
+        {% assign compare_at_price = product_card_product.compare_at_price %}
+        {% assign assign price = product_card_product.price | default: 1999 %}
+        {% assign assign available = product_card_product.available | default: false %}
+        {% assign assign money_price = price  | money_without_trailing_zeros %}
+        {% if settings.currency_code_enabled %}
+          {% assign money_price = price | money_without_trailing_zeros  %}
+        {%  endif %}
+      <div class="collection-color-name card-information__text h5">
+     {{ product_card_product.metafields.custom.product_title_cards }}
+    </div>
+      <div class="price 
+        {%- if available == false %} price--sold-out {% endif -%}
+        {%- if compare_at_price > price %} price--on-sale {% endif -%}
+        {%- if product_card_product.price_varies == false and product_card_product.compare_at_price_varies %} price--no-compare{% endif -%}        
+        ">
+        
+        <div class="price__regular">
+          <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
+          <span class="price-item price-item--regular without_sale_price makematch2">
+            {{ money_price}}
+          </span>
+        </div>
+        <div class="price__sale">
+          <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
+          <span class="price-item price-item--sale price-item--last">
+            {{ money_price }}
+          </span>
+          {%- unless product_card_product.price_varies == false and product_card_product.compare_at_price_varies %}
+            <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
+            <span>
+              <s class="price-item price-item--regular without_sale_price makematch2">
+                {% if settings.currency_code_enabled %}
+                  {{ compare_at_price |  money_without_trailing_zeros  }}
+                {% else %}
+                  {{ compare_at_price |   money_without_trailing_zeros  }}
+                {% endif %}
+              </s>
+            </span>
+          {%- endunless -%}
+          
+        </div>        
+        
+      </div>
+    </div>
+    
+  </div>
+  <div class="card card--product card--outline {{ product.metafields.custom.product_title_cards | handle }}" tabindex="-1">
+   {%- if product_card_product.featured_media -%}
+    {%- liquid
+    assign featured_media_aspect_ratio = variant.featured_media.aspect_ratio
+    if variant.featured_media.aspect_ratio == nil
+      assign featured_media_aspect_ratio = 1
+    endif
+  -%} 
+    <a href="{{ product_card_product.url }}" class="full-unstyled-link">
+      
+      <div class="card__inner related_image_pys">
+        <div class="card_image_wrap">
+        <div class="related_image_pys sss media" style="padding-bottom: {{ 1 | divided_by: featured_media_aspect_ratio | times: 100 }}%;">
+     <img class="motion-reduce collection" src="{{ product_card_product.featured_image | product_img_url: 'large' }}" alt="{{ product.title | escape }}">
+            <div alt_engrave ="{{ product_card_product.title}}" class="engrave mobile-engrave icon-chess-piece engrave-collection {{ product_card_product.type | handle }} {% if mini_clutch %}  mini-clutch {%endif%} {% if is_airpod_pro %}  airpods-pro {%endif%} gold {% if personaliser_button == true or product_card_product.selected_or_first_available_variant and product.title == "Mini Tote"  %}nomonogramshows{% endif %} {{ product_card_product.handle }}"></div>
+        </div>
+       
+        <div class="card__badge">
+
+          {% assign is_new = false %}
+          {% assign is_best = false %}
+          {% assign is_fast = false %}  
+          {% for tag in product_card_product.tags %}
+            {% if tag == 'new' %}
+              {% assign is_new = true %}
+            {% endif %}
+            {% if tag == 'best-seller' %}
+              {% assign is_best = true %}
+            {% endif %}
+            {% if tag == 'selling-fast' %}
+              {% assign is_fast = true %}
+            {% endif %}
+          {% endfor %}
+
+      {% if product_card_product.metafields.custom.product_custom_tag1.value != blank %}
+        <span class="badge badge--bottom-left custtomtag1 product-tag">
+        {{ product_card_product.metafields.custom.product_custom_tag1.value }}
+        </span>
+      {% endif %}
+      {% if product_card_product.metafields.custom.product_custom_tag2.value != blank %}
+        <span class="badge badge--bottom-left custtomtag2 product-tag">
+        {{ product.metafields.custom.product_custom_tag1.value }}
+        </span>
+        {% endif %}
+        {% if product_card_product.metafields.custom.product_custom_tag3.value != blank %}
+        <span class="badge badge--bottom-left custtomtag3 product-tag">
+        {{ product_card_product.metafields.custom.product_custom_tag3.value }}
+        </span>
+          {% endif %}          
+          {%if is_fast %} 
+               <span class="badge badge--bottom-left">Selling Fast</span>
+          {%endif%}
+          {%if is_best %} 
+               <span class="badge badge--bottom-left">Best Seller</span>
+          {%endif%}
+          {%if is_new %} 
+               <span class="badge badge--bottom-left">New</span>
+          {%endif%}
+          {% if product_card_product.metafields.custom.coming_soon != blank  %}
+           <span class="badge badge--bottom-left coming-soon">{{ product_card_product.metafields.custom.coming_soon }}</span>       
+          {% endif %}
+
+          {% if variant.metafields.custom.new_custom_tag1.value != blank %}
+          <span class="badge badge--bottom-left custtomtag1 product-tag var-titles="{{ variant.title }}" data-tagavailability="{{ variant.metafields.custom.new_custom_tag1.value }}">{{ variant.metafields.custom.new_custom_tag1.value }}</span>
+          {% endif %}
+          {% if variant.metafields.custom.new_custom_tag2.value != blank %}
+          <span class="badge badge--bottom-left custtomtag2 product-tag var-titles="{{ variant.title }}" data-tagavailability="{{ variant.metafields.custom.new_custom_tag2.value }}">
+          {{ variant.metafields.custom.new_custom_tag2.value }}
+          </span>
+          {% endif %}
+          {% if variant.metafields.custom.new_custom_tag3.value != blank %}
+          <span class="badge badge--bottom-left custtomtag3 product-tag var-titles="{{ variant.title }}" data-tagavailability="{{ variant.metafields.custom.new_custom_tag3.value }}">
+          {{ variant.metafields.custom.new_custom_tag3.value }}
+          </span>
+          {% endif %}            
+              {% if variant.compare_at_price > variant.price -%}
+           {% assign percent_off = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | money_without_currency | times: 100 | remove: '.0' %}
+          {% assign sale_text = percent_off | append: '% OFF' %}
+            <span class="badge badge--bottom-left tag-sale color-{{ settings.sale_badge_color_scheme }}">{{ sale_text }}
+            </span>
+        {% endif %}
+          {%- if product_card_product.available == "dsdsds" -%}
+            <span class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}">{{ 'product_card_product.product.sold_out' | t }}</span>
+          {% comment %}
+            {%- elsif variant.compare_at_price > variant.price -%}
+           {% assign percent_off = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | money_without_currency | times: 100 | remove: '.0' %}
+          {% assign sale_text = percent_off | append: '% OFF' %}
+            <span class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}">{{ sale_text }}
+            </span>
+            {% endcomment %}
+            
+          {%- endif -%}
+           <span class="badge badge--bottom-left {{variant.title}} t3 cardswatch product-tag colorofyear {% if variant.title == "Shibuya Fuchsia"%}show{% else %}hide{% endif %}">{{ settings.color_of_year }}</span>
+        </div>
+      </div>
+</div>
+      
+    </a>
+    {%- endif -%}
+  </div>
+</div>

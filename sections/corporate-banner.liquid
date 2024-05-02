@@ -1,0 +1,99 @@
+<section class="new-homebanner-section-nav">
+  <div class="corpbanner-example">
+    {% for block in section.blocks %}
+      {% if block.type == 'hero_slider' %}
+        <div class="corporate__slide" >
+          <div class="home-slider-mainbox">
+            <div class="home-banner-image">
+              {% if block.settings.image != blank %}
+              	{% comment %}<img lazyload src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}">{% endcomment %}
+                <picture>
+                  <source media="(min-width: 768px)" srcset="{{ block.settings.image | img_url:'1500x' }}" >
+                  <img src="{{ block.settings.mobile_image | img_url:'master' }}" alt="{{ block.settings.title }}" class="lazyload">
+                </picture>
+              {% endif %}
+            </div>
+            <div class="home-banner-content color_nav-{{ forloop.index }}">
+              <div class="bnr-content-inner-nav">
+                {% if block.settings.subtitle != blank %}
+                	<p class="banner-tagline" style="color:{{ block.settings.color_text }}">{{ block.settings.subtitle }}</p>
+                {% endif %}
+                {% if block.settings.title != blank %}
+                	<span style="color:{{ block.settings.color_text }}">{{ block.settings.title }}</span>
+                {% endif %}
+                {% if block.settings.desc != blank %}
+					<span style="color:{{ block.settings.color_text }}">{{ block.settings.desc }}</span>
+                {% endif %}
+                {% if block.settings.btntitle != blank %}
+                <a href="{% if block.settings.btn_url != blank %}{{ block.settings.btn_url }}{% else %}javaascript:void(0){% endif %}">{{ block.settings.btntitle }}</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+ {
+   "name": "HomeSlider-banner-newpix",
+   "settings": [],
+    "blocks":[
+      {
+        "name": "Hero SLider",
+        "type": "hero_slider",
+		"settings":[
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile Image"
+          },          
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "desc",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "btntitle",
+            "label": "Button Title"
+          },
+          {
+            "type": "url",
+            "id": "btn_url",
+            "label": "Button URL"
+          },
+          {
+            "type": "color",
+            "id": "color_text",
+            "label": "Text Color",
+            "default": "#FFFFFF"
+          }          
+		]
+      }
+	],
+    "presets":[
+      {
+        "name": "HomeSlider-banner-newpix",
+        "category": "Custom Content"
+
+      }
+	]
+ }
+{% endschema %}

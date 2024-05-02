@@ -1,0 +1,91 @@
+<div class="featured_logo_section">
+<div class="page-width">
+<!--   <h2 class="lg_text text-center featured-reviews--heading {% unless section.settings.heading %}hide{% endunless %}">{{ section.settings.heading }}</h2> -->
+
+  <ul class="featured-reviews hide-mobile">
+    {% if section.settings.showvogueicon %}
+      <li class="'vogue-icon">{% include 'vogue-icon' %}</li>
+    {% endif %}    
+    {% if section.settings.showcqicon %}
+      <li class="cq-icon">{% include 'cq-icon' %}</li>
+    {% endif %}  
+    {% if section.settings.showforbesicon %}
+      <li>{% include 'forbes-icon' %}</li>
+    {% endif %}      
+    {% if section.settings.showmarieicon %}
+      <li>{% include 'elle-icon' %}</li>
+    {% endif %}    
+    {% if section.settings.showsydneyicon %}
+      <li>{% include 'marie-claire-icon' %}</li>
+    {% endif %}      
+    </ul>
+  
+    <ul class="featured-reviews hide-desktop">
+      {% if section.settings.showvogueicon %}
+      <li>{% include 'vogue-icon' %}</li>
+      {% endif %}    
+      {% if section.settings.showcqicon %}
+        <li>{% include 'cq-icon' %}</li>
+      {% endif %}  
+      {% if section.settings.showforbesicon %}
+        <li>{% include 'forbes-icon' %}</li>
+      {% endif %}      
+      {% if section.settings.showmarieicon %}
+        <li>{% include 'elle-icon' %}</li>
+      {% endif %}    
+      {% if section.settings.showsydneyicon %}
+        <li>{% include 'marie-claire-icon' %}</li>
+      {% endif %}    
+    </ul>
+</div>
+
+</div>
+
+{% schema %}
+ {
+   "name": "newlogo-sectionhome",
+   "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading"
+          },
+          {
+            "type": "checkbox",
+            "id": "showforbesicon",
+            "label": "Show forbes icon",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "showvogueicon",
+            "label": "Show vogue icon",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "showcqicon",
+            "label": "Show cq icon",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "showmarieicon",
+            "label": "Show marie claire icon",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "showsydneyicon",
+            "label": "Show sydney morning icon",
+            "default": true
+          }     
+   ],
+    "presets":[
+      {
+        "name": "newlogo-sectionhome",
+        "category": "Custom Content"
+      }
+    ]
+ }
+{% endschema %}

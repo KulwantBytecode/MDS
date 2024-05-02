@@ -1,0 +1,65 @@
+<div class="hero hero--medium hero-collection-banner  box ratio-container js lazyloaded" id="Hero-collection-banner">
+	<section class="hero__inner about_banner">
+	<div class="video_container">
+		<video autoplay muted loop playsinline >
+			<source src={{ section.settings.video_file | url }} type="video/mp4">
+		</video>
+	</div>
+		<div class="page-width">
+			<div class="banner_inner">
+				{% if section.settings.title != blank %}
+					<h3 class="mega-title">{{ section.settings.title }}</h3>
+				{% endif %}
+				{% if section.settings.content != blank %}
+					<div class="mega-subtitle">{{ section.settings.content }}</div>
+				{% endif %}
+				{% if section.settings.btn_link != blank and section.settings.btn_text != blank %}
+					<a class="btn btn--secondary" data="{{ section.settings.btn_link }}">{{ section.settings.btn_text }}</a>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+</div>
+
+
+{% schema %}
+{
+    "name": "Section About Banner",
+    "class": "index-section index-section--flush",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "Banner Image"
+		},
+		{
+			"type": "text",
+			"id": "video_file",
+			"label": "Banner Video"
+		},
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Title",
+			"default": "A vision with tradition"
+		},
+		{
+			"type": "richtext",
+			"id": "content",
+			"label": "Content",
+			"default": "<p>MAISON de SABRÉ refines the art of personalised leather goods with their signature premium collection of cases, wallets, clutches and pocket accessories.</p>"
+		},
+		{
+			"type": "text",
+			"id": "btn_text",
+			"label": "Button Text",
+			"default": "Read more"
+		},
+		{
+			"type": "url",
+			"id": "btn_link",
+			"label": "Button Link"
+		}
+	]
+}
+{% endschema %}

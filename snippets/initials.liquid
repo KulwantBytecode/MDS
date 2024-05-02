@@ -1,0 +1,107 @@
+{% unless product.handle contains 'the-jelligrain™-phone-case'
+  or product.handle contains 'webbing'
+  or product.handle contains 'pencil'
+  or product.type == 'AirTag Charm'
+  or product.type == 'Leather Protectant'
+%}
+  <div class="tte cstm_btn {% if product.selected_or_first_available_variant.metafields.custom.personaliser_button.value == true %}hide{% endif %}">
+    <a
+      class="btn-customizer btn-border customizer_personalize {% if product.type contains "Pocket Notebook"%} hide_customizer_personalize {% endif %}"
+      {% unless is_mym %}
+        href="javascript:customizer.open();"
+      {% endunless %}
+      {% if is_mym %}
+        disabled="disabled"
+      {% endif %}
+    >
+      {{ 'products.customizer.free_heading' | t }}
+      <svg class="icon_pencil" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+        <polygon points="830.1,402.5,295.4,937.3,84.8,975.4,126.3,768.2,661.1,233.4"/>
+        <path d="M864.5,368.1L695.4,199.1l87.1-87.1c0,0,56.3-32.6,129,40.1c72.9,72.9,40.1,129,40.1,129L864.5,368.1z"/>
+      </svg>
+    </a>
+
+    {% if product.type != 'Airpods'
+      and product.type != 'Phone Case'
+      and product.type != 'Clutches'
+      and product.type != 'Style Set'
+    %}
+      <a
+        class="btn-customizer customizer_edit hide btn-customizer-full-width  {% if product.type contains "Pocket Notebook"%} hide_customizer_edit {% endif %}"
+        href="javascript:customizer.open();"
+      >
+        <span class="personalised_heading">
+          {{ 'products.customizer.personalised_heading' | t }}
+        </span>
+        <span class="c__split hide-desktop">|</span>
+        <span class="customizer_edit-text">
+          <span id="cusomizer-choiceee" class="customizer_choice icon-chess-piece"></span>
+          <span class="customizer_split hide-mobile"></span>
+          <span class="hide-mobile">{{ 'products.customizer.edit' | t }} </span>
+          <span class="edit-icon full-width-customizer hide-desktop">
+            <svg class="icon_pencil" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+              <polygon points="830.1,402.5 295.4,937.3 84.8,975.4 126.3,768.2 661.1,233.4 "/>
+              <path d="M864.5,368.1L695.4,199.1l87.1-87.1c0,0,56.3-32.6,129,40.1c72.9,72.9,40.1,129,40.1,129L864.5,368.1z"/>
+            </svg>
+          </span>
+          <svg class="icon_pencil hide-mobile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+            <polygon points="830.1,402.5 295.4,937.3 84.8,975.4 126.3,768.2 661.1,233.4 "/>
+            <path d="M864.5,368.1L695.4,199.1l87.1-87.1c0,0,56.3-32.6,129,40.1c72.9,72.9,40.1,129,40.1,129L864.5,368.1z"/>
+          </svg>
+        </span>
+      </a>
+    {% else %}
+      <a
+        class="btn-customizer customizer_edit {% if product.type contains "Pocket Notebook"%} hide_customizer_edit {% endif %}"
+        href="javascript:customizer.open();"
+      >
+        <span class="personalised_heading hide-mobile">
+          {{ 'products.customizer.personalised_heading' | t }}
+        </span>
+        <span class="customizer_choice icon-chess-piece"></span>
+        <span class="tiger_initial hide"> {% include 'tiger-icon' %} </span>
+        <span class="customizer_split hide-mobile"></span>
+        <span class="customizer_edit-text">
+          <span class="hide-mobile">{{ 'products.customizer.edit' | t }} </span>
+          <span class="edit-icon hide-desktop">
+            <svg class="icon_pencil" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+              <polygon points="830.1,402.5 295.4,937.3 84.8,975.4 126.3,768.2 661.1,233.4 "/>
+              <path d="M864.5,368.1L695.4,199.1l87.1-87.1c0,0,56.3-32.6,129,40.1c72.9,72.9,40.1,129,40.1,129L864.5,368.1z"/>
+            </svg>
+          </span>
+          <svg class="icon_pencil hide-mobile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+            <polygon points="830.1,402.5 295.4,937.3 84.8,975.4 126.3,768.2 661.1,233.4 "/>
+            <path d="M864.5,368.1L695.4,199.1l87.1-87.1c0,0,56.3-32.6,129,40.1c72.9,72.9,40.1,129,40.1,129L864.5,368.1z"/>
+          </svg>
+        </span>
+      </a>
+    {% endif %}
+    {% if product.type contains 'Pocket Notebook' %}
+      <a
+        id="pocket_curated_section"
+        class="btn-customizer  curated_phrases_css_style hide btn-customizer-full-width "
+        href="javascript:customizer.open();"
+      >
+        <span class="personalised_heading">
+          {{ 'products.customizer.personalised_heading' | t }}
+        </span>
+        <span class="c__split hide-desktop">|</span>
+        <span class="customizer_edit-text">
+          <span id="customizer-choiceee" class="customizer_choice icon-chess-piece"></span>
+          <span class="customizer_split hide-mobile"></span>
+          <span class="hide-mobile">{{ 'products.customizer.edit' | t }} </span>
+          <span class="edit-icon full-width-customizer hide-desktop">
+            <svg class="icon_pencil" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+              <polygon points="830.1,402.5,295.4,937.3,84.8,975.4,126.3,768.2,661.1,233.4"/>
+              <path d="M864.5,368.1L695.4,199.1l87.1-87.1c0,0,56.3-32.6,129,40.1c72.9,72.9,40.1,129,40.1,129L864.5,368.1z"/>
+            </svg>
+          </span>
+          <svg class="icon_pencil hide-mobile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080">
+            <polygon points="830.1,402.5 295.4,937.3 84.8,975.4 126.3,768.2 661.1,233.4 "/>
+            <path d="M864.5,368.1L695.4,199.1l87.1-87.1c0,0,56.3-32.6,129,40.1c72.9,72.9,40.1,129,40.1,129L864.5,368.1z"/>
+          </svg>
+        </span>
+      </a>
+    {% endif %}
+  </div>
+{% endunless %}

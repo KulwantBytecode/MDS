@@ -1,0 +1,53 @@
+<div class="mym-icons page-width">
+	<div class="icons" data-aos="fade-up" data-aos-duration="500" data-aos-delay="000">
+    <img src="{{section.settings.image1 | img_url : 'master'}}" />
+		<p>	{{section.settings.icon1 | strip_html }} </p>
+	</div>
+	<div class="icons" data-aos="fade-up" data-aos-duration="500" data-aos-delay="300">
+    <img src="{{section.settings.image2 | img_url : 'master'}}" />
+		<p>	{{section.settings.icon2 | strip_html }} </p>
+	</div>
+  <div class="icons" data-aos="fade-up" data-aos-duration="500" data-aos-delay="900">
+    <img src="{{section.settings.image3 | img_url : 'master'}}" />
+    <p> {{section.settings.icon3 | strip_html }} </p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Mym icons",
+  "class": "index-section",
+  "settings": [
+   {
+      "type": "richtext",
+      "id": "icon1",
+      "label": "Text 1"
+    },
+	{
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image 1"
+    },
+    {
+      "type": "richtext",
+      "id": "icon2",
+      "label": "Text 2"
+    },
+	{
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image 2"
+    },
+    {
+      "type": "richtext",
+      "id": "icon3",
+      "label": "Text 3"
+    },
+	{
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Image 3"
+    }
+  ]
+}
+{% endschema %}

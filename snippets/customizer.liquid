@@ -1,0 +1,938 @@
+<!-- For custom variant template customization section starts -->
+{% assign is_airpod_pro = false %}
+{% if product.tags contains 'airpods_pro' %}
+  {% assign is_airpod_pro = true %}
+{% endif %}
+{% assign defaultshipmsg = 'products.product.variantctamessage' | t %}
+{% assign shipmsge = '' %}
+{% if product.selected_or_first_available_variant.metafields.custom.shipping_days_text.value != blank %}
+  {% assign shipmsge = product.selected_or_first_available_variant.metafields.custom.shipping_days_text.value %}
+{% elsif product.metafields.custom.product_shipping_text.value != blank %}
+  {% assign shipmsge = product.metafields.custom.product_shipping_text %}
+{% else %}
+  {% assign shipmsge = 'products.product.variantctamessage' | t %}
+{% endif %}
+<input
+  type="hidden"
+  data-prodefaultctamessage="{{ product.custom.shipping_days_text.value }}"
+  id="prodefaultctamessage"
+>
+<input type="hidden" data-defaultctamessage="{{defaultshipmsg}}" id="defaultshippingmessage">
+<div class="customizer lp-product-{{forloop.index}} {{product.id | append:'p'}}">
+  <a class="customizer_mask" href="javascript:customizer.close();"></a>
+  <div class="customizer_wrap">
+    <a class="customizer_close" href="javascript:customizer.close();">
+      {%- if customizer_pdp != blank %}&times;{% else %}&times;{% endif -%}
+    </a>
+    <input type="hidden" value="{{theme.id}}" class="security">
+    <div class="customizer_product{% if product == blank %} hide-mobile{% endif %}">
+      {% if product != blank %}
+        {% assign ships_in = '' %}
+        {% for tag in product.tags %}
+          {% if tag contains 'ships:' %}
+            {% assign ships_in = tag | replace: 'ships:', '' %}
+          {% endif %}
+          {% if tag contains 'limited:' %}
+            {% assign limited_variant_handles = tag
+              | replace: 'limited: ', ''
+              | replace: 'limited:', ''
+              | replace: '-', ' '
+            %}
+            {% assign limited_variant_handles_color = tag
+              | replace: 'limited: ', ''
+              | replace: 'limited:', ''
+              | split: '-'
+            %}
+          {% endif %}
+        {% endfor %}
+        {% assign is_zodiac_series = false %}
+        {% if product.tags contains 'customize_zodiac' %}
+          {% assign is_zodiac_series = true %}
+        {% endif %}
+        {% assign is_art_series = false %}
+        {% if product.tags contains 'customize_artwork' %}
+          {% assign is_art_series = true %}
+        {% endif %}
+        {% assign is_airpod_pro = false %}
+        {% if product.tags contains 'airpods_pro' %}
+          {% assign is_airpod_pro = true %}
+        {% endif %}
+        <div
+          class="container_product-images {%if product.type contains 'Watch'%}{{current_variant.option1 | downcase | replace : ' ','-' }} {%else%} {{current_variant.option1 | downcase | replace : ' ','-' }}{%endif%}"
+          id="{{current_variant.id}}"
+        >
+          <ul class="list_product-images">
+            {% for image in product.images %}
+              {% if image.alt contains 'front' %}
+                {% assign color = image.alt | remove: ' front' | remove: ' disney' %}
+                {% assign active = false %}
+                {% if current_variant != blank %}
+                  {% assign current_color = current_variant.option1 | handleize %}
+                  {% if current_color contains 'ombre' %}
+                    {% assign current_color = current_color | replace: 'ombre', 'ombré' %}
+                  {% endif %}
+                  {% if product.type contains 'Watch' %}
+                    {% assign current_color = current_variant.option1 | handleize %}
+                  {% endif %}
+                  {% if current_color == color %}
+                    {% assign active = true %}
+                  {% endif %}
+                {% else %}
+                  {% if forloop.first %}
+                    {% assign active = true %}
+                  {% endif %}
+                {% endif %}
+                {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                <li
+                  class="active"
+                  data-color="{% if color contains 'ombré'%}{% assign color_1 = color | replace: 'ombré' , 'ombre' %}{% else %}{% assign color_1 = color %}{% endif %}{{ color_1 }}"
+                >
+                  <img
+                    class="lazyload"
+                    alt="{{ image.alt }}"
+                    data-src="{{ img_url }}"
+                    data-widths="[480, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                    data-aspectratio="{{ image.aspect_ratio }}"
+                    data-sizes="auto"
+                    data-image
+                  >
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% for variant in product.variants %}
+              <div id="newvar_input" class="p_id_var{{product.id | append: 'p'}} {{variant.title | handle }}">
+                <input
+                  type="hidden"
+                  id="{{variant.id}}"
+                  class="{{variant.title | handle }}"
+                  data-personalize="{% if product.variants[forloop.index0].metafields.custom.personaliser_button != blank %}{{ product.variants[forloop.index0].metafields.custom.personaliser_button.value }}{% else %}false{% endif %}"
+                >
+              </div>
+            {% endfor %}
+          </ul>
+          {% if product.type contains 'Pocket Notebook' %}
+            <div
+              id="curated_phrase"
+              alt_engrave="{{ product.title}}"
+              class="{% for image in product.images %}{{ image.alt }} {% endfor %}  {{product.handle}} engrave-customizer"
+            ></div>
+            <input type="hidden" value="" id="text_input_field_get1">
+            <input type="hidden" value="" id="text_input_field_get2">
+          {% endif %}
+          <div
+            id="novartitles"
+            alt_engrave="{{ product.title}}"
+            class="{% if product.handle contains 'the-large-soft-backpack' %}largeosftbackpack{% endif %} {% if product.handle contains 'the-zipped-phone-pouch' %}zippedsmartpouch{% endif %} {% for image in product.images %}{{ image.alt }} {% endfor %} {% unless product.type == 'Coin Purse' or product.type == 'Webbing Strap' %} engrave {% endunless %} engrave-customizer mobile-engrave icon-chess-piece {{ product.type | handle }} {% if mini_clutch %} mini-clutch {%endif%} {% if is_airpod_pro %} airpods-pro {%endif%} {{product.handle}} {{ product.type | handleize }} gold"
+          ></div>
+          <input type="hidden" value="{{ product.id}}" id="product_id_for_phrase">
+          {% if is_beauty %}
+            <div class="engrave  {{ product.title | handle }} b-top {{ product.type | handle }} gold"></div>
+          {% endif %}
+          {% if product.type contains 'Phone' %}
+            <div class="zodiac-engrave icon-chess-piece {{ product.type | handle }}  gold"></div>
+          {% endif %}
+        </div>
+        {% for option in product.options_with_values %}
+          {% unless option.name == 'Case Size' %}
+            <div class="container_product-colors {{ current_variant.option1 }} {{ current_variant.option1 }}">
+              <div class="customizer-color-labels">
+                <label class="label_current-color">
+                  {%- if product.type contains 'Watch' -%}
+                    {{- current_variant.option1 -}}
+                  {%- else -%}
+                    {{- current_variant.option1 -}}
+                  {%- endif -%}
+                </label>
+                <span class="{% unless limited_variant_handles contains current_variant.title  %} hide {% endunless %} limited_variant_handles bold">
+                  - {{ 'products.labels.limited' | t }}
+                </span>
+              </div>
+              {% comment %}
+                              <ul class="list_product-colors color-list">
+                                {% for value in option.values %}
+                {% assign newshippingtext = '' %}
+                {% for variant in product.variants %}
+                {% if  variant.option1 == value %}
+                {% assign newshippingtext = variant.metafields.custom.shipping_days_text.value %} {% else %} {% continue %} {% endif %}
+                {% endfor %}
+                                    <li>
+                                      <label shippingtext="{% if product.variants[forloop.index0].metafields.custom.shipping_days_text.value != blank %}{{ product.variants[forloop.index0].metafields.custom.shipping_days_text.value }}{% endif %}" for="customizer-color_{{ value | handleize }}" class="{% if product.variants[forloop.index0].metafields.custom.personaliser_button %}hide{% endif %}">
+                                        <input type="radio" id="customizer-color_{{ value | handleize }}" name="customizer-color" value="{{ value }}"{% if option.selected_value == value %} checked="checked"{% endif %} onchange="customizer.change.variant('{{ value | handleize }}','{{ value }}')">
+                                        <span class="color-option customization_color">
+                                        {% if product.handle == 'apple-watch-bands' %}
+                                          {% for variant in product.variants %}
+                                            {% if variant.option2 == value and variant.metafields.custom.gradientcolor != blank %}
+                                                {% assign count_size = variant.metafields.custom.gradientcolor.value | size %}
+                                                  {% assign g_color = "" %}
+                                                  {% for gcolor in variant.metafields.custom.gradientcolor.value %}
+                                                    {% assign g_color = gcolor %}
+                                                    {% if forloop.index0 == 0 %}
+                                                       {% assign color_1 = g_color %}
+                                                    {% elsif forloop.index0 == 1 %}
+                                                      {% assign color_2 = g_color %}
+                                                    {% endif %}
+                                                  {% endfor %}
+                                                    <span class="{{ value | handleize }}{%if sold_out_variants contains value%} sold-out {%endif%}" {% if variant.metafields.custom.gradient_position.value %}
+                                                    style="{% if count_size > 1 %}background-image: linear-gradient(to bottom, {{ color_1 }} 45%, {{ color_2 }});{% else %}background-color:{{ variant.metafields.custom.gradientcolor.value }};{% endif %}" {% else %}style="{% if count_size > 1 %}background-image: linear-gradient(to right, {{ color_1 }} 50%, {{ color_2 }} 50%);{% else %}background-color:{{ variant.metafields.custom.gradientcolor.value }};{% endif %}" {% endif %}   ></span>
+                                              {% endif %}
+                                          {% endfor %}
+                                        {% else %}
+                                          {% for variant in product.variants %}
+                                            {% if variant.option1 == value and variant.metafields.custom.gradientcolor != blank %}
+                                                {% assign count_size = variant.metafields.custom.gradientcolor.value | size %}
+                                                  {% assign g_color = "" %}
+                                                  {% for gcolor in variant.metafields.custom.gradientcolor.value %}
+                                                    {% assign g_color = gcolor %}
+                                                    {% if forloop.index0 == 0 %}
+                                                       {% assign color_1 = g_color %}
+                                                    {% elsif forloop.index0 == 1 %}
+                                                      {% assign color_2 = g_color %}
+                                                    {% endif %}
+                                                  {% endfor %}
+                                              {% assign personaliser_button = '' %}
+                                              {% for variant in product.variants %}
+                                              {% if  variant.option1 == value %}
+                                              {% assign personaliser_button = variant.metafields.custom.personaliser_button.value %} {% else %} {% continue %} {% endif %}
+                                              {% endfor %}
+                                              <span data-metatext="{{ product.variants[forloop.index0].metafields.custom.shipping_days_text.value }}" data-defaulttext="Ships in 1-2 business days." data-checketxt="{% if product.variants[forloop.index0].metafields.custom.shipping_days_text.value == blank %}emptyfield{% else %}true{% endif %}" data-personalize="{% if product.variants[forloop.index0].metafields.custom.personaliser_button != blank %}{{ product.variants[forloop.index0].metafields.custom.personaliser_button.value }}{% else %}false{% endif %}" class="{{ value | handleize }}{%if sold_out_variants contains value%} sold-out {%endif%}" {% if variant.metafields.custom.gradient_position.value %}
+                                              style="{% if count_size > 1 %}background-image: linear-gradient(to bottom, {{ color_1 }} 45%, {{ color_2 }});{% else %}background-color:{{ variant.metafields.custom.gradientcolor.value }};{% endif %}" {% else %}style="{% if count_size > 1 %}background-image: linear-gradient(to right, {{ color_1 }} 50%, {{ color_2 }} 50%);{% else %}background-color:{{ variant.metafields.custom.gradientcolor.value }};{% endif %}" {% endif %}   ></span>
+                                              {% endif %}
+                                          {% endfor %}
+                                        {% endif %}
+                                        </span>
+                                      </label>
+                                    </li>
+                                {% endfor %}
+                              </ul>
+              {% endcomment %}
+            </div>
+          {% endunless %}
+        {% endfor %}
+      {% endif %}
+    </div>
+    {% assign is_airpods = false %}
+    {% if product.type == 'Mini Tote'
+      or product.type == 'Pixel Phone Case'
+      or product.type == 'Nylon Tote'
+      or product.type == 'Nylon Tote'
+      or product.type == 'Nylon Sling Bag'
+      or product.type == 'Nylon Duffle Bag'
+      or product.type == 'Nylon Backpack'
+      or product.type == 'Laptop Bag'
+      or product.type == 'Duffle'
+      or product.type == 'Mini Backpack'
+      or product.type == 'Mini Soft Backpack'
+      or product.type == 'Trifold Wallet'
+      or product.type == 'Webbing Strap'
+      or product.type == 'Statement Strap'
+      or product.type == 'Watch'
+      or product.type == 'Sling Bag'
+      or product.type == 'Phone Pouch'
+      or product.type == 'Backpacks'
+      or product.type == 'Flaire Messenger Bag'
+      or product.type == 'Large Sling Bag'
+      or product.type == 'Saddle Bag'
+      or product.type == 'Large Messenger Bag'
+      or product.type contains 'Camera Bag'
+      or product.type contains 'Vanity Bag'
+      or product.type contains 'Soft Tote'
+      or product.type contains 'Luggage Tag'
+      or product.type == 'Sunglasses Sleeve'
+      or product.type contains 'Webbing Strap'
+      or product.type contains 'Coin Purse'
+      or product.type contains 'statement strap'
+      or product.type contains 'Small Messenger Bag'
+      or product.type == 'Mini Hobo Bag'
+      or product.type == 'Mini Flap Bag'
+      or product.type contains 'Mini Flap Bag'
+      or product.type contains 'Medium Flap Bag'
+      or product.type contains 'Micro Flap Bag'
+      or product.type contains 'Water Bottle Holder'
+    %}
+      {% unless is_airpod_pro %}
+        {% assign is_shortMonogram = true %}
+      {% endunless %}
+    {% endif %}
+
+    <!-- For card holder and card case -->
+    {% assign is_newmonogram = false %}
+    {% if product.type == 'Card Holder'
+      or product.type == 'Zipped Wallet'
+      or product.type == 'Card Case'
+      or product.type == 'MagSafe Wallet'
+      or product.type == 'Passport Holder'
+    %}
+      {% unless is_airpod_pro %}
+        {% assign is_newmonogram = true %}
+        {% assign is_shortMonogram = false %}
+        {% assign is_airpods = false %}
+      {% endunless %}
+    {% endif %}
+    <!-- ends -->
+
+    {% if product.type == 'Airpods'
+      or product.type == 'AirPods Sling Case'
+      or product.type == 'Keybell Keychain'
+      or product.type == 'AirPods Pouch'
+    %}
+      {% unless is_airpod_pro %}
+        {% assign is_airpods = true %}
+      {% endunless %}
+    {% endif %}
+    {% capture extra_svgs %}
+  <div class="extra-svgs"  >
+   <div class="svgs" style="display:none"> 
+ <div class="svgs-innver">  <a class="initials-heart">&#9825;</a> </div>
+   <div class="svgs-innver"> <a class="initials-2 icon-chess-piece initials-emoji" data-emoji="-"> - </a> </div>
+    <div class="svgs-innver"> <a class="initials-3 icon-chess-piece initials-emoji" data-emoji="!"> ! </a> </div>
+     <div class="svgs-innver"> <a class="initials-4 icon-chess-piece initials-emoji" data-emoji="=">= </a> </div>
+      <div class="svgs-innver"> <a class="initials-5 icon-chess-piece initials-emoji" data-emoji="$"> $ </a> </div>
+       <div class="svgs-innver"> <a class="initials-6 icon-chess-piece initials-emoji" data-emoji="^"> ^ </a> </div>
+        <div class="svgs-innver"> <a class="initials-7 icon-chess-piece initials-emoji" data-emoji="~"> ~ </a> </div>
+        <div class="svgs-innver"> <a class="initials-8 icon-chess-piece initials-emoji" data-emoji="*"> * </a> </div>
+       <div class="svgs-innver"> <a class="initials-1 icon-chess-piece initials-emoji" data-emoji="@"> @ </a> </div>
+    </div>
+   </div> 
+  {% endcapture %}
+
+    {% capture select_foil %}
+    <label class="customizer-color-text">{{ 'products.labels.foil' | t }} - Gold </label> 
+      <div class="foil-list">
+        <label>
+          <input class="checked" type="radio" name="customizer-foil" value="Gold" onchange="customizer.change.foil('Gold')" checked="checked">
+          <span class="foil-option gold"></span>
+        </label>
+        <label>
+          <input type="radio" name="customizer-foil" value="Silver" onchange="customizer.change.foil('Silver')">
+          <span class="foil-option silver"></span>
+        </label>
+        {% comment %}
+        <label>
+          <input type="radio" name="customizer-foil" value="Rose" onchange="customizer.change.foil('Rose')">
+          <span class="foil-option rose"></span>
+        </label>
+        {% endcomment %}
+      </div>
+    {%unless product.type contains 'Watch'  %}
+      <sub class="silver-warning hidden">{{ 'products.product.logo_gold' | t }}</sub>
+    {%endunless%}
+         {%if product.type == 'Nylon Tote' or product.type == 'Nylon Sling Bag' or product.type == 'Nylon Duffle Bag' or product.type == 'Nylon Backpack'  %}
+      <sub class="golden-warning hide-goldenwarning">MAISON de SABRÉ logo will remain in silver</sub>
+    {%endif%}
+    {%if product.type contains 'Phone'  %}
+      <span class="art-warning hide">{{ 'products.product.art_warning' | t }}</span>
+    {%endif%}
+    {% endcapture %}
+
+    {% capture select_foil_only_gold %}
+      <label>{{ 'products.labels.foil' | t }}</label>
+      <div class="foil-list">
+        <label>
+          <input class="checked" type="radio" name="customizer-foil" value="Gold" onchange="customizer.change.foil('Gold')" checked="checked">
+          <span class="foil-option gold"></span>
+        </label>
+      </div>
+    {% endcapture %}
+
+    <div class="customizer_form">
+      <span class="hide customizer__text--preset"></span>
+      <span class="hide customizer__zodiac--preset"> no zodiac </span>
+      <div class="customizer_form-content">
+        {%- assign product_type = 'products.customizer.default_type' | t -%}
+        {% if product != blank %}
+          {%- assign product_type = product.type | replace: 'Backpacks', 'Backpack' -%}
+        {% endif %}
+        {% if product.metafields.custom.personalisertitletext == blank %}
+          <h1 class="personailze_heading">{{ 'products.customizer.heading' | t: type: product_type }}</h1>
+        {% else %}
+          <h1 class="personailze_heading">{{ product.metafields.custom.personalisertitletext }}</h1>
+        {% endif %}
+        <div class="customizer_tabs-container">
+          <ul class="customizer_tabs">
+            {% unless is_art_series %}
+              <li class="customizer_tab active" data-tab="text">
+                <a href="javascript:customizer.change.tab('text')">{{ 'products.customizer.text' | t }}</a>
+              </li>
+            {% endunless %}
+            {% if is_fathers %}
+              <li class="customizer_tab" data-tab="fathers">
+                <a href="javascript:customizer.change.tab('fathers')">{{ 'products.customizer.fathers' | t }}</a>
+              </li>
+            {% endif %}
+            {% if is_zodiac_series %}
+              <li class="customizer_tab" data-tab="horoscopes">
+                <a href="javascript:customizer.change.tab('horoscopes')">{{ 'products.customizer.horoscopes' | t }}</a>
+              </li>
+            {% endif %}
+            {% if is_art_series %}
+              <li class="customizer_tab" data-tab="artwork">
+                <a href="javascript:customizer.change.tab('artwork')">{{ 'products.customizer.artwork' | t }}</a>
+              </li>
+            {% endif %}
+          </ul>
+          <span class="customizer_tab-active"></span>
+        </div>
+        <ul class="customizer_panels">
+          {% unless is_art_series %}
+            <li class="customizer_panel active" data-panel="text">
+              <ul class="customizations">
+                <li class="customizations_initials">
+                  <div class="initials_wrap">
+                    <div class="initials_field">
+                      <input
+                        type="text"
+                        data-fetch="cust"
+                        class="initials {%if is_airpod_pro%} airpods-pro {%else%}{{product.type | handleize}} {%endif%} chess_text icon-chess-piece {%if is_shortMonogram %} shortMonogram {%endif%}"
+                        value=""
+                        onfocus="customizer.focus();"
+                        onblur="customizer.unfocus();"
+                        autocomplete="off"
+                        onkeyup="customizer.onkeyup();"
+                        pattern="[a-zA-Z0-9#.♡&]"
+                        title="{%if is_airpods %} {{- 'products.personalise.airpods.note' | t -}} {%else%} {{- 'products.personalise.note' | t -}} {%endif%}"
+                        maxlength="{%if is_shortMonogram %} 3 {%elsif is_airpods%} 4 {% elsif is_newmonogram %} 5  {%else%} 6 {%endif%}"
+                      >
+                      <div class="initials-label">{{ 'products.personalise.placeholder' | t }}</div>
+                      <div class="initials-right">
+                        {% if is_shortMonogram %}
+                          <a class="initials-heart {%if  product.type contains 'Watch'%} hide {%endif%}">&#9825;</a>
+                          <div class="initials-limit-shortMonogram">0/2</div>
+                        {% elsif is_airpods or product.type == 'Airpods Sling Case' %}
+                          <a class="initials-heart">&#9825;</a>
+                          <div class="initials-limit-airpods">0/3</div>
+                        {% elsif is_newmonogram or product.type == 'Card Case' %}
+                          <a class="initials-heart">&#9825;</a>
+                          <div class="initials-limit-card-holder">0/4</div>
+                        {% else %}
+                          <a class="initials-heart">&#9825;</a>
+                          <div class="initials-limit">0/5</div>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <div class="initials_text">
+                      <span class="normal">
+                        <span
+                          class="variantsshippingtext"
+                          {% if is_preorder and ships_in != '' %}
+                            class="hide"
+                          {% endif %}
+                          data-ships-normal
+                        >
+                          Free personalisation
+                          {% comment %}
+                            {% if product.variants[forloop.index0].metafields.custom.shipping_days_text.value == blank %}
+                              {{ shipmsge }}
+                            {% else %}
+                              {{ product.variants[forloop.index0].metafields.custom.shipping_days_text.value }}
+                            {% endif %}
+                          {% endcomment %}
+                        </span>
+                        <span
+                          {% if ships_in == '' %}
+                            class="hide"
+                          {% endif %}
+                          data-ships-preorder
+                        >
+                          {{- ships_in -}}
+                        </span>
+                      </span>
+                      <span class="error {{is_shortMonogram}}">
+                        {% if is_shortMonogram %}
+                          {{ 'products.personalise.airpods.line1' | t }}
+                          {{ 'products.personalise.airpods.line2' | t }}
+                          {{ 'products.personalise.airpods.line3' | t }}
+                        {% else %}
+                          {{ 'products.personalise.line1' | t }}
+                          {{ 'products.personalise.line2' | t }}
+                          {{ 'products.personalise.line3' | t }}
+                        {% endif %}
+                      </span>
+                    </div>
+                    <a class="initials_clear hide-desktop" href="javascript:customizer.reset();">&times;</a>
+                  </div>
+                </li>
+                <li>
+                  {% if product.type contains 'Pocket Notebook' %}
+                    <div class="curated_phrase">
+                      <p>Or choose from a curated phrase provided by us.</p>
+                      <ul id="curatedList">
+                        <li class="curatedOption" data-value="Million Dollar Ideas.">Million Dollar Ideas.</li>
+                        <li class="curatedOption" data-value="You’re Goals.">You’re Goals.</li>
+                        <li class="curatedOption" data-value="Ideas That Change The World">
+                          Ideas That Change The World
+                        </li>
+                        <li class="curatedOption" data-value="Make Your Mark">Make Your Mark</li>
+                      </ul>
+                    </div>
+                  {% endif %}
+                </li>
+                {% unless product.type contains 'Phone Pouch' %}
+                  <li class="extra-svgs">{{ extra_svgs }}</li>
+                {% endunless %}
+                <li>{{ select_foil }}</li>
+              </ul>
+            </li>
+          {% endunless %}
+        </ul>
+        <div class="customizer_spacer"></div>
+        <div class="customizer_bottom">
+          <button
+            class="btn-customizer btn-blue customizer_save"
+            onclick="(this.getAttribute('aria-disabled') || this.getAttribute('disabled')) ? null : customizer.close()"
+          >
+            {% if customizer_pdp != blank %}{{ 'products.customizer.save' | t }}{% else %}Save{% endif %}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ends -->
+
+<style type="text/css">
+   .hide-goldenwarning{
+     display:none;
+   }
+    .svgs {
+      display: flex;
+      overflow-x: scroll;
+      height: auto;
+      align-items: center;
+      overflow-y: hidden;
+  }
+
+  .svgs .svgs-innver:not(:first-child) a {
+      margin-left: 1rem;
+  }
+  .svgs .svgs-innver:first-child a {
+    margin-left: 0rem !important;
+  }
+
+  .svgs a {
+      font-size: 1.75rem;
+
+  }
+  .icon-chess-piece {
+
+      letter-spacing: 0.1rem;
+  }
+  .svgs-innver a {
+    cursor: pointer;
+  }
+  li.extra-svgs {
+      margin-bottom: 1.25rem;
+  }
+  .initials_text.invalid .error {
+      font-family: 'fontello', 'muli';
+  }
+  @media(max-width: 991px) {
+    .extra-svgs {
+      position: relative;
+  }
+  li.extra-svgs {
+      margin-bottom: 1.5rem;
+  }
+  .extra-svgs::after {
+     content: '';
+      position: absolute;
+      top: 50%;
+      height: 50%;
+      pointer-events: none;
+      right: 0;
+      width: 30px;
+      background: url(https://cdn.shopify.com/s/files/1/0558/2182/8304/files/slider-overflow-shadow.png?v=1621515428);
+  }
+  .svgs .svgs-innver:not(:first-child) a {
+      margin-left: 1.25rem;
+  }
+  .svgs .svgs-innver:last-child a {
+      margin-right: 1.25rem;
+  }
+  }
+  span.tag-tag-new {
+      position: absolute;
+      top: -0.65rem;
+      right: 0.2rem;
+      font-size: 8px;
+      padding: 0 0.1rem;
+      background: red;
+      color: #fff;
+  }
+</style>
+
+{% comment %}
+  <!-- For custom variant template customization section starts  -->
+    {% assign is_airpod_pro = false %}
+  {% if product.tags contains 'airpods_pro' %}
+    {% assign is_airpod_pro = true %}
+  {% endif %}
+  {% assign defaultshipmsg = "products.product.variantctamessage" | t  %}
+  {% assign shipmsge = "" %}
+  {% if product.selected_or_first_available_variant.metafields.custom.shipping_days_text.value != blank %}
+  {% assign shipmsge = product.selected_or_first_available_variant.metafields.custom.shipping_days_text.value %}
+  {% elsif product.metafields.custom.product_shipping_text.value != blank %}
+  {% assign shipmsge = product.metafields.custom.product_shipping_text %}
+  {% else %}
+  {% assign shipmsge = "products.product.variantctamessage" | t  %}
+  {% endif %}
+  <input type="hidden" data-prodefaultctamessage="{{ product.custom.shipping_days_text.value }}" id="prodefaultctamessage">
+  <input type="hidden" data-defaultctamessage="{{defaultshipmsg}}" id="defaultshippingmessage">
+  <div class="customizer lp-product-{{forloop.index}} {{product.id | append:'p'}}">
+    <a class="customizer_mask" href="javascript:customizer.close();"></a>
+    <div class="customizer_wrap">
+      <a class="customizer_close" href="javascript:customizer.close();">{%if customizer_pdp != blank%}&times;{%else%}&times;{%endif%}</a>
+      <input type="hidden" value="{{theme.id}}" class="security"/>
+      <div class="customizer_product{% if product == blank %} hide-mobile{% endif %}">
+        {% if product != blank %}
+            {% assign ships_in = '' %}
+            {% for tag in product.tags %}
+              {% if tag contains 'ships:' %}
+                {% assign ships_in = tag | replace: 'ships:', '' %}
+              {% endif %}
+              {% if tag contains 'limited:' %}
+              {% assign limited_variant_handles = tag | replace: 'limited: ', '' | replace: 'limited:', '' | replace: '-', ' ' %}
+              {% assign limited_variant_handles_color = tag | replace: 'limited: ', '' | replace: 'limited:', '' | split: "-" %}
+              {% endif %}
+            {% endfor %}
+            {% assign is_zodiac_series = false %}
+            {% if product.tags contains 'customize_zodiac' %}
+              {% assign is_zodiac_series = true %}
+            {% endif %}
+            {% assign is_art_series = false %}
+            {% if product.tags contains 'customize_artwork' %}
+              {% assign is_art_series = true %}
+            {% endif %}
+            {% assign is_airpod_pro = false %}
+        {% if product.tags contains 'airpods_pro' %}
+            {% assign is_airpod_pro = true %}
+        {% endif %}
+            <div class="container_product-images {%if product.type contains 'Watch'%}{{current_variant.option1 | downcase | replace : ' ','-' }} {%else%} {{current_variant.option1 | downcase | replace : ' ','-' }}{%endif%}"  id="{{current_variant.id}}">
+              <ul class="list_product-images">
+                {% for image in product.images %}
+                  {% if image.alt contains 'front' %}
+                    {% assign color = image.alt | remove: ' front' | remove: ' disney' %}
+                    {% assign active = false %}
+                    {% if current_variant != blank %}
+                      {% assign current_color = current_variant.option1 | handleize %}
+                     {% if current_color contains 'ombre' %}
+                    {% assign current_color = current_color | replace: 'ombre' , 'ombré'  %}
+                    {%endif%}
+                      {%if product.type contains 'Watch'%}
+                      {% assign current_color = current_variant.option1 | handleize %}
+                      {%endif%}
+                      {% if current_color == color %}
+                        {% assign active = true %}
+                      {% endif %}
+                    {% else %}
+                      {% if forloop.first %}
+                        {% assign active = true %}
+                      {% endif %}
+                    {% endif %}
+                    {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                    <li class="active" data-color="{% if color contains 'ombré'%}{% assign color_1 = color | replace: 'ombré' , 'ombre' %}{% else %}{% assign color_1 = color %}{% endif %}{{ color_1 }}">
+                      <img class="lazyload"
+                        alt="{{ image.alt }}"
+                        data-src="{{ img_url }}"
+                        data-widths="[480, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                        data-aspectratio="{{ image.aspect_ratio }}"
+                        data-sizes="auto"
+                        data-image>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                {% for variant in product.variants %}
+                  <div id="newvar_input" class="p_id_var{{product.id | append: 'p'}} {{variant.title | handle }}">
+                    <input type="hidden" id="{{variant.id}}" class="{{variant.title | handle }}"
+                  data-personalize="{% if product.variants[forloop.index0].metafields.custom.personaliser_button != blank %}{{ product.variants[forloop.index0].metafields.custom.personaliser_button.value }}{% else %}false{% endif %}"
+                  />
+                  </div>
+                {% endfor %}
+              </ul>
+              <div id="novartitles" alt_engrave ="{{ product.title}}" class="{% if product.handle contains 'the-large-soft-backpack' %}largeosftbackpack{% endif %} {% if product.handle contains 'zipped-phone-pouch' %}zippedsmartpouch{% endif %} {% for image in product.images %}{{ image.alt }} {% endfor %} {% unless product.type == 'Coin Purse' or product.type == 'Webbing Strap' %} engrave {% endunless %} engrave-customizer mobile-engrave icon-chess-piece {{ product.type | handle }} {% if mini_clutch %} mini-clutch {%endif%} {% if is_airpod_pro %} airpods-pro {%endif%} {{product.handle}} gold"></div>
+              {%if is_beauty %}
+                <div class="engrave  {{ product.title | handle }} b-top {{ product.type | handle }} gold"></div>
+              {%endif%}
+              {% if product.type contains 'Phone' %}
+                        <div class="zodiac-engrave icon-chess-piece {{ product.type | handle }}  gold"></div>
+                      {% endif %}
+            </div>
+            {% for option in product.options_with_values %}
+            {% unless option.name == 'Case Size' %}
+              <div class="container_product-colors {{ current_variant.option1 }} {{ current_variant.option1 }}">
+                <div class="customizer-color-labels">
+                  <label class="label_current-color">{%if product.type contains 'Watch'%}{{ current_variant.option1 }}{% else %}{{ current_variant.option1 }}{% endif %}</label>
+                  <span class="{% unless limited_variant_handles contains current_variant.title  %} hide {% endunless %} limited_variant_handles bold"> - {{ 'products.labels.limited' | t }} </span>
+                </div>
+              </div>
+              {%endunless%}
+            {% endfor %}
+        {% endif %}
+      </div>
+  {% assign is_airpods = false %}
+  <!-- for the products have limit 2 characters -->
+   {% if product.type == 'Mini Tote' or product.type == 'ID Lanyard' or product.type == 'Tall Soft Tote' or product.type == 'Water Bottle Holder' or product.type == 'Pixel Phone Case' or product.type == 'Nylon Tote' or product.type == 'Nylon Backpack' or product.type == 'Nylon Sling Bag' or product.type == 'Nylon Duffle Bag' or product.type == 'Duffle' or product.type == 'Bifold Wallet' or product.type == 'Long Zip Wallet' or product.type == 'Long Flap Wallet' or product.type == 'Zip Around Wallet' or product.type == 'Zip Card Holder' or product.type == 'Mini Flap Bag' or product.type == 'Small Messenger Bag' or product.type == 'Mini Backpack' or product.type == 'Large Soft Backpack' or product.type == 'Mini Soft Backpack' or product.type == 'Trifold Wallet' or product.type =='Webbing Strap' or product.type == 'Statement Strap' or product.type contains 'Watch' or product.type contains 'Sling Bag' or  product.type contains 'Phone Pouch' or product.type contains 'Backpacks' or product.type contains 'Camera Bag' or product.type contains 'Vanity Bag' or product.type contains 'Soft Tote' or product.type contains 'Luggage Tag' or product.type contains 'Webbing Strap' or product.type contains 'Coin Purse' or product.type contains 'statement strap' or product.type == 'Mini Hobo Bag' or product.type == 'Laptop Bag' or product.type == 'Sunglasses Sleeve' %}
+     {%unless is_airpod_pro%}
+      {% assign is_shortMonogram = true %}
+      {%endunless%}
+   {% endif %}
+  <!-- For card holder and card case -->
+  {% assign is_newmonogram = false %}
+  <!-- for the products have limit 4 characters -->
+   {% if product.type == 'Card Holder'  or product.type == 'Zipped Wallet' or product.type == 'Card Case' or product.type == 'MagSafe Wallet' or product.type == 'Passport Holder' %}
+     {%unless is_airpod_pro%}
+      {% assign is_newmonogram = true %}
+        {% assign is_shortMonogram = false %}
+       {% assign is_airpods = false %}
+      {%endunless%}
+   {% endif %}
+    <!-- ends -->
+    <!-- for the products have limit 3 characters -->
+    {%if product.type == 'Airpods' or product.type == 'Airpods Pouch' or product.type == 'Airpods Belt' or product.type == 'AirPods Sling Case' or product.type == 'Keybell Keychain' %}
+      {%unless is_airpod_pro%}
+        {% assign is_airpods = true %}
+        {%endunless%}
+   {%endif%}
+   {% capture extra_svgs %}
+    <div class="extra-svgs"  >
+     <div class="svgs" style="display:none">
+   <div class="svgs-innver">  <a class="initials-heart">&#9825;</a> </div>
+     <div class="svgs-innver"> <a class="initials-2 icon-chess-piece initials-emoji" data-emoji="-"> - </a> </div>
+      <div class="svgs-innver"> <a class="initials-3 icon-chess-piece initials-emoji" data-emoji="!"> ! </a> </div>
+       <div class="svgs-innver"> <a class="initials-4 icon-chess-piece initials-emoji" data-emoji="=">= </a> </div>
+        <div class="svgs-innver"> <a class="initials-5 icon-chess-piece initials-emoji" data-emoji="$"> $ </a> </div>
+         <div class="svgs-innver"> <a class="initials-6 icon-chess-piece initials-emoji" data-emoji="^"> ^ </a> </div>
+          <div class="svgs-innver"> <a class="initials-7 icon-chess-piece initials-emoji" data-emoji="~"> ~ </a> </div>
+          <div class="svgs-innver"> <a class="initials-8 icon-chess-piece initials-emoji" data-emoji="*"> * </a> </div>
+         <div class="svgs-innver"> <a class="initials-1 icon-chess-piece initials-emoji" data-emoji="@"> @ </a> </div>
+      </div>
+     </div>
+    {% endcapture %}
+
+      {% capture select_foil %}
+      <label class="customizer-color-text">{{ 'products.labels.foil' | t }} - Gold </label>
+        <div class="foil-list">
+          <label>
+            <input class="checked" type="radio" name="customizer-foil" value="Gold" onchange="customizer.change.foil('Gold')" checked="checked">
+            <span class="foil-option gold"></span>
+          </label>
+          <label>
+            <input type="radio" name="customizer-foil" value="Silver" onchange="customizer.change.foil('Silver')">
+            <span class="foil-option silver"></span>
+          </label>
+          {% comment %}
+          <label>
+            <input type="radio" name="customizer-foil" value="Rose" onchange="customizer.change.foil('Rose')">
+            <span class="foil-option rose"></span>
+          </label>
+          {% endcomment %}
+        </div>
+      {%unless product.type contains 'Watch'  %}
+        <sub class="silver-warning hidden">{{ 'products.product.logo_gold' | t }}</sub>
+      {%endunless%}
+         {%if product.type == 'Nylon Tote' or product.type == 'Nylon Sling Bag' or product.type == 'Nylon Duffle Bag' or product.type == 'Nylon Backpack'  %}
+        <sub class="golden-warning  hide-goldenwarning">MAISON de SABRÉ logo will remain in silver</sub>
+      {%endif%}
+      {%if product.type contains 'Phone'  %}
+        <span class="art-warning hide">{{ 'products.product.art_warning' | t }}</span>
+      {%endif%}
+      {% endcapture %}
+
+      {% capture select_foil_only_gold %}
+        <label>{{ 'products.labels.foil' | t }}</label>
+        <div class="foil-list">
+          <label>
+            <input class="checked" type="radio" name="customizer-foil" value="Gold" onchange="customizer.change.foil('Gold')" checked="checked">
+            <span class="foil-option gold"></span>
+          </label>
+        </div>
+      {% endcapture %}
+
+      <div class="customizer_form">
+        <span class="hide customizer__text--preset"></span>
+        <span class="hide customizer__zodiac--preset"> no zodiac </span>
+        <div class="customizer_form-content">
+          {%- assign product_type = 'products.customizer.default_type' | t -%}
+          {% if product != blank %}
+            {%- assign product_type = product.type | replace: "Backpacks", "Backpack" -%}
+          {% endif %}
+          {%if product.metafields.custom.personaliser_title_text == blank%}
+            <h1 class="personailze_heading">{{ 'products.customizer.heading' | t: type: product_type }}</h1>
+          {%else%}
+            <h1 class="personailze_heading">{{product.metafields.custom.personaliser_title_text}}</h1>
+          {%endif%}
+          <div class="customizer_tabs-container">
+            <ul class="customizer_tabs">
+              {% unless is_art_series %}
+                <li class="customizer_tab active" data-tab='text'>
+                  <a href="javascript:customizer.change.tab('text')">{{ 'products.customizer.text' | t }}</a>
+                </li>
+              {% endunless %}
+              {% if is_fathers %}
+                <li class="customizer_tab" data-tab='fathers'>
+                  <a href="javascript:customizer.change.tab('fathers')">{{ 'products.customizer.fathers' | t }}</a>
+                </li>
+              {% endif %}
+              {% if is_zodiac_series %}
+                <li class="customizer_tab" data-tab='horoscopes'>
+                  <a href="javascript:customizer.change.tab('horoscopes')">{{ 'products.customizer.horoscopes' | t }}</a>
+                </li>
+              {% endif %}
+              {% if is_art_series %}
+                <li class="customizer_tab" data-tab='artwork'>
+                  <a href="javascript:customizer.change.tab('artwork')">{{ 'products.customizer.artwork' | t }}</a>
+                </li>
+              {% endif %}
+            </ul>
+            <span class="customizer_tab-active"></span>
+          </div>
+          <ul class="customizer_panels">
+            {% unless is_art_series %}
+              <li class="customizer_panel active" data-panel="text">
+                <ul class="customizations">
+                  <li class="customizations_initials">
+                     <div class="initials_wrap">
+                      <div class="initials_field">
+
+                        <input type="text" class="initials {%if is_airpod_pro %} airpods-pro {%else%}{{product.type | handleize}} {%endif%} chess_text icon-chess-piece {%if is_shortMonogram %} shortMonogram {%endif%}"  value="" onfocus="customizer.focus();" onblur="customizer.unfocus();" autocomplete="off" pattern="[a-zA-Z0-9#.♡&]" title="{%if is_airpods %} {{- 'products.personalise.airpods.note' | t -}} {%else%} {{- 'products.personalise.note' | t -}} {%endif%}" maxlength="{%if is_shortMonogram %} 3 {%elsif is_airpods%} 4 {% elsif is_newmonogram %}5 {%else%} 6 {%endif%}">
+                        <div class="initials-label">{{ 'products.personalise.placeholder' | t }}</div>
+                        <div class="initials-right">
+                          {%if is_shortMonogram %}
+                           <a class="initials-heart {%if  product.type contains 'Watch'%} hide {%endif%}">&#9825;</a>
+                              <div class="initials-limit-shortMonogram">0/2</div>
+
+                           {%elsif is_airpods or product.type == 'Airpods Belt' %}
+                           <a class="initials-heart">&#9825;</a>
+                             <div class="initials-limit-airpods">0/3</div>
+                           {% elsif is_newmonogram or product.type == 'Card Case'  %}
+                               <a class="initials-heart">&#9825;</a>
+                             <div class="initials-limit-card-holder">0/4</div>
+
+                            {%else %}
+
+                           <a class="initials-heart">&#9825;</a>
+
+                             <div class="initials-limit">0/5</div>
+
+                           {%endif%}
+                        </div>
+                      </div>
+
+                      <div class="initials_text">
+                        <span class="normal">
+                          <span class="variantsshippingtext" {% if is_preorder and ships_in != '' %} class="hide"{% endif %} data-ships-normal>
+                            Free personalisation (ships in 1-2 business days)
+                            {% comment %}
+                            {% if product.variants[forloop.index0].metafields.custom.shipping_days_text.value == blank %}
+                              {{ shipmsge }}
+                            {% else %}
+                              {{ product.variants[forloop.index0].metafields.custom.shipping_days_text.value }}
+                            {% endif %}
+                          {% endcomment %}
+                          </span>
+                          <span {% if ships_in == '' %}class="hide"{% endif %} data-ships-preorder>{{ ships_in }}</span>
+                        </span>
+                        <span class="error {{is_shortMonogram}}">
+                          {%if is_shortMonogram %}
+                              {{ 'products.personalise.airpods.line1' | t }} {{ 'products.personalise.airpods.line2' | t }} {{ 'products.personalise.airpods.line3' | t }}
+                          {%else%}
+                            {{ 'products.personalise.line1' | t }} {{ 'products.personalise.line2' | t }} {{ 'products.personalise.line3' | t }}
+                          {%endif%}
+                        </span>
+                      </div>
+                      <a class="initials_clear hide-desktop" href="javascript:customizer.reset();">&times;</a>
+                    </div>
+                  </li>
+                  {%unless product.type contains "Phone Pouch" %}
+  <li class="extra-svgs">{{ extra_svgs }}</li>
+                   {%endunless%}
+                 <li>{{ select_foil }}</li>
+                </ul>
+              </li>
+
+            {% endunless %}
+
+
+          </ul>
+          <div class="customizer_spacer"></div>
+          <div class="customizer_bottom">
+
+          <button class="btn-customizer btn-blue customizer_save" onclick="(this.getAttribute('aria-disabled') || this.getAttribute('disabled')) ? null : customizer.close()">{%if customizer_pdp != blank%}{{ 'products.customizer.save' | t }}{%else%}Save{%endif%}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ends -->
+
+  <style type="text/css">
+  .hide-goldenwarning{
+    display:none;
+  }
+    .svgs {
+      display: flex;
+      overflow-x: scroll;
+      height: auto;
+      align-items: center;
+      overflow-y: hidden;
+  }
+
+  .svgs .svgs-innver:not(:first-child) a {
+      margin-left: 1rem;
+  }
+  .svgs .svgs-innver:first-child a {
+    margin-left: 0rem !important;
+  }
+
+  .svgs a {
+      font-size: 1.75rem;
+
+  }
+  .icon-chess-piece {
+
+      letter-spacing: 0.1rem;
+  }
+  .svgs-innver a {
+    cursor: pointer;
+  }
+  li.extra-svgs {
+      margin-bottom: 1.25rem;
+  }
+  .initials_text.invalid .error {
+      font-family: 'fontello', 'muli';
+  }
+  @media(max-width: 991px) {
+    .extra-svgs {
+      position: relative;
+  }
+  li.extra-svgs {
+      margin-bottom: 1.5rem;
+  }
+  .extra-svgs::after {
+     content: '';
+      position: absolute;
+      top: 50%;
+      height: 50%;
+      pointer-events: none;
+      right: 0;
+      width: 30px;
+      background: url(https://cdn.shopify.com/s/files/1/0558/2182/8304/files/slider-overflow-shadow.png?v=1621515428);
+  }
+  .svgs .svgs-innver:not(:first-child) a {
+      margin-left: 1.25rem;
+  }
+  .svgs .svgs-innver:last-child a {
+      margin-right: 1.25rem;
+  }
+  }
+  span.tag-tag-new {
+      position: absolute;
+      top: -0.65rem;
+      right: 0.2rem;
+      font-size: 8px;
+      padding: 0 0.1rem;
+      background: red;
+      color: #fff;
+  }
+  </style>
+{% endcomment %}

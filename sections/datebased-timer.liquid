@@ -1,0 +1,112 @@
+<!-- hours count down  -->
+{% if section.settings.homecount_timer %}
+<div class="page-width">
+<div id="clockdiv" style="background:{{section.settings.homebackground_color2 }}">
+<div class="custom_count">
+<div class="Hour_sale">
+{% if  section.settings.homesaletiming2 != blank %}
+<h3 style="color:{{ section.settings.font_color }}">{{ section.settings.homesaletiming2 }}</h3>
+{% endif %}
+</div>  
+<div id="countdown">
+<div id='tiles'></div>
+<div class="labels">
+<!-- <li><span class="c_timevalue" id="c_days"></span><span class="c_label">Days</span></li> -->
+<li><span class="c_timevalue" id="c_hrs"></span><span class="c_label">Hours</span></li>
+<li><span class="c_timevalue" id="c_mins"></span><span class="c_label">MINUTES</span></li>
+<li><span class="c_timevalue" id="c_sec"></span><span class="c_label">SECONDS</span></li>
+</div>
+</div>      
+</div>
+</div>
+</div>
+{% endif %}
+<script>
+var timer;
+var Cdate = "{{ settings.timer }}";
+var compareDate = new Date(Cdate);
+timer = setInterval(function() {
+  timeBetweenDates(compareDate);
+}, 1000);
+
+function timeBetweenDates(toDate) {
+  var dateEntered = toDate;
+  var now = new Date();
+  var difference = dateEntered.getTime() - now.getTime();
+
+  if (difference <= 0) {
+
+    // Timer done
+    clearInterval(timer);
+  
+  } else {
+    
+    var seconds = Math.floor(difference / 1000);
+    var minutes = Math.floor(seconds / 60);
+    var hours = Math.floor(minutes / 60);
+    var days = Math.floor(hours / 24);
+
+    hours %= 24;
+    minutes %= 60;
+    seconds %= 60;
+
+    //document.getElementById('c_days').textContent = days;
+    // console.log(hours);
+    // console.log(minutes);
+    // console.log(seconds);
+    document.getElementById('c_hrs').textContent = hours;
+    document.getElementById('c_mins').textContent = minutes;
+    document.getElementById('c_sec').textContent = seconds;
+    }
+}  
+</script>
+<!-- ends   -->
+
+{% schema %}
+{
+"name": "Collection Page Timer new",
+"class" : "homepage-timer",
+"settings": [
+{
+"type" : "checkbox",
+"id" : "homecount_timer",
+"label" : "Hide or Show Sale Count",
+"default" : true
+},
+{
+"type": "color",
+"id": "homebackground_color",
+"label": "Container Background color",
+"default": "#ffffff"
+},
+{
+"type": "color",
+"id": "homefont_color",
+"label": "Font color",
+"default": "#ffffff"
+},
+{
+"type": "color",
+"id": "homebackground_color2",
+"label": "Container Background color",
+"default": "#ffffff"
+},
+  {
+"type" : "text",
+"id" : "homesaletiming2",
+"label" :"Sale Timing"
+}
+],
+"presets" : [
+{
+"name" : "Date Based Timer"
+}
+]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

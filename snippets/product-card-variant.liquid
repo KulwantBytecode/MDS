@@ -1,0 +1,32 @@
+{% assign count_img = 0 %}
+<div class="product-grid3 {{ product.type | handleize }}">
+    <div class="product-image3">
+        <a href="{{ variant.url | within: collection }}">
+            <img class="pic-1" src="{{ variant.image.src | img_url: 'master' }}" alt="{{image.alt}}">
+            {% for image in product.images %}
+            {% if image.alt contains "perspective" and image.alt contains updatedcolouname %}
+            {% assign count_img = variable | plus: 1 %}
+            <img class="pic-2" src="{{ image | img_url: 'master' }}" alt="{{image.alt}}">
+            {% endif %}
+            {% endfor %}
+
+            {% if count_img == 0 %}
+            {% for image in product.images %}
+            {% if image.alt contains "perspective" and image.alt contains updatedcolortext %}
+            <img class="pic-2 text-wvt-{{forloop.index}}" src="{{ image | img_url: 'master' }}" alt="{{image.alt}}">
+
+            {% break %}
+            {% endif %}
+
+            {% endfor %}
+
+            {% endif %}
+
+
+
+        </a>
+    </div>
+    <div class="product-content">
+        <h3 class="title"><a href="{{ variant.url | within: collection }}">{{ product.metafields.custom.product_title_cards }}</a></h3>
+    </div>
+</div>

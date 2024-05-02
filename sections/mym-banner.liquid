@@ -1,0 +1,98 @@
+
+<!-- this sliderdua can be used multiple times on the same page -->
+<!-- don't change class names because sliderdua will not work -->
+<div class="blog-slider__container">
+  <div class="blogSlides fade hp-slider-1">
+    <div class="page-width">
+      <div class="blog-slider__text"> 
+        {%- if section.settings.title != blank -%}
+              <h3 class="mega-title mega-title-2 text-normal xl_text">{{ section.settings.title | escape }}</h3>
+        {%- endif -%}
+         {%- if section.settings.text != blank -%}
+                <p class="sm_text text-white"> {{ section.settings.text | strip_html }} </p>
+        {%- endif -%}
+        <div class="cta_combo">
+          {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+              <a href="{{ section.settings.button_link }}" class="btn--main">
+                    {{ section.settings.button_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<style>
+    .blogSlides.fade.hp-slider-2.hidden-slide {
+    z-index: -1;
+}
+   .hp-slider-2{
+      background: url({{section.settings.image_mob2 | img_url: "master"}});
+      background-position:center;
+      background-size:cover;
+  }
+  .hp-slider-1 {
+    background: url({{section.settings.image_mob | img_url: "master"}});
+    background-position:center;
+    background-size:cover;
+  }
+  @media(min-width:992px) {
+    .hp-slider-1{
+        background: url({{section.settings.image | img_url: "master"}});
+      background-size:cover;
+      background-position: center;
+      
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Mym Banner",
+  "class": "index-section index-section--flush index-section--banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Banner Image"
+    },
+   
+    {
+      "type": "image_picker",
+      "id": "image_mob",
+      "label": "Mob Banner Image"
+    },
+    
+     {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+   
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+   
+  ],
+  "presets": [
+    {
+      "name": "MYM banner",
+      "category": "Maison"
+    }
+  ]
+}
+{% endschema %}

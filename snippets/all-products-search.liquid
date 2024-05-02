@@ -1,0 +1,118 @@
+<div class="all_product_search">
+  <div class="all_product_search_contain">
+    <h2 class="predictive_search_heading">Products</h2>
+    
+  {% for product in collections.all.products %}
+  	<div class="product_search_grid_wrap" data-title="{{ product.title }}">
+      <div class="product_search_grid">
+        <div class="product_search_grid_left">
+          <a href="{{ product.url }}">
+            <figure>
+              {% if product.first_available_variant.featured_image != blank %}
+              <img src="{{ product.first_available_variant.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+            {% else %}
+              <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+            {% endif %}
+            </figure>
+          </a>
+        </div>
+        <div class="product_search_grid_right">
+          <a href="{{ product.url }}">
+              <h5>{{ product.title | escape }}</h5>
+          </a>
+          <p>{{ product.first_available_variant.title }}</p>
+          <p>{{ product.price | money }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  
+  </div>
+    <button class="predictive_search_item">
+      <em> Search for “<span>ab</span>” </em>
+      <svg viewBox="0 0 14 10" fill="none" aria-hidden="true" focusable="false" role="presentation" class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor">
+        </path>
+      </svg>
+
+    </button>
+</div>
+
+<style>
+  .search-form-navv{
+  	position: relative;
+  }
+  .all_product_search {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    height: auto;
+    background: #FFFFFF;
+    z-index: 9999999 !important;
+    overflow-y: auto;
+    display: none;
+  }
+  .product_search_grid_wrap{
+      display: none;
+  }
+  .product_search_grid{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 10px 5px;
+  }
+  .product_search_grid_left{
+  	max-width: 100px;
+    padding-right: 10px;
+    width: 100%;
+  }
+  .product_search_grid_right{
+  	max-width: calc(100% - 100px);
+    width: 100%;
+  }
+  .product_search_grid_left figure{
+  	margin: 0;
+  }
+  .product_search_grid_left figure img{
+  	max-width: 80px;
+    max-height: 80px;
+    width: 100%;
+    height: 100%;
+  }
+  .product_search_grid_right{
+  	padding: 10px 0;
+  }
+  .product_search_grid_right h5 {
+    margin: 0 0 5px;
+  }
+  .product_search_grid_right p {
+    margin:0;
+    line-height: initial;
+  }
+  button.predictive_search_item em {
+    padding-left: 15px;
+  }
+</style>
+
+<script>
+  $(document).ready(function(){
+    $(".search_input").on("keyup", function() {
+      var value = $(this).val().toLowerCase().trim();
+      $('.predictive_search_item span').text(value);
+      $(".product_search_grid_wrap").filter(function() {
+        var getTH = $(this).toggle($(this).attr('data-title').toLowerCase().indexOf(value) > -1);
+      });
+      if(value.length > 0){
+      	$('.all_product_search').show();
+        $('.clear-search').show();
+      }else{
+      	$('.all_product_search').hide();
+        $('.clear-search').hide();
+      }
+    });
+  });
+</script>

@@ -1,0 +1,65 @@
+<section class="mds-banner-new">
+  <div class="mds-banner-new-row">
+    <div class="mds-banner-new-media">
+      {% if section.settings.section_image != blank %}
+        <a href="{{ section.settings.button_url }}">
+          <img class="desktop_image" src="{{ section.settings.section_image | img_url: 'master' }}" alt="{{ section.settings.image_alt }}"
+        >
+          <img class="mobile_image" src="{{ section.settings.section_image1 | img_url: 'master' }}" alt="{{ section.settings.image_alt }}"
+        >
+        </a>
+      {% endif %}
+    </div>
+    <div class="mds-banner-new-content">
+      {% if section.settings.section_heading != blank %}
+        <h2>{{ section.settings.section_heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.button_text != blank and section.settings.button_url != blank %}
+        <a href="{{ section.settings.button_url }}" class="btn">{{ section.settings.button_text }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Banner section",
+  "settings": [
+        {
+      "type": "image_picker",
+      "id": "section_image",
+      "label": "Desktop Image"
+    },
+            {
+      "type": "image_picker",
+      "id": "section_image1",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image Alt Text"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner section"
+    }
+  ]
+}
+{% endschema %}

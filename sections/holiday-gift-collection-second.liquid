@@ -1,0 +1,97 @@
+{% stylesheet %}
+.content-item.non-dynamic-style {
+    background-color: #fff;
+    color: #000;
+  }
+.content-item.dynamic-style .rte {
+  color: #000;
+}  
+{% endstylesheet %}  
+<div class="page-width holiday-gift-collection-2" style="display:none;">
+  <div class="collection-list">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'collection' %}
+            <div class="collection-list__item">
+              {%- assign collection = collections[block.settings.collection] -%}
+              {%- assign title = collection.title | escape -%}
+              {%- assign description = collection.description  -%}
+              <div class="slider-wrapper">
+                  <div class="content-item mobile-hide dynamic-style" style="background-color:{{ block.settings.color1 }}; color:{{ block.settings.color2 }};">
+                    <div class="product-content relative">
+                       <h3>{{ block.settings.pd_title }}</h3>
+                      <div class="rte" style="color:{{ block.settings.color2 }};">
+                         {{ block.settings.info }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content-item desktop-hide non-dynamic-style">
+                    <div class="product-content relative">
+                       <h3>{{ block.settings.pd_title }}</h3>
+                      <div class="rte">
+                         {{ block.settings.info }}
+                      </div>
+                    </div>
+                  </div>                
+                {% include 'holiday-collection-slider', hideSwatch: block.settings.swatch %}
+              </div>
+            </div>
+      {% endcase %}   
+      {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collection Settings 2nd",
+    "blocks": [
+     {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "label": "Hide Swatch Desktop",
+            "id": "swatchdesk",
+            "type": "checkbox",
+            "default": false
+          },
+          {
+            "label": "Hide Swatch Mobile",
+            "id": "swatchmobi",
+            "type": "checkbox",
+            "default": true
+          },
+          {
+            "label": "Title",
+            "id": "pd_title",
+            "type": "text",
+            "default": "Title"
+          },         
+          {
+            "label": "Info",
+            "id": "info",
+            "type": "textarea",
+            "default": "Shop our range"
+          },
+          {
+            "label": "Tile Bg Color",
+            "id": "color1",
+            "type": "color",
+            "default": "#fff"
+          },
+          {
+            "label": "Tile Text Color",
+            "id": "color2",
+            "type": "color",
+            "default": "#fff"
+          }        
+      ]
+    }
+  ]    
+  }
+{% endschema %}

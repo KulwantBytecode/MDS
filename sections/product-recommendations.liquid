@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-product-grid.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'section-product-recommendations.css' | asset_url }}" media="print" onload="this.media='all'">
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.3.2/swiper-bundle.min.js"></script> 
+<noscript>{{ 'component-card.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'section-product-recommendations.css' | asset_url | stylesheet_tag }}</noscript>
+
+<input type="text" class="product_selected_id" value="{{ product.selected_or_first_available_variant.id }}" style="display: none !important;">
+<input type="text" class="product_selected_title" value="{{ product.selected_or_first_available_variant.title | handle | downcase }}" style="display: none !important;">
+<product-recommendations class="product-recommendations page-width" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=5"  product-json="{{ recommendations.products | json }}">
+  {% if recommendations.performed and recommendations.products_count > 0 %}
+    <h2 class="product-recommendations__heading">{{ section.settings.heading | escape }}</h2>
+  	<ul class="relate_product_pys grid grid--2-col product-grid{% if recommendations.products_count > 3 %} grid--4-col-desktop grid--quarter-max{% else %} grid--{{ recommendations.products_count }}-col-tablet{% endif %}" role="list">
+      {% for recommendation in recommendations.products %}
+      {% unless recommendation.handle == "easy-apply-screen-protector-1" or  recommendation.handle == "make-it-a-gift" %}
+      <li class="relate_product_grid_pys grid__item" data-type="{{ product.type | handle | downcase }}" {{ recommendation.handle }}>
+        {% render 'product-card-recommendations',
+            product_card_product: recommendation,
+            media_size: section.settings.image_ratio,
+            show_secondary_image: section.settings.show_secondary_image,
+            add_image_padding: section.settings.add_image_padding,
+            show_vendor: section.settings.show_vendor,
+            show_image_outline: section.settings.show_image_outline,
+            show_rating: section.settings.show_rating
+          %}
+        </li>
+        {% endunless %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</product-recommendations>
+
+{% javascript %}
+  let loopDone = false;
+  class ProductRecommendations extends HTMLElement {
+    constructor() {
+      super();
+      const handleIntersection = (entries, observer) => {
+        if (!entries[0].isIntersecting) return;
+        observer.unobserve(this);
+
+        fetch(this.dataset.url)
+          .then(response => response.text())
+          .then(text => {
+            
+            const html = document.createElement('div');
+            html.innerHTML = text;
+            const recommendations = html.querySelector('product-recommendations');
+            console.log("text", text)
+            console.log("1212", recommendations);
+            //debugger;
+            if (recommendations && recommendations.innerHTML.trim().length) {
+              this.innerHTML = recommendations.innerHTML;
+            }
+            var swiper = new Swiper(".cstm_slider", {
+               slidesPerView: 5,
+                cssMode: true,
+                slidesPerGroup: 5,
+                loopedSlides: 5,
+                navigation: {
+                nextEl: ".icon-next"
+              },
+            });
+
+            $(document).ready(function () {
+               $('.swiper-wrapper').each(function(index){
+                $(this).on('scroll', chk_scroll);
+              });
+            });
+            function chk_scroll(e) {
+                var elem = $(e.currentTarget);
+                if (elem[0].scrollWidth - elem.scrollLeft()   <= elem.outerWidth() + 3) {
+         
+                    $(this).parent().find('.icon-prev').css('display','block');
+                     $(this).parent().find('.icon-next').css('display','none');
+                }
+                else {
+                 $(this).parent().find('.icon-prev').css('display','none');
+                 $(this).parent().find('.icon-next').css('display','block');
+                }
+            }
+            $(".icon-prev").click(function(){
+              let index = $('.icon-prev').index(this);
+                setTimeout(function () {
+                  swiper[index].slideTo(1);
+                }, 175);
+              
+            });          
+        
+            //initials.load(); 
+            if (html.querySelector('.grid__item')) {
+              this.classList.add('product-recommendations--loaded');
+            }
+          })
+          .catch(e => {
+            console.error(e);
+          });
+      }
+
+      new IntersectionObserver(handleIntersection.bind(this), {rootMargin: '0px 0px 200px 0px'}).observe(this);
+    }
+  }
+
+  customElements.define('product-recommendations', ProductRecommendations);
+{% endjavascript %}
+
+  
+
+{% schema %}
+{
+  "name": "t:sections.product-recommendations.name",
+  "tag": "section",
+  "class": "spaced-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.product-recommendations.settings.paragraph__1.content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "You may also like",
+      "label": "t:sections.product-recommendations.settings.heading.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product-recommendations.settings.header__2.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.product-recommendations.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.product-recommendations.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.product-recommendations.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.product-recommendations.settings.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.product-recommendations.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_image_padding",
+      "default": false,
+      "label": "t:sections.product-recommendations.settings.add_image_padding.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_outline",
+      "default": true,
+      "label": "t:sections.product-recommendations.settings.show_image_outline.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.product-recommendations.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.product-recommendations.settings.show_rating.label",
+      "info": "t:sections.product-recommendations.settings.show_rating.info"
+    }
+  ]
+}
+{% endschema %}

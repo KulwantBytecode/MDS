@@ -1,0 +1,59 @@
+<div class="gift-card-info">
+  <div class="page-width">
+    <div class="product-info-desktop hide-mobile">
+      <div class="rte text-center">
+        <h2>{{ section.settings.heading }}</h2>
+        {{ section.settings.content }}
+      </div>
+    </div>
+    <div class="product-tabs-mobile hide-desktop">
+      <ul>
+        <li class="relative">
+          <a href="javascript:void(0);" class="tab-toggle product-tab-link open" data-type="text">{{ section.settings.heading }}</a>
+          <a href="javascript:void(0);" class="tab-toggle toggle-icon open"></a>
+          <div class="panel is-open" style="display:block;">
+            <div class="rte">{{ section.settings.content }}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+    $(document).ready(function(){
+  $(".tab-toggle").click(function(){
+    $(this).parent('li').find('.panel').slideToggle();
+    $(this).parent('li').find('.tab-toggle').toggleClass('open');
+  });
+  $('.digitalgift .drop-down-amount').click(function(){
+    var amountselectval =$('.drop-down-btn').text();
+    $(this).parents('.product-single').find('.price-item--regular').html(amountselectval);
+
+});
+
+  $('.modal-header-nav .close, .menu-mask').click(function() {
+        $('#cartpopupboxnav').removeClass('activenav');
+        $('html').removeClass('cart-open');
+    });  
+   
+});
+</script>
+{% schema %}
+{
+  "name": "Gift card page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "INFO"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum odio facilis, totam, adipisci et architecto magnam sit facere cupiditate illum ullam veniam nemo iure quae porro, perferendis doloremque aut assumenda! Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum odio facilis, totam, adipisci et architecto magnam sit facere cupiditate illum ullam veniam nemo iure quae porro, perferendis doloremque aut assumenda! Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum odio facilis, totam, adipisci et architecto magnam sit facere cupiditate illum ullam veniam nemo iure quae porro, perferendis doloremque aut assumenda! Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum odio facilis, totam, adipisci et architecto magnam sit facere cupiditate illum ullam veniam nemo iure quae porro, perferendis doloremque aut assumenda!</p>"
+    }
+  ]
+}
+{% endschema %}

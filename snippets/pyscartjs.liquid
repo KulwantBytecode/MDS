@@ -1,0 +1,1666 @@
+<script>
+$(document).ready(function() {
+// apple watch js
+
+// ends
+window.theme = window.theme || {};
+
+    $('.size_help').click(function() {
+      $('.size_help-popup').addClass('open');
+      $('.size_help-popup').css('display','flex');
+      $('html').addClass('no-scroll');
+    });
+  
+    $('.size_help-close, .size_help_mask, .preorder-popup_mask, .size_help-btn').click(function(e) {
+      e.preventDefault();
+      $('.size_help-popup').removeClass('open');
+      $('html').removeClass('no-scroll');
+    });
+  
+
+    $.getJSON('https://api.db-ip.com/v2/free/self', function(data) {
+        if (data.countryCode == 'US') {
+            $('.cart-status.cart-afterpay').removeClass('hide');
+        }
+    });
+
+    $('.afterpay .afterpay-svg, .cart-status.cart-afterpay p').click(function() {
+        $('.afterpay-popup').addClass('open');
+        $('html').addClass('no-scroll');
+    });
+
+    $('.afterpay-close, .preorder-popup_mask').click(function() {
+        $('.afterpay-popup').removeClass('open');
+        $('html').removeClass('no-scroll');
+    });
+
+
+    $('.empty-cart-only').hide();
+    //////////////////// cart drawer custom js
+    $(document).on('click', '#cartopennav, #cartopennavmov', function(e) {
+        e.preventDefault();
+        updateCart();
+        $('#cartpopupboxnav').addClass('activenav');
+        $(".full_cart_loader").show();
+        $('html').addClass('cart-open');
+    });
+
+    $('.modal-header-nav .close, .menu-mask').click(function() {
+        $('#cartpopupboxnav').removeClass('activenav');
+        $('html').removeClass('cart-open');
+    });  
+
+    $(document).on('change','.dropdown-btn',function(e){
+      var variantid = $('option:selected', this).attr('variantid');
+        $.post('/cart/add.js', {
+              quantity: 1,
+              id: variantid
+            }, function(item) {
+              updateCart();
+            }, "json");
+    });
+  
+
+    var shop_url = window.origin;
+  
+    function addToCart(variant_id, qty, props = null) {
+
+        $.post(shop_url + "/cart/add.js", {
+            id: variant_id,
+            quantity: qty,
+            properties: props
+        }, function(result) {
+            updateCart();
+            $(".loading-overlay__spinner").addClass('hidden');
+            $(".gift-spin").addClass('hide');
+            
+            $('#cartpopupboxnav').addClass('activenav');
+            //$(".full_cart_loader").show();
+            $('html').addClass('cart-open');
+        }, "json");
+    }
+
+    $(document).on('click', '.cart_add_btn', function(e) {
+        e.preventDefault();
+        var new_tag_1 = $("#new_tag_1").val();
+        var new_tag_2 = $("#new_tag_2").val();
+        var new_tag_3 = $("#new_tag_3").val();
+        var coming_soon_tag = $("#coming_soon_tag").val();
+
+        if(coming_soon_tag != "")
+        {
+        var new_coming_soon_tag = coming_soon_tag;
+        }
+        else{
+        var new_coming_soon_tag = '';
+        }
+      
+        if(new_tag_1 != "")
+        {
+        var new_tag_11 = new_tag_1;
+        }
+        else{
+        var new_tag_11 = '';
+        }
+
+        if(new_tag_2 != "")
+        {
+        var new_tag_22 = new_tag_2;
+        }
+        else{
+        var new_tag_22 = '';
+        }
+
+        if(new_tag_1 != "")
+        {
+        var new_tag_11 = new_tag_1;
+        }
+        else{
+        var new_tag_11 = '';
+        }
+
+        if(new_tag_3 != "")
+        {
+        var new_tag_33 = new_tag_3;
+        }
+        else{
+        var new_tag_33 = '';
+        }
+      
+      
+        $(".loading-overlay__spinner").removeClass('hidden');
+        $(".gift-spin").removeClass('hide');
+        var check_data_personalize = $(".color-swatch[data-status='checkedx']").attr('data-personalize');
+        if($('.initials').hasClass('shortMonogram'))
+        {
+          var mdsEngraving = validateShortMonogram(localStorage.getItem('mdsEngraving') != null ? localStorage.getItem('mdsEngraving') : '');
+          console.log(mdsEngraving);
+        }
+      else
+        {
+          var mdsEngraving = localStorage.getItem('mdsEngraving') != null ? localStorage.getItem('mdsEngraving') : '';
+        }
+        if(check_data_personalize == "true")
+        {
+          var props = {
+              'Text': '',
+              'Foil Colour': '',
+              '_NEWTAG1' : new_tag_11,
+              '_NEWTAG2' : new_tag_22,
+              '_NEWTAG3' : new_tag_33,
+              '_COMINGSOON' : new_coming_soon_tag
+          };          
+        }
+      else
+        {
+        var props = {
+            'Text': mdsEngraving,
+            'Foil Colour': localStorage.getItem('mdsEngraving') != null ? localStorage.getItem('mdsFoil') : '',
+            '_NEWTAG1' : new_tag_11,
+            '_NEWTAG2' : new_tag_22,
+            '_NEWTAG3' : new_tag_33,
+            '_COMINGSOON' : new_coming_soon_tag
+        };
+        }
+
+        var variant_id = $(this).attr('data-id');
+        let properties = props;
+        $(".full_cart_loader").show();
+        var qty = 1;
+        if (props.Text != '' && props.Text != null && $(this).parent().find('.cart__props').hasClass('hide') == false) {
+            addToCart(variant_id, qty, properties);
+        } else {
+            addToCart(variant_id, qty);
+        }
+    });
+
+    $(document).on('click', '.cart_add_btn_gift_cart', function(e) {
+        e.preventDefault();
+        $(".loading-overlay__spinner").removeClass('hidden');
+        $(".gift-spin").removeClass('hide');
+        let props = {
+            'Text': '',
+            'Foil Colour': ''
+        };
+
+        var variant_id = $(this).attr('data-id');
+        let properties = props;
+        var qty = 1;
+       
+        if (props.Text != '' && props.Text != null && $(this).parent().find('.cart__props').hasClass('hide') == false) {
+            addToCart(variant_id, qty, properties);
+        } else {
+            addToCart(variant_id, qty);
+        }
+    });
+
+    function makeitmatchpdp(color){   
+        var x = 0;
+        $(".grid__item .card-wrapper .container_product-colors .list_product-colors .swiper-wrapper .swiper-slide .color-option span").each(function(){
+          var input_color_value = $(this).attr('data-color');
+            if(input_color_value == color){
+              var split_data =  $(this).parents().parents('.swiper-slide').attr('aria-label').split("/");
+              if(typeof split_data != "undefined")
+              {
+              var index =  $(this).parents().parents().parents().parents().parents().parents('.grid__item').attr('data-index');
+              $(this).trigger('mouseenter');
+              x++;
+              swiper[index].slideTo(split_data[0]);
+            }
+            }
+        });
+    }
+  
+    function generateMatchingItems(items, parent_class, item_class, colour) {
+          let output = document.createElement('div');
+          output.setAttribute('class', parent_class);
+          if (items.length == 1) {
+              output.classList.add('lefty');
+          }
+      
+          const limit = 4;
+          let toShow = items.length < limit ? items.length : limit;
+      
+          for (let i = 0; i < toShow; i++) {
+              let product = items[i];
+              let variant = '';
+              if (product.product_type.includes('Watch')) {
+                  variant = product.variants.filter(function(variant) {
+                      return variant.option2 == colour;
+                  })[0];
+      
+              } else {
+                  variant = product.variants.filter(function(variant) {
+                      return variant.option1 == colour;
+                  })[0];
+              }
+              let varURL = '/products/' + product.handle + '?variant=' + variant.id;
+      
+              var preorder_matching = document.querySelector('#preorder' + product.id);
+              let is_preorder_matching = false;
+              var preorder_text = null;
+              if (preorder_matching != null) {
+                  let variants_matching = preorder_matching.value.split(',');
+                  //  console.log(variants_matching);
+                  for (var j = 0; j < variants_matching.length; j++) {
+                      let values = variants_matching[j].split(':');
+                      if (values[0] == variant.id) {
+                          preorder_matching = values[1] == "true";
+                      }
+                  }
+              }
+              if (preorder_matching) {
+                  for (var x = 0; x < product.tags.length; x++) {
+                      if (product.tags[x].includes('eta:')) {
+                          preorder_text = product.tags[x].split(':')[1];
+                      }
+                  }
+              }
+      
+              let product_wrapper = document.createElement('div');
+              product_wrapper.setAttribute('class', item_class);
+              output.appendChild(product_wrapper);
+      
+              let featured_item = document.createElement('div');
+              featured_item.classList.add('featured-item');
+              product_wrapper.appendChild(featured_item);
+      
+              let featured_product_image = document.createElement('div');
+              featured_product_image.classList.add('feautred-product-image');
+              featured_item.appendChild(featured_product_image);
+      
+              let image_link = document.createElement('a');
+              image_link.classList.add('image-link');
+              image_link.setAttribute('href', varURL);
+              featured_product_image.appendChild(image_link);
+      
+              let image_wrapper = document.createElement('div');
+              image_wrapper.setAttribute('class', 'grid-view-item__image-wrapper product-card__image-wrapper js product-image-fix');
+              image_wrapper.classList.add(variant.option1.replace(/ /g, '-').toLowerCase());
+              image_link.appendChild(image_wrapper);
+      
+              let rel = document.createElement('div');
+              rel.classList.add('relative');
+              image_wrapper.appendChild(rel);
+      
+              let image = document.createElement('img');
+              image.setAttribute('class', 'grid-view-item__image active');
+              image.setAttribute('src', variant.featured_image.src);
+              rel.appendChild(image);
+      
+              let is_art_series = product.tags.indexOf('customize_artwork') != -1;
+              // zodiac
+              let is_zodiac_series = product.tags.indexOf('customize_zodiac') != -1;
+      
+              let is_airpods_pro = product.tags.indexOf('airpods_pro') != -1;
+              let mini_clutch = product.tags.indexOf('mini_clutch') != -1;
+      
+              let eng = is_zodiac_series ? 'engrave icon-chess-piece' : is_art_series ? 'artwork-engrave' : is_airpods_pro ? 'engrave icon-chess-piece airpods-pro' : mini_clutch ? 'engrave icon-chess-piece mini-clutch' : 'engrave icon-chess-piece';
+      
+      
+              let text_class = eng + ' ' + product.product_type.replace(/ /g, '-').toLowerCase() + ' ' + foil.get();
+              let text = document.createElement('div');
+      
+              if (is_zodiac_series) {
+                  text.classList.add(zodiac.get().replace(/ /g, '-').toLowerCase());
+              }
+              if (is_art_series) {
+                  text.classList.add(artwork.get().replace(/ /g, '-').toLowerCase());
+              } else {
+                  text.innerText = initials.get(product.product_type);
+              }
+              text.setAttribute('class', text_class);
+              rel.appendChild(text);
+      
+              let featured_details = document.createElement('div');
+              featured_details.classList.add('featured-details');
+              featured_details.classList.add('rte');
+              featured_item.appendChild(featured_details);
+      
+              let p_link = document.createElement('a');
+              p_link.setAttribute('href', varURL);
+              featured_details.appendChild(p_link);
+      
+              let p_title = document.createElement('h4');
+              p_title.innerHTML = variant.option1 + '<br>' + product.title;
+              p_link.appendChild(p_title);
+      
+              let p_price_wrap = document.createElement('div');
+              p_price_wrap.classList.add('price');
+              featured_details.appendChild(p_price_wrap);
+      
+              if (variant.compare_at_price != null && product.product_type != 'Gift Boxes & Tins') {
+                  let variant_compare_price = document.createElement('span');
+                  variant_compare_price.classList.add('price');
+                  variant_compare_price.classList.add('compare_price_matching');
+                  variant_compare_price.classList.add('cart_text');
+                  variant_compare_price.innerHTML = "$"+ variant.compare_at_price;
+                  p_price_wrap.appendChild(variant_compare_price);
+              }
+      
+              let p_price = document.createElement('span');
+              p_price.setAttribute('class', 'price-item price-item--regular');
+              if (variant.compare_at_price != null) {
+                  p_price.setAttribute('class', 'compare_price_color');
+              }
+              p_price.innerText = "$" +parseInt(variant.price) * 100;
+              p_price_wrap.appendChild(p_price);
+      
+              let p_info = document.createElement('p');
+              p_info.innerHTML = product.body_html;
+      
+              p_info.innerHTML = mdsProductDes(product.product_type, mini_clutch);
+              featured_details.appendChild(p_info);
+              p_info.outerHTML += "<br>";
+      
+              let p_add = document.createElement('a');
+              p_add.setAttribute('class', 'btn btn--pill text-upper add-to-bag ajax-atc');
+              p_add.setAttribute('href', varURL);
+              p_add.setAttribute('data-variant', variant.id);
+              p_add.setAttribute('data-art', is_art_series);
+              p_add.setAttribute('data-zodiac', is_zodiac_series);
+              p_add.setAttribute('p-type', product.product_type);
+              p_add.setAttribute('preorder-text', preorder_text);
+              p_add.innerText = preorder_matching ? "Pre-Order" : cart_add;
+              featured_details.appendChild(p_add);
+          }
+      
+          return output;
+      }
+
+
+  
+    function updateMatchingItems(type, colour) {
+      console.log(type);
+        const forNotMatchTag = "notmatch2"; //for airpods
+        $.getJSON('/collections/matching-slider/products.json', function(recommendations) {
+            console.log('recommendations', recommendations);
+            var items = [];
+            var recommendedProducts = recommendations.products.filter(function(product) {
+                return product.product_type != type;
+            });
+            if (recommendedProducts.length > 0) {
+                recommendedProducts.map(function(product) {
+                    if (!(product.tags.indexOf(forNotMatchTag) != -1)) { //for airpods
+                        let sameColour = product.options[product.options.length - 1].values.indexOf(colour) != -1;
+                        if (sameColour) {
+                            items.push(product);
+                        }
+                    }
+                });
+                if (items.length > 0) {
+                    let matching_items_desktop = generateMatchingItems(items, 'grid grid--uniform', 'grid__item medium-up--one-half', colour);
+                    let matching_items_mobile = generateMatchingItems(items, 'css-slider', 'css-slider_slide', colour);
+    
+                    document.querySelector('#product-matching-desktop').innerHTML = matching_items_desktop.outerHTML;
+                    document.querySelector('#product-matching-mobile').innerHTML = matching_items_mobile.outerHTML;
+    
+                    $('.ajax-atc').click(function(e) {
+                        e.preventDefault();
+    
+                        let props = {
+                            'Text': initials.get($(this).attr('p-type')),
+                            'Foil Color': foil.get(),
+                            'Pre-order': $(this).attr('preorder-text') != "null" ? $(this).attr('preorder-text') : ''
+                        };
+                        if (this.dataset.art == "true") {
+                            props = {
+                                'Artwork': artwork.get(),
+                                'Foil Color': 'Gold'
+                            };
+                        }
+                        if (this.dataset.zodiac == "true") {
+                            props = {
+                                'Zodiac': zodiac.get(),
+                                'Foil Color': foil.get()
+                            };
+                        }
+    
+                        let form_data = {
+                            quantity: 1,
+                            id: this.dataset.variant,
+                            properties: props
+                        }
+    
+                        $.post('/cart/add.js', form_data, function(item) {
+                            loadCart(2);
+    
+                            $('#cartMenu').addClass('open');
+                            $('html').addClass('no-scroll');
+                        }, "json");
+                    });
+    
+                    //createFlickity(matching_items_mobile);
+                } else {
+                    updateMatchingItems(type, 'Black Caviar');
+                }
+            }
+        });
+    }
+    function updateCartItem(line, qty) {
+        $.post(shop_url + "/cart/change.js", {
+            line: line,
+            quantity: qty
+        }, function(result) {
+            updateCart();
+        }, "json");
+    }
+
+
+  // matching items on change
+    $('.color-swatch').click(function(){
+    var type = $(this).attr('data-pdtype');
+    var colour = $(this).attr('data-color');
+      // console.log('here');
+      makeitmatchpdp(colour);
+    });
+
+    // var product_selected_title = $(".product_selected_title").attr('data-color');
+    // if(product_selected_title !== "")
+    // {
+    //   makeitmatchpdp(product_selected_title);
+    // }
+  // ends
+  
+    // Remove Item from Cart
+    $(document).on('click', '.remove_cart_item', function() {
+        $(this).parent().parent().parent().parent().addClass('cart_loading');
+        $(this).parent().parent().parent().parent().find('.cart_popup_bg').removeClass('hide');
+        var line = $(this).attr('data-line');
+        var qty = 0;
+        updateCartItem(line, qty);
+    });
+
+    $('.matching-heading').click(function(event, empty = null) {
+        if (empty != null && empty == 'open') {
+            $(this).addClass('open');
+        } else {
+            $(this).toggleClass('open');
+        }
+        if ($(this).hasClass('open')) {
+            $('.cart__matching').css('background', "#f4f4f4");
+            $('.css-slider').slideDown(300, function() {});
+        } else {
+            $('.cart__matching').css('background', "#fff");
+            $('.css-slider').slideUp(300, function() {});
+
+        }
+    });
+
+    // Increment Item IN Cart
+    $(document).on('click', '.cart_item_plus', function() {
+        //console.log($(this).parent().parent().parent());
+        $(this).parent().parent().parent().parent().parent().parent().addClass('cart_loading');
+        $(this).parent().parent().parent().parent().parent().parent().find('.cart_popup_bg').removeClass('hide');
+
+        var input_val = $(this).closest('.QuantityBox').find('.QuantityInput').val();
+        input_val = Number(input_val) + 1;
+        $(this).closest('.QuantityBox').find('.QuantityInput').val(input_val);
+        var variant_id = $(this).attr('variant_id');
+        var qty = $(this).closest('.QuantityBox').find('.QuantityInput').val();
+        var line = $(this).attr('data-line');
+        //console.log(line);
+        updateCartItem(line, qty);
+    });
+
+    // Decrement Item IN Cart
+    $(document).on('click', '.cart_item_minus', function() {
+        $(this).parent().parent().parent().parent().parent().parent().addClass('cart_loading');
+        $(this).parent().parent().parent().parent().parent().parent().find('.cart_popup_bg').removeClass('hide');
+        var input_val = $(this).closest('.QuantityBox').find('.QuantityInput').val();
+        input_val = Number(input_val) - 1;
+        $(this).closest('.QuantityBox').find('.QuantityInput').val(input_val);
+        var qty = $(this).closest('.QuantityBox').find('.QuantityInput').val();
+        var line = $(this).attr('data-line');
+        updateCartItem(line, qty);
+    });
+
+    //updateCart();
+
+    function addMatchingItem(btn, variant, is_art_series, is_zodiac_series, is_upsell, productType, preorder_text) {
+        btn.addEventListener('click', function(e) {
+
+            e.preventDefault();
+            $('.matching-heading').trigger('click');
+            $(".matching__atc").addClass('hide');
+            $(".adding_atc").removeClass('hide');
+            $(".adding_atc").attr('disabled', true);
+            let btn_text = $(this).find('[data-add-to-cart-text]')[0];
+            let btn_loader = $(this).find('[data-loader]')[0];
+            if (btn_text != null && btn_loader != null) {
+                btn_text.classList.add('hide');
+                btn_loader.classList.remove('hide');
+            }
+
+            let props = {
+               'Text': initials.get(productType),
+                'Foil Color': foil.get(),
+               
+
+                'Pre-order': preorder_text
+            };
+
+            if ($(btn).hasClass('upsell_item--add')) {
+                props = {
+                    'Text': '',
+                    'Foil Color': ''
+                };
+            }
+            if (is_art_series) {
+                props = {
+                    'Artwork': artwork.get(),
+                    'Foil Color': 'Gold'
+                };
+            }
+
+            //Zodiac
+            if (is_zodiac_series) {
+                props = {
+                    'Zodiac': zodiac.get(),
+                    'Foil Color': 'Gold'
+                };
+            }
+
+            $.post('/cart/add.js', {
+                quantity: 1,
+                id: variant.id,
+                properties: props
+            }, function(item) {
+                updateCart();
+                if (btn_text != null && btn_loader != null) {
+                    btn_text.classList.remove('hide');
+                    btn_loader.classList.add('hide');
+                }
+            }, "json");
+        });
+
+    }
+
+
+    function checkDisneycolor(col) {
+        if (col.includes('Pluto') || col.includes('Donald') || col.includes('Daisy') || col.includes('Mickey') || col.includes('Minnie') || col.includes('Goofy') || col.includes('Tempered')) {
+
+            return true;
+        }
+        return false;
+    }
+
+    function checkdisneycolour(col) {
+
+        if (col.includes('Pluto')) {
+            return 'Emerald Green';
+        }
+        if (col.includes('Donald')) {
+            return 'Sky Blue';
+        }
+        if (col.includes('Daisy')) {
+            return 'Lavender Purple';
+        }
+        if (col.includes('Mickey')) {
+            return 'Pomegranate Red';
+        }
+        if (col.includes('Minnie')) {
+            return 'Pink Lily';
+        }
+        if (col.includes('Goofy')) {
+            return 'Manhattan Orange';
+        }
+
+        return col;
+    }
+
+
+    function checkForMatch(cart, product, itemToMatch) {
+        let notInCart = cart.items.filter(function(line_item) {
+            return line_item.product_id == product.id;
+        }).length <= 0;
+        let differentType = product.product_type != itemToMatch.product_type;
+        let typeNotInCart = cart.items.filter(function(line_item) {
+            return line_item.product_type == product.product_type;
+        }).length <= 0;
+        if (product.product_type == 'Screen Protector') {
+            typeNotInCart = true;
+            differentType = true;
+        }
+
+        return notInCart && differentType && typeNotInCart;
+    }
+
+
+    function getMatchingItems(container, cart) {
+        var itemindex = 0;
+        if (cart.items[0].product_type == "Gift Cards" && cart.items[1] != null) {
+            itemindex = 1;
+        }
+        const itemToMatch = cart.items[itemindex];
+        let colour = itemToMatch.variant_options[itemToMatch.variant_options.length - 1];
+        colour = colour.includes('Ombré') ? 'Black Caviar' : colour;
+        colour = colour.includes('Laguna') ? 'Sky Blue' : colour;
+        colour = colour.includes('Kiwi') ? 'Emerald Green' : colour;
+        colour = colour.includes('Viola') ? 'Lavender Purple' : colour;
+        const upsellTag = "upsell2";
+        const forMatchTag = "formatch";
+        const forNotMatchTag = "notmatch2"; //for airpods
+        //matchingCondition 0 for upsell
+        //1 for color
+        //2 for specific tag
+        let var_id = 8;
+
+        function renderProduct(product, matchingCondition, model = '') {
+            //console.log(model);
+            let variant = null;
+            if (model.includes('iPhone 11') || model.includes('iPhone XR Case')) {
+                var_id = 3;
+            }
+            if (model.includes('iPhone 12') || model.includes('iPhone 13')) {
+                var_id = 6;
+            }
+            if (model == 'iPhone 7/8 Case' || model == 'iPhone SE Case') {
+                var_id = 0;
+            }
+            if (model == 'iPhone 7/8 Plus Case') {
+                var_id = 1;
+            }
+            if (model.includes('iPhone 11 Pro') || model == 'iPhone X/XS Case') {
+                var_id = 2;
+            }
+            if (model.includes('iPhone 12 Pro')) {
+                var_id = 6;
+            }
+
+            if (model.includes('iPhone 13')) {
+                var_id = 13;
+            }
+            if (model.includes('iPhone 12 Mini') || model.includes('iPhone 13 Mini')) {
+                var_id = 5;
+            }
+            if (model.includes('iPhone XS Max ') || model.includes('iPhone 11 Pro Max')) {
+                var_id = 4;
+            }
+            if (model.includes('iPhone 13 Pro')) {
+                var_id = 7;
+            }
+            if (model.includes('iPhone 12 Pro Max') || model.includes('iPhone 13 Pro Max')) {
+                var_id = 8;
+            }
+            if (model == 'iPhone 14 Case' || model == "The Sling Phone Case - iPhone 14" || model == "The Jelligrain™ Phone Case - iPhone 14") {
+                var_id = 12;
+            }
+            if (model == "iPhone 14 Plus Case" || model == "The Sling Phone Case - iPhone 14 Plus" || model == "The Jelligrain™ Phone Case - iPhone 14 Plus") {
+                var_id = 11;
+            }
+            if (model == "The Sling Phone Case - iPhone 14 Pro Max" || model == 'iPhone 14 Pro Max Case' || model == "The Jelligrain™ Phone Case - iPhone 14 Pro Max" || model == "The Card Phone Case - iPhone 14 Pro Max") {
+                var_id = 9;
+            }
+            if (model == "The Sling Phone Case - iPhone 14 Pro" || model == "The Jelligrain™ Phone Case - iPhone 14 Pro" || model == "iPhone 14 Pro Case" || model == "The Card Phone Case - iPhone 14 Pro") {
+                var_id = 10;
+            }
+            if (model == 'watch_protector') {
+                var_id = 0;
+            }
+            if (matchingCondition == 0) {
+                variant = product.variants[var_id];
+            }
+
+            if (matchingCondition == 1) {
+                if (product.title.includes('Day Card')) {
+
+                    variant = product.variants[0];
+                } else {
+                    if (colour.includes('Tempered')) {
+                        colour = cart.items[cart.items.length - 1].variant_options[0];
+                    }
+                    colour = checkdisneycolour(colour);
+                    if (product.product_type.includes('Watch')) {
+                        variant = product.variants.filter(function(variant) {
+                            return variant.option2 == colour;
+                        })[0];
+
+                    } else {
+                        variant = product.variants.filter(function(variant) {
+                            return variant.option1 == colour;
+                        })[0];
+                    }
+                }
+            }
+            if (matchingCondition == 2) {
+                var preorder = "none";
+                for (var i = 0; i < product.variants.length; i++) {
+                    //  preorder = product.tags.indexOf("pre order") != -1;
+                    if (product.variants[i].available) {
+                        variant = product.variants[i];
+                        break;
+                    }
+                }
+
+            }
+            if (matchingCondition == 3) {
+
+                variant = product.variants[0];
+            }
+            if (variant == null) {
+                return;
+            }
+            if (!variant.available) {
+                return;
+            }
+            let matching_item = document.createElement('div');
+            let variantURL = '/products/' + product.handle + '?variant=' + variant.id;
+            if (matchingCondition == 0) {
+                let puzzle_description = "Tempered Glass";
+                let puzzle_price = "<span class='upsell_deiscount'>$" + Math.trunc(variant.price) + "</span>";
+
+                puzzle_description = "Tempered Glass";
+                puzzle_price = puzzle_price + "<span class='free_puzzle'>$" + Math.trunc(variant.compare_at_price) + " </span>";
+
+                matching_item.classList.add('css-slider_slide');
+                matching_item.classList.add('slider_matching--items');
+                matching_item.classList.add('screen-protector-upsell');
+
+                let matching__outer = document.createElement('div');
+                matching__outer.classList.add('matching_itemcart_main');
+                matching_item.appendChild(matching__outer);
+
+                let matching__inner = document.createElement('div');
+                matching__inner.classList.add('matching__item__image');
+                matching__inner.classList.add('cart__item__image' + variant.title.replace(/ /g, "-"));
+                matching__outer.appendChild(matching__inner);
+
+                let image_link = document.createElement('a');
+                image_link.classList.add('product-image-fix');
+                image_link.classList.add('matching-image-fix-link');
+
+                matching__inner.appendChild(image_link);
+
+                let image_wrap = document.createElement('div');
+                image_wrap.classList.add('relative');
+                image_link.appendChild(image_wrap);
+
+                let matching_item_image = document.createElement('img');
+                let image_src = variant.featured_image != null ? variant.featured_image.src : product.images[0].src;
+                matching_item_image.setAttribute('src', image_src.replace('.jpg', '_360x.jpg'));
+                matching_item_image.setAttribute('alt', variant.title);
+                image_wrap.appendChild(matching_item_image);
+
+                let matching_form = document.createElement('div');
+                matching_form.classList.add('cart__item__details');
+                matching_form.classList.add('matching-details__form');
+                matching__outer.appendChild(matching_form);
+
+                let variant_info = document.createElement('div');
+                variant_info.classList.add('matching__product-info');
+                matching_form.appendChild(variant_info);
+
+                let variant_title = document.createElement('a');
+                variant_title.classList.add('matching__product-title');
+                variant_title.innerHTML = product.title;
+                variant_info.appendChild(variant_title);
+
+                let description = document.createElement('span');
+                description.classList.add('description');
+                description.classList.add('puzzle_description');
+                description.innerHTML = puzzle_description;
+                variant_info.appendChild(description);
+
+                let price_wrapper = document.createElement('div');
+                price_wrapper.classList.add('cart__price-wrapper');
+                price_wrapper.classList.add('price_matching_item');
+                variant_info.appendChild(price_wrapper);
+
+
+
+                let variant_price = document.createElement('span');
+                variant_price.classList.add('price');
+                variant_price.classList.add('price__upsell');
+                variant_price.innerHTML = puzzle_price;
+                price_wrapper.appendChild(variant_price);
+                if (model == 'watch_protector') {
+                    let atc_size_btn = document.createElement('select');
+                    atc_size_btn.classList.add('btn');
+                    atc_size_btn.classList.add('btn--alternate');
+                    atc_size_btn.classList.add('matching__atc');
+                    atc_size_btn.classList.add('dropdown-btn');
+                    var atc_size_option_default = document.createElement("option");
+                    atc_size_option_default.value = "Select Size";
+                    atc_size_option_default.text = "+ ADD";
+                    atc_size_option_default.setAttribute('disabled', true);
+                    atc_size_option_default.setAttribute('selected', true);
+                    atc_size_btn.appendChild(atc_size_option_default);
+                    for (var atc_i = 0; atc_i < product.variants.length; atc_i++) {
+                        variantURL = '/products/' + product.handle + '?variant=' + product.variants[atc_i].id;
+
+                        var atc_size_option = document.createElement("option");
+                        var option_text = product.variants[atc_i].option1;
+
+                        if (!product.variants[atc_i].available) {
+                            atc_size_option.setAttribute('disabled', true);
+                            option_text = option_text + '(Out of Stock)';
+                        }
+                        atc_size_option.value = product.variants[atc_i].option1;;
+                        atc_size_option.text = option_text;
+                        atc_size_option.setAttribute('variantID', product.variants[atc_i].id);
+
+
+                        atc_size_btn.appendChild(atc_size_option);
+
+                    }
+                    matching_form.appendChild(atc_size_btn);
+                } else {
+
+                    let atc = document.createElement('a');
+                    atc.classList.add('btn');
+                    atc.classList.add('btn--alternate');
+                    atc.classList.add('matching__atc');
+                    atc.classList.add('upsell_item--add');
+                    atc.setAttribute('href', variantURL);
+                    addMatchingItem(atc, variant, false, false, 'upsell', product.product_type, preorder_text);
+                    matching_form.appendChild(atc);
+
+                    let adding_atc = document.createElement('a');
+                    adding_atc.classList.add('btn');
+                    adding_atc.classList.add('btn--alternate');
+                    adding_atc.classList.add('adding_atc');
+                    adding_atc.classList.add('hide');
+                    adding_atc.setAttribute('href', '#');
+                    matching_form.appendChild(adding_atc);
+
+                    let atc_text = document.createElement('span');
+                    atc_text.setAttribute('data-add-to-cart-text', '');
+                    atc_text.innerHTML = '+ Add';
+                    atc.appendChild(atc_text);
+
+                    let atc_loader = document.createElement('span');
+                    atc_loader.setAttribute('data-loader', '');
+                    atc_loader.classList.add('hide');
+                    atc.appendChild(atc_loader);
+
+                    let atc_loader_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    atc_loader_svg.classList.add('icon');
+                    atc_loader_svg.classList.add('icon-spinner');
+                    atc_loader.appendChild(atc_loader_svg);
+
+                    let atc_loader_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    atc_loader_path.setAttribute('d', 'M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z');
+                    atc_loader_svg.appendChild(atc_loader_path);
+                    adding_atc.innerHTML = '';
+                    adding_atc.appendChild(atc_loader_svg);
+                }
+
+            } //matching item is upsell
+
+            if (matchingCondition == 1 || matchingCondition == 2 || matchingCondition == 3) {
+                let is_art_series = product.tags.indexOf('amber-vittoria') != -1;
+                // zodiac
+                let is_zodiac_series = product.tags.indexOf('zodiac-series') != -1;
+                var preorder_matching = document.querySelector('#preorder' + product.id);
+                let is_preorder_matching = false;
+                var preorder_text = null;
+                if (preorder_matching != null) {
+                    let variants_matching = preorder_matching.value.split(',');
+                    //  console.log(variants_matching);
+                    for (var i = 0; i < variants_matching.length; i++) {
+                        let values = variants_matching[i].split(':');
+                        if (values[0] == variant.id) {
+                            preorder_matching = values[1] == "true";
+                        }
+                    }
+                }
+                if (preorder_matching) {
+
+                    for (i = 0; i < product.tags.length; i++) {
+                        if (product.tags[i].includes('eta:')) {
+                            preorder_text = product.tags[i].split(':')[1];
+                        }
+                    }
+                }
+                matching_item.classList.add('css-slider_slide');
+                matching_item.classList.add('slider_matching--items');
+                matching_item.classList.add(product.product_type.toLowerCase().replaceAll(' ', '-'));
+
+                let matching__outer = document.createElement('div');
+                matching__outer.classList.add('matching_itemcart_main');
+                matching_item.appendChild(matching__outer);
+
+                let matching__inner = document.createElement('div');
+                matching__inner.classList.add('matching__item__image');
+                matching__inner.classList.add('cart__item__image'); //for color
+                matching__inner.classList.add(variant.title.toLowerCase().replaceAll(' ', '-'));
+                matching__outer.appendChild(matching__inner);
+
+                let image_link = document.createElement('a');
+                image_link.classList.add('product-image-fix');
+                image_link.classList.add('matching-image-fix-link');
+                image_link.setAttribute('href', variantURL);
+                matching__inner.appendChild(image_link);
+
+                let image_wrap = document.createElement('div');
+                image_wrap.classList.add('relative');
+                image_link.appendChild(image_wrap);
+
+                let matching_item_image = document.createElement('img');
+                let image_src = variant.featured_image != null ? variant.featured_image.src : product.images[0].src;
+                matching_item_image.setAttribute('src', image_src.replace('.jpg', '_360x.jpg'));
+                matching_item_image.setAttribute('alt', variant.title);
+                image_wrap.appendChild(matching_item_image);
+
+                let engraving = document.createElement('div');
+                engraving.classList.add('matching-engrave');
+                engraving.classList.add('engrave');
+
+                if (is_art_series) {
+                    engraving.classList.add('artwork-engrave')
+                } else if (is_zodiac_series) {
+                    engraving.classList.add('zodiac-engrave')
+                } else {
+                    engraving.classList.add('icon-chess-piece');
+                }
+                engraving.classList.add(product.product_type.toLowerCase().replaceAll(' ', '-'));
+                if (is_art_series) {
+                    engraving.classList.add(artwork.get().toLowerCase().replaceAll(/ /g, '-'));
+                } else if (is_zodiac_series) {
+                    engraving.classList.add(zodiac.get().toLowerCase().replaceAll(/ /g, '-'));
+                } else {
+                    engraving.classList.add(foil.get().toLowerCase());
+                    if (product.product_type == 'Airpods') {
+                        engraving.innerHTML = initials.get('shortMonogram2');
+                    } else {
+                        engraving.innerHTML = initials.get(product.product_type);
+                    }
+                }
+                image_wrap.appendChild(engraving);
+
+                let matching_form = document.createElement('div');
+                matching_form.classList.add('cart__item__details');
+                matching__outer.appendChild(matching_form);
+
+                let variant_info = document.createElement('div');
+                variant_info.classList.add('matching__product-info');
+                matching_form.appendChild(variant_info);
+
+                let variant_title = document.createElement('a');
+                variant_title.classList.add('cart__product-title');
+                variant_title.classList.add('md_text');
+                variant_title.classList.add('bold');
+                variant_title.setAttribute('href', variantURL);
+                // variant_title.innerHTML = product.title + " - " + variant.title;
+                variant_title.innerHTML = product.title;
+                variant_info.appendChild(variant_title);
+
+                let variant_color = document.createElement('span');
+                variant_color.classList.add('cart_text');
+                // variant_title.innerHTML = product.title + " - " +
+                if (product.product_type == 'Gift Boxes & Tins') {
+                    var limited_text = 'Complimentary when you purchase 2 items';
+                    if (product.title.includes('Laptop')) {
+                        limited_text = 'Complimentary when you purchase a laptop case';
+                    }
+                    if (product.title.includes('Tote')) {
+                        limited_text = 'Complimentary when you purchase a mini tote';
+                    }
+                    variant_color.innerHTML = '<br>' + variant.title + '<p class="gift-boxes-free">' + limited_text + '</p>';
+                } else {
+                    variant_color.innerHTML = '<br>' + variant.title;
+                }
+                variant_title.appendChild(variant_color);
+
+                let price_wrapper = document.createElement('div');
+                price_wrapper.classList.add('cart__price-wrapper');
+                price_wrapper.classList.add('price_matching_item');
+
+                matching_form.appendChild(price_wrapper);
+
+                if (variant.compare_at_price != null) {
+                    let variant_compare_price = document.createElement('span');
+                    variant_compare_price.classList.add('price');
+                    variant_compare_price.classList.add('compare_price_matching');
+                    variant_compare_price.classList.add('cart_text');
+                    variant_compare_price.innerHTML = Math.trunc(variant.compare_at_price);
+                    price_wrapper.appendChild(variant_compare_price);
+                }
+
+                let variant_price = document.createElement('span');
+                variant_price.classList.add('price');
+                variant_price.classList.add('cart_text');
+                if (variant.compare_at_price != null) {
+                    variant_price.classList.add('compare_price_color');
+                }
+                // for % tags append elements
+                let price_discounts = variant.price / variant.compare_at_price;
+                let percent_offss = 1 - price_discounts;
+                let item_percent_discount = document.createElement('span');
+                var on_sale = false;
+                item_percent_discount.classList.add('discount_percent');
+                var setprice = item_percent_discount.innerHTML = Math.round(percent_offss * 100) + '% OFF';
+                if (variant.compare_at_price > variant.price) {
+                    on_sale = true;
+                }
+                if (on_sale == true) {
+                    matching__inner.appendChild(item_percent_discount);
+                } else {
+                    //console.log("Works");
+                }
+                // ends
+                if (product.product_type != 'Gift Boxes & Tins') {
+                    variant_price.innerHTML = "$" + Math.trunc(variant.price);
+                } else {
+                    variant_price.innerHTML = 'Free';
+                }
+                price_wrapper.appendChild(variant_price);
+
+
+                let atc = document.createElement('a');
+                atc.classList.add('btn');
+                atc.classList.add('btn--alternate');
+                atc.classList.add('matching__atc');
+                atc.setAttribute('href', variantURL);
+                addMatchingItem(atc, variant, is_art_series, is_zodiac_series, false, product.product_type, preorder_text);
+                matching_form.appendChild(atc);
+
+
+                let adding_atc = document.createElement('a');
+                adding_atc.classList.add('btn');
+                adding_atc.classList.add('btn--alternate');
+                adding_atc.classList.add('adding_atc');
+                adding_atc.classList.add('hide');
+                adding_atc.setAttribute('href', '#');
+                matching_form.appendChild(adding_atc);
+
+                let atc_text = document.createElement('span');
+                atc_text.setAttribute('data-add-to-cart-text', '');
+                atc_text.innerHTML = preorder_matching ? "Pre-Order" : "+ Add";
+                atc.appendChild(atc_text);
+
+                let atc_loader = document.createElement('span');
+                atc_loader.setAttribute('data-loader', '');
+                atc_loader.classList.add('hide');
+                atc.appendChild(atc_loader);
+
+                let atc_loader_svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                atc_loader_svg.classList.add('icon');
+                atc_loader_svg.classList.add('icon-spinner');
+                atc_loader.appendChild(atc_loader_svg);
+
+                let atc_loader_path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                atc_loader_path.setAttribute('d', 'M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z');
+                atc_loader_svg.appendChild(atc_loader_path);
+                adding_atc.innerHTML = '';
+                adding_atc.appendChild(atc_loader_svg);
+            } //if matching item ==1 means color or 2 meansfor match tag
+            return matching_item;
+        }
+
+        //"/recommendations/products.json?product_id=" + itemToMatch.product_id
+        $.getJSON('/collections/matching-slider/products.json', function(recommendations) {
+            const limit = 7; //setting the limit
+            var shown = 0;
+            let upsell_tag_watch_show = true;
+            let upsell_tag_phone_show = true;
+
+            var type = 0;
+            let compare_shown = 0;
+            var matchtag = 0;
+            let formatchitem = [];
+            let upsellfirst = [];
+            let notInProductType = ["nothing"];
+
+            var recommendedProducts = recommendations.products.filter(function(product) {
+                return checkForMatch(cart, product, itemToMatch);
+            });
+            container.innerHTML = "";
+            if (recommendedProducts.length > 0) {
+                document.querySelector('.cart__matching').classList.remove('hide');
+                recommendedProducts.map(function(product) {
+                    let upsell_tag = false;
+                    let upsell_tag_watch = false;
+                    let forMatch_tag = false;
+                    let sameColour = false;
+                    let render = null;
+                    let model = null;
+                    let notincart = true;
+                    let disney_color = false;
+                    let notincart2 = true;
+                    let phone_cases_qty = 0;
+                    let card_qty = 0;
+
+                    let gift_box = false;
+                    let gift_box_render = false;
+
+                    if (!(product.tags.indexOf(forNotMatchTag) != -1)) { //for airpods / not match tag check 
+                        upsell_tag = product.tags.indexOf(upsellTag) != -1;
+
+                        upsell_tag = false;
+                        for (var x = 0; x < cart.items.length; x++) {
+
+                            if (cart.items[x].product_title.includes('13') || cart.items[x].product_title.includes('14') || cart.items[x].product_title.includes('SE') || cart.items[x].product_title.includes('11') || cart.items[x].product_title.includes('12') || cart.items[x].product_title.includes('7/8') || cart.items[x].product_title.includes('XS') || cart.items[x].product_title.includes('XR')) {
+                                if (upsell_tag == false) {
+                                    model = cart.items[x].product_title;
+                                }
+                                upsell_tag = true;
+
+                            }
+                            if (cart.items[x].product_type.includes('Apple Watch')) {
+                                upsell_tag_watch = true;
+
+                            }
+                        }
+
+                        for (var x = 0; x < cart.items.length; x++) {
+                            //  console.log(cart.items[x]);
+                            if (cart.items[x].handle.includes('easy-apply-screen-protector-1')) {
+                                notincart = false;
+                            }
+                            if (cart.items[x].handle.includes('apple-watch-screen-protector')) {
+                                notincart2 = false;
+                            }
+
+                        }
+                        if (!upsell_tag || !upsell_tag_watch || shown != compare_shown || (!notincart) || (!notincart2)) {
+
+                            sameColour = product.options[0].values.indexOf(colour) != -1;
+                            if (sameColour && product.tags.indexOf(forMatchTag) != -1) {
+                                for (var i = 0; i < product.variants.length; i++) {
+                                    if ((!product.variants[i].available) && product.variants[i].option1 == colour) {
+                                        sameColour = false;
+
+                                    }
+                                }
+
+                            }
+
+                        }
+                        if (product.product_type.includes('Watch')) {
+                            sameColour = true;
+                        }
+                        if (!sameColour) {
+                            forMatch_tag = product.tags.indexOf(forMatchTag) != -1;
+                        }
+
+
+                        disney_color = checkDisneycolor(colour);
+
+                        if ((sameColour || disney_color) && shown < limit) {
+                            if (product.product_type != "Airpods") {
+                                notInProductType[type++] = product.product_type;
+                            }
+                            render = renderProduct(product, 1);
+
+                        }
+                        if (shown < limit && upsell_tag && shown <= 2 && notincart && upsell_tag_phone_show) {
+                            render = renderProduct(product, 0, model);
+                            if (product.handle.includes('easy-apply-screen-protector-1')) {
+                                shown += 1;
+                                upsell_tag_phone_show = false;
+                            }
+                        }
+                        if (shown < limit && upsell_tag_watch && upsell_tag_watch_show && shown <= 2 && notincart2) {
+                            //console.log('erere');
+                            render = renderProduct(product, 0, 'watch_protector');
+                            if (product.handle.includes('apple-watch-screen-protector')) {
+                                shown += 1;
+                                upsell_tag_watch_show = false;
+                            }
+                        }
+                        if (shown < limit && forMatch_tag) {
+                            formatchitem[matchtag++] = renderProduct(product, 2);
+                        }
+                        if (render != null) {
+
+                            if ((!gift_box_render)) {
+                                shown += 1;
+                            }
+
+                            container.appendChild(render);
+                        }
+                    }
+                });
+            } else {
+                $('.cart__has-items').addClass('hide');
+            }
+
+            var formatchcounter = shown;
+            var formatchFound = false;
+            if (formatchitem != null) {
+                for (var i = 0; formatchcounter < limit; i++) {
+
+                    if (formatchitem.length > i) {
+                        container.appendChild(formatchitem[i]);
+                        formatchFound = true;
+
+                    }
+                    formatchcounter += 1;
+
+                }
+                //container.appendChild(formatchitem);
+            }
+            if (upsellfirst != null) {
+                container.prepend(upsellfirst);
+            }
+            if (shown == 0 && (!formatchFound)) {
+                document.querySelector('.cart__matching').classList.add('hide');
+            }
+        });
+        if (container.childElementCount === 0) {
+            container.parentElement.classList.add('hide');
+            $('.cart__matching').addClass('hide');
+        }
+
+        $('.cart__matching').removeClass('hide');
+    }
+
+
+    function updateCart() {
+
+
+    let valGiftCounter = new Array(1);
+    valGiftCounter.fill(0);
+    let valInCart = false;
+    let valInCart2 = false;
+    let valInCart3 = false;
+    let alreadyIncart = false;
+    let addFreeItem=false;
+    
+    let valId = "41108196393142";
+    let valId3 = "41108196425910";
+    let valId2 = "3955601139320ddd6";
+    let card_id = "";
+    let valQty = 0;
+    let val2Qty = 0;
+    let val3Qty = 0;
+    let emerald=0;
+    let gift_outer = null;
+    var gift_counter = 0; 
+    let gift_line_item = new Array(15);
+    let counter=0;
+    let card_qty = 0;
+    let phone_cases_qty = 0;
+    let protector_is = 0;
+    let card_qty_id = 0;
+    let pro_var_id = ''; 
+    let phone_case = false;
+    let sticker_qty = 0;
+      
+
+        var cartItems = [];
+        var shop_currency = $('#shop_currency_val').text();
+        var shop_currency_sym = shop_currency.split(".")[0];
+        $('#upsell-cart-items-add').empty();
+        const matchingItems = document.querySelector('.cart-matching-slider');
+        const ap_Price = document.querySelector('.cart-ap-price');
+
+        jQuery.getJSON(shop_url + '/cart.js', function(cart) {
+
+          let items_custome = cart.items;
+            var total_cart_length = cart.item_count;
+            $('#cart-title span').text(cart.item_count);
+            $("#cartopennavmov span.btn-cart-trigger__count").text(cart.item_count);
+            $("#cartopennav span.btn-cart-trigger__count").text(cart.item_count);
+            var subtotalCart = (Number(cart.total_price) / 100);
+            var subtotal = (subtotalCart).toFixed(2);
+            var splittotal = subtotal.split('.')
+          
+            if(splittotal[1] == 00){
+            var nodecimaltotal  = '$' + Math.trunc(subtotal) + ' AUD'; 
+          }
+          else{
+            var nodecimaltotal  = '$' + subtotal + ' AUD'; 
+          }
+          $('.cart_final_subtotal_price').text(nodecimaltotal);
+
+
+            if (subtotalCart != null) {
+                ap_Price.innerHTML = Math.round(cart.total_price / 400);
+            }
+            if (total_cart_length == 0) {
+                
+                $('.header-cart__progg').show();
+                $(".emptycart__contents").show();
+                $('.content-cart-nav').show();
+                $('#cart_container_id').empty();
+                $('.cart-footer-nav').hide();
+                $('.gift_product').hide();
+                $('.upsellempy').hide();
+                $('.cart_gift_box').addClass('hide');
+                $(".content-cart-nav .not-empty-cart").hide();
+                $(".cart__matching").hide();
+                $(".full_cart_loader").hide();
+            } else {
+              
+                $(".cart__matching").show();
+                getMatchingItems(matchingItems, cart);
+                $('.header-cart__progg').hide();
+                $(".emptycart__contents").hide();
+                $('.cart-footer-nav').show();
+                $('.upsellempy').show();
+                $('.cart_gift_box').removeClass('hide');
+                $(".content-cart-nav .not-empty-cart").show();
+                $(".full_cart_loader").hide();
+                cartItems = cart.items;
+                let props = {
+                    'Text': localStorage.getItem('mdsEngraving') != null ? localStorage.getItem('mdsEngraving') : '',
+                    'Foil Colour': localStorage.getItem('mdsEngraving') != null ? localStorage.getItem('mdsFoil') : ''
+                };
+                var prsnlize_clr = props['Foil Colour'];
+                var p = 1;
+                $('#cart_container_id').empty();
+                var sale_text = '';
+                for (var i = 0; i < cartItems.length; i++) {
+
+              // console.log(sale_text);
+                  if(cart.items[i].variant_options[0].includes('Emerald')){ 
+                  emerald = 1;
+                  }
+                  if(cart.items[i].handle.includes('disney-leather-sticker')){ 
+                  sticker_qty = cart.items[i].quantity + sticker_qty;
+                  }
+                  if(cart.items[i].id == valId){
+                  valInCart = true;
+                  valQty = cart.items[i].quantity;
+                  }
+                  if(cart.items[i].id == valId2){
+                  valInCart2 = true;
+                  val2Qty = cart.items[i].quantity;
+                  }
+                  if(cart.items[i].id == valId3){
+                  valInCart3 = true;
+                  val3Qty = cart.items[i].quantity;
+                  
+                  }
+                  if(cart.items[i].handle.includes('easy-apply-screen-protector-1')) {
+                  protector_is = cart.items[i].quantity;
+                  pro_var_id = cart.items[i].variant_id;
+                  }
+                  if(cart.items[i].product_type == 'Phone Case' || cart.items[i].product_type == 'Card Phone Case' || cart.items[i].product_type == 'Sling Phone Case' || cart.items[i].product_type == 'Silicone Phone Case'){
+                  phone_case = true;
+                  }
+                  if(cart.items[i].product_title.includes('Day Card')){
+                  card_qty = card_qty + cart.items[i].quantity;
+                  card_qty_id = cart.items[i].variant_id;
+                  
+                  
+                  }
+                  if(cart.items[i].product_title.includes('Phone')){
+                    phone_cases_qty = phone_cases_qty + cart.items[i].quantity;
+                  }
+                    var line_count = i + 1;
+                    var cart_item = cartItems[i];
+                    console.log(cartItems)
+                    var properties = cart_item.properties;
+                    var image = cart_item.featured_image.url;
+                    var title = cart_item.product_title;
+                    var price = cart_item.price;
+                    var quantity = cart_item.quantity;
+                    var op_price = cart_item.price;
+                    price = Number(price) / 100;
+                    price = price * quantity;
+                    var variant_id = cart_item.variant_id;
+                    var prd_url = cart_item.url;
+                    var prd_type = cart_item.product_type;
+                    var var_title = cart_item.variant_title;
+                    var shippingtext = $(".min_free_values").attr('data-varlu');
+                    var min_texts = $(".min_free_values").attr('data-text');
+                    var max_texts = $(".min_free_values").attr('data-maxfree');
+                    var final_total = cart.total_price.toFixed(2) / 100;
+                    var minimumshipprice = $('.dyn_price').text();
+
+                    // for cart price less than 50
+                    if (final_total < 50) {
+                        $('.progress-bar__fill').css('width', '25%')
+                    }
+                    // for cart price less than or equals to 50
+                    else if ((final_total >= 50) && (final_total < 75)) {
+                        $('.progress-bar__fill').css('width', '50%');
+                    }
+                    // for cart price reaches to 75
+                    else if ((final_total >= 75) && (final_total < 90)) {
+                        $('.progress-bar__fill').css('width', '85%');
+                    }
+                    // for cart price equals to 100 or greater than 100
+                    else if (final_total >= 90) {
+                        $('.progress-bar__fill').css('width', '100%');
+                    }
+                    if (final_total < shippingtext) {
+                        var diff_price = Math.round(shippingtext - final_total);
+                        $(".fullprogressbar").addClass('hide');
+                        $(".customprogressbar").removeClass('hide');
+                        $('.progress-bar__fill').removeClass('full-bar');
+                        $('.progress-bar__fill').removeClass('full-bar');
+                        // $('.progress-bar__fill').addClass('full-bar-down');
+                        $('.dyn_price').html(diff_price);
+                    } else {
+                        $(".fullprogressbar").removeClass('hide');
+                        $(".customprogressbar").addClass('hide');
+                        $('.progress-bar__fill').addClass('full-bar');
+                        // $('.progress-bar__fill').removeClass('full-bar-down');
+                    }
+                    
+                    cart_item_div_new = "<div class='item-cart-fill-main0 cart_items_div kp-" + variant_id + "' data-id=" + variant_id + " data-type='" + prd_type + "' data-value='" + var_title + "'>"
+                    cart_item_div_new += "<div class='cart_popup_bg hide'><svg aria-hidden='true' focusable='false' role='presentation' class='icon icon-spinner' viewBox='0 0 20 20'><path d='M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z' fill='#919EAB'></path></svg></div>"
+                    cart_item_div_new += "<div class='cart-fill-product-image'><a class='cart-image' href='" + prd_url + "'><img src='" + image + "' alt='" + title + "'> </a>"
+                    cart_item_div_new += "<div class='product-tag-list'>"
+                    if(properties !== null && properties['_NEWTAG1'] != null)
+                    {
+                      cart_item_div_new += "<span class='badge badge--bottom-left custtomtag1 product-tag'>"+properties['_NEWTAG1']+"</span>"
+                    }
+                    if(properties !== null && properties['_NEWTAG2'] != null)
+                    {
+                      cart_item_div_new += "<span class='badge badge--bottom-left custtomtag2 product-tag'>"+properties['_NEWTAG2']+"</span>"
+                    }          
+                    if(properties !== null && properties['_NEWTAG3'] != null)
+                    {
+                      cart_item_div_new += "<span class='badge badge--bottom-left custtomtag3 product-tag'>"+properties['_NEWTAG3']+"</span>"
+                    }          
+                    if(properties !== null && properties['_COMINGSOON'] != null)
+                    {
+                      cart_item_div_new += "<span class='badge badge--bottom-left coming_soon product-tag'>"+properties['_COMINGSOON']+"</span>"
+                    }                   
+                    cart_item_div_new += "</div>"
+                  
+                    if (properties !== null && properties['Text'] != null && properties['Text'] != "") {
+                      
+                        if(properties['Foil Colour'])
+                        {
+                          var pro_color = properties['Foil Colour'];
+                        }
+                        if(properties['Foil Color'])
+                        {
+                          var pro_color = properties['Foil Color'];
+                        }                      
+                        cart_item_div_new += "<div class ='cart-engrave engrave chess_text " + pro_color + ' ' + prd_type.replace(/\s+/g, '-').toLowerCase() + "'>" +  properties['Text'] + "</div>"
+                    }
+                    cart_item_div_new += "</div><div class='cart-fill-product-detail'><div class='cart-fill-detail-01'>"
+
+                    cart_item_div_new += "<a href='" + prd_url + "'><p>" + title + "</p></a><span class='ajaxcart__product-meta'>" + var_title + "</span>"
+
+                    cart_item_div_new += "<div class='delate-cart-item'><button class='grey-5 header-cart-item__remove__btn cart_remove_item remove_cart_item' data-phandle=" + cart_item.handle + " data-line=" + line_count + ">"
+
+                    cart_item_div_new += '<svg width="13" height="15" viewBox="0 0 13 15" fill="none"> <path d="M1.75004 13.0417C1.75004 13.9125 2.46254 14.625 3.33337 14.625H9.66671C10.5375 14.625 11.25 13.9125 11.25 13.0417V3.54167H1.75004V13.0417ZM3.33337 5.125H9.66671V13.0417H3.33337V5.125ZM9.27087 1.16667L8.47921 0.375H4.52087L3.72921 1.16667H0.958374V2.75H12.0417V1.16667H9.27087Z" fill="#727272"/></svg></button></div>'
+                    
+                    cart_item_div_new += "</div><div class='cart-fill=discription'></div>"
+
+                    if (properties !== null && properties['Text'] != null && properties['Text'] != "") {
+
+                        if(properties['Foil Colour'])
+                        {
+                          var pro_color_new = properties['Foil Colour'];
+                        }
+                        if(properties['Foil Color'])
+                        {
+                          var pro_color_new = properties['Foil Color'];
+                        }                       
+                        cart_item_div_new += "<div class='cart__props'><div class='cart__prop cart_text'><span>Personalisation:</span><span class='foil-option prsnlizer_color " + pro_color_new + "' ddts='" + pro_color_new + "' style='order: 3;'></span><span class='chess_text'>" + properties['Text'] + "</span></div></div>"
+                    }
+
+                    cart_item_div_new += "<div class='wc_qty_box quantity-box'><div class='num-block skin-3'>"
+
+                    cart_item_div_new += "<ul class='QuantityBox cart_p_quantity'><li class='minus-box'>"
+
+                    cart_item_div_new += "<a href='javascript:void(0)' data-line=" + line_count + " class='cart_item_minus minus ajaxcart__qty-adjust cart-slider-decrease-qty ajaxcart__qty--minus'>"
+
+                    cart_item_div_new += "<img src='//cdn.shopify.com/s/files/1/0619/2575/3081/t/5/assets/minu.svg?v=419654119375667803' class='img-fluid'></a>"
+
+                    cart_item_div_new += "</li><li class='input-box'>"
+
+                    cart_item_div_new += "<input readonly type='number' name='updates' class='QuantityInput Quantity_cart_slider ajaxcart__qty-num' value=" + quantity + " min='0'>"
+
+                    cart_item_div_new += "</li><li class='plus-box'><a data-line=" + line_count + " href='javascript:void(0)' variant_id=" + variant_id + " class='cart_item_plus plus ajaxcart__qty-adjust cart-slider-increase-qty ajaxcart__qty--plus'>"
+
+                    cart_item_div_new += "<img src='//cdn.shopify.com/s/files/1/0619/2575/3081/t/5/assets/plus.svg?v=14305593096000451169' class='img-fluid'></a>"
+
+                    cart_item_div_new += "</li></ul></div>"
+
+                    cart_item_div_new += "<div class='price'>"
+                    
+                  $.ajax({
+                    url: cart_item.url + '.js',
+                    dataType: "json",
+                    async: false,
+                    timeout: 800,
+                    success: function (data, status, xhr) {
+                      var varinats = data.product.variants;
+                      varinats.forEach(function(variant){
+                       //var newtagmeta = {{ variant.metafields.custom.new_custom_tag1.value }};
+                       //var newtagmeta2 = "{{ variant.metafields.custom.new_custom_tag1.value }}";
+                        //console.log(newtagmeta);   
+                       //console.log('newtagmeta2', newtagmeta2);
+                        if(parseInt(variant.id) == parseInt(variant_id)){
+                          // console.log('if',variant.id, '==', variant_id);
+                          // console.log(variant.compare_at_price, '>', variant.price);
+                          var variantprice = variant.price;
+                          var splitprice = variantprice.split('.');
+                          // console.log(splitprice[1]);
+                          if(splitprice[1] == 00){
+                            var nozerodecimal = Math.trunc(variantprice);
+                          }
+                          else{
+                            var nozerodecimal = variantprice;
+                          }
+                          // console.log(nodecprice, "nodecprice");
+                          var compareprice = Math.trunc(variant.compare_at_price);
+                          let price_discount =variantprice / compareprice;
+                          var prodcp = variant.compare_at_price;
+                          var prodprice = variant.price;
+                          var salesprice = prodprice/prodcp;
+                          let percent_off = 1 - price_discount;
+                          sale_text = Math.round(percent_off * 100) + '% OFF';
+                          if(parseInt(variant.compare_at_price) > parseInt(variant.price))
+                          {
+                          cart_item_div_new += "<span class='regular_price price-item--sale' > $" + nozerodecimal + " </span>"
+                          cart_item_div_new += "<span class='compare_oldprice'>" + '$' + compareprice + " </span>"
+                          cart_item_div_new += "<span class='salestext_price'>" +  sale_text + " </span>"                            
+                          }
+                          else
+                          {
+                            cart_item_div_new += "<span class='regular_price' > $" + nozerodecimal + " </span>"
+                          }
+                        }else{
+                        }
+                      });
+                      cart_item_div_new += "</div>"
+                      cart_item_div_new += '</div></div></div>'
+                      $('#cart_container_id').append(cart_item_div_new);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                      console.log(jqXhr, textStatus, errorMessage);
+                    }
+                  });
+
+                    // jQuery.getJSON(cart_item.url + '.js', function(product){
+                    //   var varinats = product.product.variants;
+                    //   varinats.forEach(function(variant){
+                    //     if(variant.id == variant_id && variant.compare_at_price > variant.price){
+                    //       var variantprice = variant.price
+                    //       var compareprice = variant.compare_at_price
+                    //       let price_discount =variantprice / compareprice;
+                    //       var prodcp = variant.compare_at_price;
+                    //       var prodprice = variant.price;
+                    //       var salesprice = prodprice/prodcp;
+                    //       let percent_off = 1 - price_discount;
+                    //       sale_text = Math.round(percent_off * 100) + '% OFF';
+                    //       console.log(sale_text)
+                    //       cart_item_div_new += "<span class='salestext_price'>" + sale_text + " </span>"
+                    //     }
+                    //   });
+                    // })
+                    
+                    
+                }
+
+                if(protector_is > 0 && phone_case == false ) {
+                		$.post('/cart/change.js', {
+                        quantity: 0,
+                        id: pro_var_id,
+                        properties: ""
+                      }, function(item) {
+                        updateCart();
+                      }, "json");
+                }
+                if(sticker_qty !=0 && cart.item_count == sticker_qty) {
+                $.post('/cart/clear.js',function(cart) {
+                          updateCart();
+                        },"json");
+                }
+                 if(card_qty > 0 && phone_case == false ) {
+                    $.post('/cart/change.js', {
+                        quantity: 0,
+                        id: card_qty_id,
+                        properties: ""
+                      }, function(item) {
+                        updateCart();
+                      }, "json");
+                }
+                if(card_qty > phone_cases_qty && phone_case  ) {
+                    $.post('/cart/change.js', {
+                        quantity: phone_cases_qty,
+                        id: card_qty_id,
+                        properties: ""
+                      }, function(item) {
+                        updateCart();
+                      }, "json");
+                }
+
+              
+            }
+        });
+    }
+    // updateCart();
+
+
+       $('.color-option span').hover(function(){
+        
+           let colorClicked  = $(this).attr('class');
+           let vid  = $(this).attr('id');
+           let vurl =$(this).attr('v-url'); 
+          
+        
+         //  $('img[img-id="'+vid+'"]').addClass('hide');
+         // $('img[img-id="'+vid+'"][img-text~="'+colorClicked+'"]').removeClass('hide');
+          $('.card-wrapper[p-id="'+vid+ '"] .card-information__wrapper .card-information__text a').attr('href',vurl);
+        });
+  
+    //////////// product recommandation js
+
+    if ($('body').hasClass('pys_product')) {
+        var id = $('.product_selected_id').val();
+        var title = $('.product_selected_title').val();
+        var myInterval = setInterval(
+            function() {
+                var len = $('.relate_product_pys li').length;
+                if (len > 0) {
+                    clearInterval(myInterval);
+                    $('.related_image_pys').each(function() {
+                        var img_src = $(this).find('.related_pys_img[data-alt="' + title + '"]').attr('data-src');
+                        //console.log("imagesrc", img_src);
+                        var src_len = $(this).find('.related_pys_img[data-alt="' + title + '"]');
+                        if (src_len.length > 0) {
+                            $(this).closest('.relate_product_grid_pys').find('.related_media_pys img').attr('srcset', img_src);
+                        } else {
+                            var img_default_src = $(this).find('.related_pys_img[data-alt="black-caviar"]').attr('data-src');
+                            $(this).closest('.relate_product_grid_pys').find('.related_media_pys img').attr('srcset', img_default_src);
+                        }
+                    });
+                }
+            }, 1000);
+    }
+});
+
+</script>

@@ -1,0 +1,159 @@
+<!-- UPSELL BOX HERE -->
+
+<script>
+  function upsell_product() {
+
+    var upsell_product_data = localStorage.getItem("upsell_product_data");
+    var getObje = JSON.parse(upsell_product_data);
+    var shop_url_upsell = window.origin;
+    jQuery.getJSON(shop_url_upsell+'/cart.js', function(cart) {
+
+    var upsellcartItems = cart.items;
+    var handle_arr = [];
+    for (var i = 0; i < upsellcartItems.length; i++) {
+      
+    var cart_item_upsell = upsellcartItems[i];  
+    var color = cart_item_upsell.variant_title;
+    var handle = cart_item_upsell.handle; 
+
+    for(var x = 0; x < getObje.length; x++)
+    {
+      if(getObje[x].handle == handle){
+        var upsellproduct1 = getObje[x].p1;
+        var upsellproduct2 = getObje[x].p2;
+      }
+    }
+    
+    var dataUrl1 = upsellproduct1;
+    var dataSplit1 = dataUrl1.split('/');
+    var prdstr1 = dataSplit1[3];
+    
+    var dataUrl2 = upsellproduct2;
+    var dataSplit2 = dataUrl2.split('/');
+    var prdstr2 = dataSplit2[3];
+
+    if (prdstr1 == 'products' || prdstr2 == 'products') {
+        var prdhandle1 = dataSplit1[4].split('?');
+        var handle1 = prdhandle1[0];
+        handle_arr.push(handle1);
+        var prdhandle2 = dataSplit2[4].split('?');
+        var handle2 = prdhandle2[0];
+        handle_arr.push(handle2);
+
+       if(upsellproduct1 != ''){
+         var cart_item_div_new1 = "";
+          if(handle1.includes('screen'))
+          {
+            jQuery.getJSON(window.Shopify.routes.root + 'products/' + handle1 + '.js', function(screenproduct) {
+             let var_id = 6;
+             if(handle.includes('iphone-14-pro-max-case'))
+              {
+                var_id = 9;
+              }
+              var varArrayScreen = screenproduct.variants[var_id]; 
+
+             var screen_title = screenproduct.title;
+             var screen_price = screenproduct.price;
+             var screen_price_check = "" + screen_price + " / 100";
+             var screen_priceCurr = eval(screen_price_check);
+             var screen_varTitle = varArrayScreen.title;
+             
+             var screen_img = varArrayScreen.featured_image.src;
+             cart_item_div_new1 = '<div class="upsell_cart_box"><div class="upsell-box-main-NM upsell_prd_pys upsell_prd_pys_one">';
+             cart_item_div_new1 += '<div class="upsell-image" data-url="/product/'+handle1+'/?variant='+varArrayScreen.id+'"><a href="/product/'+handle1+'/?variant='+varArrayScreen.id+'"><span class="imgapp"><img src="'+screen_img+'"></span></a></div>';
+             cart_item_div_new1 += '<div class="upsell-image-contentt"><div class="upsell-middle-content">';
+             cart_item_div_new1 += '<div class="ddmm-upsell">';
+             cart_item_div_new1 += '<a href="/product/'+handle1+'/?variant='+varArrayScreen.id+'"><h3 class="title">'+screen_title+'</h3></a>';
+             cart_item_div_new1 += '<small class="varTitle">'+screen_varTitle+'</small></div>';
+             cart_item_div_new1 += '<div class="upsell-end-box"><h5 class="price">$ '+screen_priceCurr+'</h5></div>';
+
+             if(varArrayScreen.available){
+             cart_item_div_new1 += '<a data-id="'+varArrayScreen.id+'" class="button cart_add_btn"> + Add ';
+             cart_item_div_new1 += '<div class="upsell loading-overlay__spinner hidden"><svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg></div></a>';
+             }
+             else{
+             cart_item_div_new1 += '<a data-id="'+varArrayScreen.id+'" class="button cart_add_btn" disabled> + Add </a>';
+             }
+             cart_item_div_new1 += '</div></div></div></div>';
+             $('#upsell-cart-items-add').append(cart_item_div_new1);
+              
+            });
+          }
+          else{
+            jQuery.getJSON(window.Shopify.routes.root + 'products/' + handle1 + '.js', function(product1) {
+              var varArray1 = product1.variants;
+                //console.log('varArray1',varArray1);
+                jQuery.each( varArray1, function( i, variant1 ) {
+                   console.log('available',variant1.available);
+                   if(variant1.option1 == color) {
+                     var title = product1.title;
+                     var price = product1.price;
+                     var price_check = "" + price + " / 100";
+                     var priceCurr = eval(price_check);
+                     var varTitle = variant1.title;
+                     
+                     var img = variant1.featured_image.src;
+                     cart_item_div_new1 = '<div class="upsell_cart_box"><div class="upsell-box-main-NM upsell_prd_pys upsell_prd_pys_one">';
+                     cart_item_div_new1 += '<div class="upsell-image" data-url="/product/'+handle1+'/?variant='+variant1.id+'"><a href="/product/'+handle1+'/?variant='+variant1.id+'"><span class="imgapp"><img src="'+img+'"></span></a></div>';
+                     cart_item_div_new1 += '<div class="upsell-image-contentt"><div class="upsell-middle-content">';
+                     cart_item_div_new1 += '<div class="ddmm-upsell">';
+                     cart_item_div_new1 += '<a href="/product/'+handle1+'/?variant='+variant1.id+'"><h3 class="title">'+title+'</h3></a>';
+                     cart_item_div_new1 += '<small class="varTitle">'+varTitle+'</small></div>';
+                     cart_item_div_new1 += '<div class="upsell-end-box"><h5 class="price">$ '+priceCurr+'</h5></div>';
+  
+                     if(variant1.available){
+                     cart_item_div_new1 += '<a data-id="'+variant1.id+'" class="button cart_add_btn"> + Add ';
+                     cart_item_div_new1 += '<div class="upsell loading-overlay__spinner hidden"><svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg></div></a>';
+                     }
+                     else{
+                     cart_item_div_new1 += '<a data-id="'+variant1.id+'" class="button cart_add_btn" disabled> + Add </a>';
+                     }
+                     cart_item_div_new1 += '</div></div></div></div>';
+                     $('#upsell-cart-items-add').append(cart_item_div_new1);
+                   }
+                });
+            });            
+          }
+        }
+       if(upsellproduct2 != ""){
+         var cart_item_div_new2 = "";
+         jQuery.getJSON(window.Shopify.routes.root + 'products/' + handle2 + '.js', function(product2) {
+           var varArray2 = product2.variants;
+             console.log('varArray2',varArray2);
+              jQuery.each( varArray2, function( j, variant2 ) {
+                
+                 if(variant2.option1 == color) {
+                   var title = product2.title;
+                   var price = product2.price;
+                   var price_check = "" + price + " / 100";
+                   var priceCurr = eval(price_check);
+                   var varTitle = variant2.title;
+                   var img = variant2.featured_image.src;
+                   cart_item_div_new2 = '<div class="upsell_cart_box"><div class="upsell-box-main-NM upsell_prd_pys upsell_prd_pys_two">';
+                   cart_item_div_new2 += '<div class="upsell-image" data-url="/product/'+handle2+'/?variant='+variant2.id+'"><a href="/product/'+handle2+'/?variant='+variant2.id+'"><span class="imgapp"><img src="'+img+'"></span></a></div>';
+                   cart_item_div_new2 += '<div class="upsell-image-contentt"><div class="upsell-middle-content">';
+                   cart_item_div_new2 += '<div class="ddmm-upsell">';
+                   cart_item_div_new2 += '<a href="/product/'+handle2+'/?variant='+variant2.id+'"><h3 class="title">'+title+'</h3></a>';
+                   cart_item_div_new2 += '<small class="varTitle">'+varTitle+'</small></div>';
+                   cart_item_div_new2 += '<div class="upsell-end-box"><h5 class="price">$ '+priceCurr+'</h5></div>';
+                   //if condition for check is product aviabale
+                   if(variant2.available){
+                   cart_item_div_new2 += '<a data-id="'+variant2.id+'" class="button cart_add_btn"> + Add ';
+                   cart_item_div_new2 += '<div class="upsell loading-overlay__spinner hidden"><svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg></div></a>';
+                   }
+                   else{
+                   cart_item_div_new2 += '<a data-id="'+variant2.id+'" class="button cart_add_btn" disabled> + Add </a>';
+                   }
+                   cart_item_div_new2 += '</div></div></div></div>';
+                   console.log('cart_item_div_new2', cart_item_div_new2);
+                   $('#upsell-cart-items-add').append(cart_item_div_new2);
+                 }
+              });
+        });
+         
+       }
+      }
+    }
+    });
+  }
+</script>
