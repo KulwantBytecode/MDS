@@ -29,13 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
     drag: "free",
     focus: "center",
     perPage: 5,
+    arrows: false, 
     autoScroll: {
       speed: 0.7,
-      pauseOnHover: true,
-      pauseOnFocus: true,
+      pauseOnHover: false,
+      pauseOnFocus: false,
     },
     interval: 5000,
-    keyboard: false,
+    keyboard: true,
     rewind: true,
     // Responsive breakpoints
     breakpoints: {

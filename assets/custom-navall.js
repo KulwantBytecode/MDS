@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    $(function () {
-        $(".toggle-section").on("click", function (a) {
+   $(function() {
+         $(".toggle-section").on("click", function (a) {
         const minusIcon = $(this).children('.minus_icon');
         const plusIcon = $(this).children('.plus_icon');
         var sectionContent = $(this).parent('.section-header').next('.section-content');
@@ -18,7 +18,7 @@ $(document).ready(function () {
             .stop()
             .slideToggle();
         });
-    }),
+}),
         $(".carousel").flickity({ cellSelector: ".carousel__slide", wrapAround: !0, autoPlay: !0, imagesLoaded: !0 }),
         $(".top_bar_slider").slick({ dots: !1, arrows: !1, infinite: !0, fade: !0, speed: 300, slidesToShow: 1, autoplay: !0, autoplaySpeed: 5e3, cssEase: "ease-in-out", adaptiveHeight: !0 }),
         $(".colorwheel-slider").flickity({ cellSelector: ".flickty_item", wrapAround: !1, autoPlay: !1, fade: !1, freeScroll: !0, contain: !0, pageDots: !1, cellAlign: "left", groupCells: !0 }),

@@ -12,8 +12,11 @@
               <div class="mds-collection-grid-col-in">
                 <div class="mds-collection-grid-media">
                   <a href="{{ block.settings.button_url }}">
-                    <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.alt_text }}"
-                  ></a>
+                    <img class="desktop_collection_image" src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.alt_text }}"
+                  >
+                    <img class="mobile_collection_image" src="{{ block.settings.mobile_image | img_url: 'master' }}" alt="{{ block.settings.alt_text }}"
+                  >
+                  </a>
                 </div>
                 <div class="mds-collection-grid-content">
                   <h2>{{ block.settings.heading }}</h2>
@@ -219,7 +222,7 @@
          <button class="splide__play-pause" aria-controls="splide-track">Pause</button>
         </div>
       -->
-      <div class="splide__optional-button-container">
+      <!-- <div class="splide__optional-button-container">
         <button
           class="splide__play-pause"
           aria-controls="splide-track"
@@ -263,10 +266,10 @@
             </defs>
           </svg>
         </button>
-      </div>
+      </div> -->
     </div>
 
-    <div class="flickity_controls">
+    <!-- <div class="flickity_controls">
       <div class="news__pagination">
         <div class="slick_slider_control">
           <div class="news__arrows"></div>
@@ -314,7 +317,7 @@
         <div class="slider-dots-box"></div>
         <div class="news__counter"><span>1</span>/<span>11</span></div>
       </div>
-    </div>
+    </div> -->
   </section>
   <script>
       // Play toggle
@@ -424,7 +427,12 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Desktop Image"
+        },
+         {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
         },
         {
           "type": "text",

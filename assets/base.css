@@ -7326,13 +7326,13 @@ footer .footer-menu-innerbox ul li a svg {
   font-family: "Muli", Lato;
 }
 footer .footer-newsletter-box p {
-  color: #6f6f6f;
+  color: #000;
   font-family: "Muli", Lato;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 18px;
-  margin: 0 0 10px;
+  margin: 0 0 20px;
 }
 #shopify-section-new-footer footer .footer-newsletter-box svg {
   fill: #000 !important;
@@ -7343,12 +7343,12 @@ footer .footer-bottom-left ul li a {
   font-family: "Muli", Lato;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
 }
 footer.desktop-footer {
   padding: 3rem 0 0rem 0;
-  background: #F4F4F4;
+  background: #fff;
   border-top: 1px solid #eee;
   font-family: "Muli", Lato;
 }
@@ -7548,7 +7548,7 @@ span.form-icon.form-icon__success {
   }
   footer .footer-newsletter-box p {
     text-align: left;
-    margin:0 0 7px 0;
+    margin: 0 0 15px 0;
   }
 
   footer.mobile-footer .social-icons-nav {
@@ -7563,7 +7563,7 @@ span.form-icon.form-icon__success {
     flex: none;
     background: #f0f0f0;
     margin: 20px -15px 0;
-    padding: 38px 15px;
+    padding: 19px 15px;
   }
   footer.mobile-footer .social-icons-nav h3 {
     margin: 0 0 10px;
@@ -14304,6 +14304,15 @@ body .mobile-navigation-wrapper,
 }
 body.pys_index:not(.header_sticky) svg.icon--bag path {
   fill: #fff !important;
+
+}
+section.new_home_page_collection_with {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+}
+section.mds-work-banner {
+    margin-top: -2px !important;
 }
 @media (max-width: 1400px) and (min-width: 768px) {
   .desktop-top-header-bar-nav .page-width,
@@ -14625,6 +14634,8 @@ body.pys_index:not(.header_sticky) svg.icon--bag path {
     left: 60.5%;
   }
 }
+
+
 /* banner-vedio - section */
 span.fruit-charm-image {
     background-size: cover !important;
@@ -14688,7 +14699,12 @@ video.mobile_video {
 
 /* banner-vedio - section end */
 /* Footer design */
-
+footer .footer-newsletter-box p {
+    color: #6f6f6f;
+}
+footer.desktop-footer{
+  background:#F4F4F4;
+}
 footer form.contact-form {
     flex-direction: column;
     align-items: self-start;
@@ -14842,7 +14858,7 @@ body .footer-bottom-right ul.list-inline li {
       margin-right: 0 !important;
 }
 @media (max-width:1023px){
-        footer.mobile-footer {
+      footer.mobile-footer {
         background: #F4F4F4;
     }
   span.mobile_logo {
@@ -14932,6 +14948,19 @@ footer.mobile-footer .footer-menu-innerbox.shipping_block {
 body.pys_product .ss__theme.ss__recommendation--carousel.ss__recommendation--pdp-upsell.pdp_upsell_container .ss__carousel__recommendation .swiper-container-pointer-events {
     touch-action: initial;
 }
+/* collection section image 30-4-2024  */
+  .mobile_collection_image {
+    display: none ;
+  }
+@media screen and (max-width: 768px) {
+  .desktop_collection_image {
+    display: none;
+  }
+    .mobile_collection_image {
+    display: block ;
+  }
+}
+
 .cart-engrave.engrave.water-bottle-holder {
     display: none;
 }

@@ -1,13 +1,43 @@
+<style>
+div#controls {
+    position: relative;
+}
+</style>
 <section class="mds-banner-new">
+   <a href="{{ section.settings.button_url }}" style="  width: 100%;height: 100%; position: absolute;  z-index: 1; display: block;"></a>
   <div class="mds-banner-new-row">
+    
     <div class="mds-banner-new-media">
-      {% if section.settings.section_image != blank %}
-        <a href="{{ section.settings.button_url }}">
-          <img class="desktop_image" src="{{ section.settings.section_image | img_url: 'master' }}" alt="{{ section.settings.image_alt }}"
-        >
-          <img class="mobile_image" src="{{ section.settings.section_image1 | img_url: 'master' }}" alt="{{ section.settings.image_alt }}"
-        >
-        </a>
+      {% if section.settings.media_type == 'image' %}
+        {% if section.settings.section_image != blank %}
+          <a href="{{ section.settings.button_url }}">
+            <img
+              class="desktop_image"
+              src="{{ section.settings.section_image | img_url: 'master' }}"
+              alt="{{ section.settings.image_alt }}"
+            >
+            <img
+              class="mobile_image"
+              src="{{ section.settings.section_image1 | img_url: 'master' }}"
+              alt="{{ section.settings.image_alt }}"
+            >
+          </a>
+        {% endif %}
+      {% elsif section.settings.media_type == 'video' %}
+        {% if section.settings.desktop_video != blank %}
+          <div class="video-container">
+            
+            <video id="desktopVideo" class="desktop_video" loop muted autoplay playsinline></video>
+    
+          
+          </div>
+        {% endif %}
+        {% if section.settings.mobile_video != blank %}
+                <div class="video-container">
+            <video id="mobVideo" class="mobile_video" loop muted autoplay playsinline></video>
+          
+          </div>
+        {% endif %}
       {% endif %}
     </div>
     <div class="mds-banner-new-content">
@@ -20,20 +50,74 @@
       {% endif %}
     </div>
   </div>
+     {% if section.settings.media_type == 'video' %}
+        {% if section.settings.desktop_video != blank %}
+    <!-- <div id="vedio_controls">
+<div id="deskplayPauseBtn">
+<svg class="vedio_pause" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" >
+            <g clip-path="url(#clip0_309_2261)">
+              <mask id="mask0_309_2261" style="mask-type: luminance;" maskUnits="userSpaceOnUse" x="0" y="0" width="14" height="14">
+                <path d="M13.6599 0.730042H0.659912V13.73H13.6599V0.730042Z" fill="white"></path>
+              </mask>
+              <g mask="url(#mask0_309_2261)">
+                <path d="M5.71549 0.730042H3.54883V13.73H5.71549V0.730042Z" fill="black"></path>
+                <path d="M10.7712 0.730042H8.60449V13.73H10.7712V0.730042Z" fill="black"></path>
+              </g>
+            </g>
+            <defs>
+              <clipPath id="clip0_309_2261">
+                <rect width="13" height="13" fill="white" transform="translate(0.659912 0.730042)"></rect>
+              </clipPath>
+            </defs>
+          </svg>
+
+
+
+</div>
+<div id="deskmuteUnmuteBtn">
+<svg class="sound_off" width="100%" height="100%" viewBox="0 0 19.3 18.08"><path fill="currentColor" d="m10.2.06c-.23-.11-.49-.08-.68.08L3.92,4.72H.64c-.35,0-.64.29-.64.64v7.35c0,.35.29.64.64.64h3.28l5.6,4.58c.12.1.26.15.41.15.09,0,.19-.02.27-.06.23-.11.37-.33.37-.58V.64c0-.25-.14-.47-.37-.58Zm-.63,16.62l-5.3-4.33H1v-6.63h3.27L9.57,1.4v15.28Z"></path><polygon fill="currentColor" points="19.3 6.93 18.59 6.22 16.48 8.33 14.38 6.22 13.67 6.93 15.78 9.04 13.67 11.14 14.38 11.85 16.48 9.74 18.59 11.85 19.3 11.14 17.19 9.04 19.3 6.93"></polygon></svg>
+</div>
+  </div> -->
+  {% endif %}
+  {% endif %}
 </section>
+
+            
 {% schema %}
 {
   "name": "Banner section",
   "settings": [
-        {
+    {
+      "type": "radio",
+      "id": "media_type",
+      "label": "Select Media Type",
+      "options": [
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image"
+    },
+    {
       "type": "image_picker",
       "id": "section_image",
       "label": "Desktop Image"
+
     },
-            {
+    {
       "type": "image_picker",
       "id": "section_image1",
       "label": "Mobile Image"
+
+    },
+    {
+      "type": "video",
+      "id": "desktop_video",
+      "label": "Desktop Video"
+    },
+    {
+      "type": "video",
+      "id": "mobile_video",
+      "label": "Mobile Video"
     },
     {
       "type": "text",
@@ -63,3 +147,46 @@
   ]
 }
 {% endschema %}
+<script>
+  const deskData = {{ section.settings.desktop_video | json}};
+  const deskmp4Urls = deskData.sources.filter(source => source.format === 'mp4').map(mp4Source => mp4Source.url);
+  console.log(deskmp4Urls);
+  const videoElement = document.querySelector('.desktop_video');
+  const sourceElement = document.createElement('source');
+  sourceElement.setAttribute('src', deskmp4Urls[0]);
+  sourceElement.setAttribute('type', 'video/mp4');
+  videoElement.appendChild(sourceElement);
+  const videoData = {{ section.settings.mobile_video | json}};
+  const mp4Urls = videoData.sources.filter(source => source.format === 'mp4').map(mp4Source => mp4Source.url);
+  console.log(mp4Urls);
+  const videoElement2 = document.querySelector('.mobile_video');
+  const sourceElement2 = document.createElement('source');
+  sourceElement2.setAttribute('src', mp4Urls[0]);
+  sourceElement2.setAttribute('type', 'video/mp4');
+  videoElement2.appendChild(sourceElement2);
+  //   document.addEventListener("DOMContentLoaded", function() {
+  //     var video = document.getElementById("desktopVideo");
+  //     var playPauseBtn = document.getElementById("deskplayPauseBtn");
+  //     var muteUnmuteBtn = document.getElementById("deskmuteUnmuteBtn");
+
+  //     playPauseBtn.addEventListener("click", function() {
+  //         if (video.paused || video.ended) {
+  //             video.play();
+  //             playPauseBtn.innerHTML  = '<svg class="vedio_pause" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"fill="none" ><g clip-path="url(#clip0_309_2261)"><mask id="mask0_309_2261" style="mask-type: luminance;" maskUnits="userSpaceOnUse" x="0" y="0" width="14" height="14"><path d="M13.6599 0.730042H0.659912V13.73H13.6599V0.730042Z" fill="white"></path></mask><g mask="url(#mask0_309_2261)"><path d="M5.71549 0.730042H3.54883V13.73H5.71549V0.730042Z" fill="black"></path> <path d="M10.7712 0.730042H8.60449V13.73H10.7712V0.730042Z" fill="black"></path> </g></g><defs> <clipPath id="clip0_309_2261"><rect width="13" height="13" fill="white" transform="translate(0.659912 0.730042)"></rect> </clipPath></defs></svg>';
+  //           } else {
+  //             video.pause();
+  //             playPauseBtn.innerHTML  = '<svg class="vedio_play" height="14" id="play-btn" version="1.1" viewBox="0 0 512 512" width="14" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M405.2,232.9L126.8,67.2c-3.4-2-6.9-3.2-10.9-3.2c-10.9,0-19.8,9-19.8,20H96v344h0.1c0,11,8.9,20,19.8,20  c4.1,0,7.5-1.4,11.2-3.4l278.1-165.5c6.6-5.5,10.8-13.8,10.8-23.1C416,246.7,411.8,238.5,405.2,232.9z"></path></svg>';
+  //         }
+  //     });
+
+  //     muteUnmuteBtn.addEventListener("click", function() {
+  //         if (video.muted) {
+  //             video.muted = false;
+  //             muteUnmuteBtn.innerHTML = '<svg class="sound_on" viewBox="0 0 19.3 18.08" width="100%" height="100%"><path fill="currentColor" d="m10.2.06c-.23-.11-.49-.08-.68.08L3.92,4.72H.64c-.35,0-.64.29-.64.64v7.35c0,.35.29.64.64.64h3.28l5.6,4.58c.12.1.26.15.41.15.09,0,.19-.02.27-.06.23-.11.37-.33.37-.58V.64c0-.25-.14-.47-.37-.58Zm-.63,16.62l-5.3-4.33H1v-6.63h3.27L9.57,1.4v15.28Z"></path><path fill="currentColor" d="m19.25,8.3c-.26-2.01-1.56-3.26-2.11-3.7l-.63.78c.45.37,1.53,1.4,1.75,3.05.33,2.52-1.67,4.22-1.75,4.29l.64.77c.1-.08,2.5-2.13,2.11-5.19Z"></path></svg>';
+  //         } else {
+  //             video.muted = true;
+  //             muteUnmuteBtn.innerHTML = '<svg class="sound_off" width="100%" height="100%" viewBox="0 0 19.3 18.08"><path fill="currentColor" d="m10.2.06c-.23-.11-.49-.08-.68.08L3.92,4.72H.64c-.35,0-.64.29-.64.64v7.35c0,.35.29.64.64.64h3.28l5.6,4.58c.12.1.26.15.41.15.09,0,.19-.02.27-.06.23-.11.37-.33.37-.58V.64c0-.25-.14-.47-.37-.58Zm-.63,16.62l-5.3-4.33H1v-6.63h3.27L9.57,1.4v15.28Z"></path><polygon fill="currentColor" points="19.3 6.93 18.59 6.22 16.48 8.33 14.38 6.22 13.67 6.93 15.78 9.04 13.67 11.14 14.38 11.85 16.48 9.74 18.59 11.85 19.3 11.14 17.19 9.04 19.3 6.93"></polygon></svg>';
+  //         }
+  //     });
+  // });
+</script>
