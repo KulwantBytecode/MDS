@@ -19,7 +19,9 @@
       {% endif %}
     </div>
     <div class="mds-work-banner-content">
-      <div class="mds-work-coming-soon-text">COMING SOON</div>
+       {% if section.settings.section_heading != blank %}
+      <div class="mds-work-coming-soon-text">{{ section.settings.coming_soon }}</div>
+         {% endif %}
       {% if section.settings.section_heading != blank %}
         <h2>{{ section.settings.section_heading }}</h2>
       {% endif %}
@@ -105,6 +107,11 @@ function timeBetweenDates(toDate) {
       "type": "text",
       "id": "section_heading",
       "label": "Heading"
+    },
+      {
+      "type": "text",
+      "id": "coming_soon",
+      "label": "Coming Soon Text"
     },
     {
       "type": "text",

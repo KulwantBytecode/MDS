@@ -90,34 +90,34 @@ document.addEventListener("DOMContentLoaded", function () {
       button
     );
   }
-  function updateSlideCount() {
-    var activeSlideIndex = document
-      .querySelector("#splide .splide__pagination__page.is-active")
-      .getAttribute("aria-label")
-      .replace(/\D/g, "");
-    var totalSlides = document.querySelectorAll(
-      "#splide .splide__pagination__page"
-    ).length;
-    document.querySelector(
-      ".news__counter"
-    ).innerText = `${activeSlideIndex}/${totalSlides}`;
-  }
-  setInterval(updateSlideCount, 300);
+  // function updateSlideCount() {
+  //   var activeSlideIndex = document
+  //     .querySelector("#splide .splide__pagination__page.is-active")
+  //     .getAttribute("aria-label")
+  //     .replace(/\D/g, "");
+  //   var totalSlides = document.querySelectorAll(
+  //     "#splide .splide__pagination__page"
+  //   ).length;
+  //   document.querySelector(
+  //     ".news__counter"
+  //   ).innerText = `${activeSlideIndex}/${totalSlides}`;
+  // }
+  // setInterval(updateSlideCount, 300);
 
-  $("body").on("click", function () {
-    // Remove class "pause-active" from pauseBtn
-    console.log("helllo");
-    var button = document.querySelector("#splide #splide-track");
-    var attr = button.getAttribute("aria-live");
-    var pauseBtn = document.querySelector(
-      "#splide .splide__optional-button-container"
-    );
-    if (attr == "polite") {
-      pauseBtn.classList.add("pause-active");
-    } else {
-      pauseBtn.classList.remove("pause-active");
-    }
-  });
+  // $("body").on("click", function () {
+  //   // Remove class "pause-active" from pauseBtn
+  //   console.log("helllo");
+  //   var button = document.querySelector("#splide #splide-track");
+  //   var attr = button.getAttribute("aria-live");
+  //   var pauseBtn = document.querySelector(
+  //     "#splide .splide__optional-button-container"
+  //   );
+  //   if (attr == "polite") {
+  //     pauseBtn.classList.add("pause-active");
+  //   } else {
+  //     pauseBtn.classList.remove("pause-active");
+  //   }
+  // });
 });
 // Fancybox Config
 $('[data-fancybox="gallery"]').fancybox({
