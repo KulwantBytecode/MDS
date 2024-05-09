@@ -11,10 +11,10 @@
               {% endif %}
               <ul class="page_sec_tabs"> 
                 {% if section.settings.block1 != blank %}
-                  <li class="active"><a href="#{{ section.settings.block1 | handleize | remove: '&' }}">{{section.settings.block1 }}</a></li>
+                  <!-- <li class="active"><a href="#{{ section.settings.block1 | handleize | remove: '&' }}">{{section.settings.block1 }}</a></li> -->
                 {% endif %}
                 {% if section.settings.block2 != blank %}
-                  <li class=""><a href="#{{ section.settings.block2 | handleize | remove: '&' }}">{{section.settings.block2 }}</a></li>
+                  <li class="active"><a href="#{{ section.settings.block2 | handleize | remove: '&' }}">{{section.settings.block2 }}</a></li>
                 {% endif %}
                 {% if section.settings.block3 != blank %}  
                   <li class=""><a href="#{{ section.settings.block3 | handleize | remove: '&' }}">{{section.settings.block3 }}</a></li>

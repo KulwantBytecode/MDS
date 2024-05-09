@@ -14985,39 +14985,9 @@ footer.mobile-footer .footer-menu-innerbox.shipping_block {
 wishlist-page .wk-callout-cta {
     font-size: 16px !important;
 }
-/* Timer */
-.mds-work-conter {
-    margin: 32px 0 16px;
-    color: #fff;
-    text-align: center;
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 23px;
-    font-family: juanalight, serif;
+.item-cart-fill-main0[data-type="AirTag Charm"] .cart__props {
+    /* display: none; */
 }
-
-.mds-work-coming-soon-text {
-    color: #FFF;
-    text-align: center;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    margin-bottom: 16px;
-    letter-spacing: 1px;
-    font-family: 'Muli';
-}
-@media (max-width:767px){
-  .mds-work-conter {
-    font-size: 20px;
-    margin-bottom: 16px;
-    margin-top: 16px;
-}
-
-.mds-work-coming-soon-text {
-    font-size: 12px;
-    margin-bottom: 8px;
-    line-height: 11px;
-}
+div#sale-faqs {
+    display: none;
 }
