@@ -182,7 +182,44 @@
     }
     }
   </style>
+<section class="mds-work-banner">
+  <div class="mds-work-banner-row">
+    <div class="mds-work-banner-media">
+      {% if section.settings.section_image != blank %}
+        <a href="{{ section.settings.button_url }}">
+          <img
+            class="desktop_img"
+            src="{{ section.settings.section_image | img_url: 'master' }}"
+            alt="{{ section.settings.image_alt }}"
+        ></a>
+      {% endif %}
+      {% if section.settings.mobile_image != blank %}
+        <a href="{{ section.settings.button_url }}">
+          <img
+            class="mobile_img"
+            src="{{ section.settings.mobile_image | img_url: 'master' }}"
+            alt="{{ section.settings.mobile_alt }}"
+        ></a>
+      {% endif %}
+    </div>
+    <div class="mds-work-banner-content">
+       {% if section.settings.section_heading != blank %}
+      <div class="mds-work-coming-soon-text">{{ section.settings.coming_soon }}</div>
+         {% endif %}
+      {% if section.settings.section_heading != blank %}
+        <h2>{{ section.settings.section_heading }}</h2>
+      {% endif %}
+      {% if section.settings.homecount_timer %}
+       <div class="mds-work-conter"><span id="c_days"></span>日と <span id="c_hrs"></span>時間: <span id="c_mins"></span>分: <span id="c_sec"></span>秒 
 
+       </div>
+        {% endif %}
+      {% if section.settings.button_text != blank and section.settings.button_url != blank %}
+        <a href="{{ section.settings.button_url }}" class="btn">{{ section.settings.button_text }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
   <section class="play-pause-slider">
     <div id="splide" class="newarrival-wrapper splide">
       <div class="play-pause-slider swiper-container collection splide__track">
@@ -356,6 +393,49 @@
       }
     }
   </script>
+  
+<script>
+
+var timer;
+var Cdate = "{{ settings.timer }}";
+var compareDate = new Date(Cdate);
+timer = setInterval(function() {
+  timeBetweenDates(compareDate);
+}, 1000);
+
+function timeBetweenDates(toDate) {
+  var dateEntered = toDate;
+  var now = new Date();
+  var difference = dateEntered.getTime() - now.getTime();
+
+  if (difference <= 0) {
+
+    // Timer done
+    clearInterval(timer);
+  
+  } else {
+    
+    var seconds = Math.floor(difference / 1000);
+    var minutes = Math.floor(seconds / 60);
+    var hours = Math.floor(minutes / 60);
+    var days = Math.floor(hours / 24);
+
+    hours %= 24;
+    minutes %= 60;
+    seconds %= 60;
+
+    document.getElementById('c_days').textContent = days;
+    // console.log(hours);
+    // console.log(minutes);
+    // console.log(seconds);
+    document.getElementById('c_hrs').textContent = hours;
+    document.getElementById('c_mins').textContent = minutes;
+    document.getElementById('c_sec').textContent = seconds;
+    }
+}
+
+  
+</script>
 </section>
 {% schema %}
 {
@@ -417,7 +497,58 @@
     "default": false,
     "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
     "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
-  }
+  },
+    {
+      "type": "image_picker",
+      "id": "section_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Desktop Image Alt Text"
+    },
+            {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "text",
+      "id": "mobile_alt",
+      "label": "Mobile Image Alt Text"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading"
+    },
+      {
+      "type": "text",
+      "id": "coming_soon",
+      "label": "Coming Soon Text"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+    "type" : "checkbox",
+    "id" : "homecount_timer",
+    "label" : "Hide or Show Sale Count",
+    "default" : true
+    },
+         {
+    "type" : "text",
+    "id" : "homesaletiming2",
+    "label" :"Sale Timing"
+    }
   ],
   "blocks": [
     {
