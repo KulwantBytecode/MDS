@@ -14975,7 +14975,6 @@ footer.mobile-footer .footer-menu-innerbox.shipping_block {
     display: block ;
   }
 }
-
 .cart-engrave.engrave.water-bottle-holder {
     display: none;
 }
@@ -14985,9 +14984,49 @@ footer.mobile-footer .footer-menu-innerbox.shipping_block {
 wishlist-page .wk-callout-cta {
     font-size: 16px !important;
 }
-.item-cart-fill-main0[data-type="AirTag Charm"] .cart__props {
-    /* display: none; */
+/* Timer */
+.mds-work-conter {
+    margin: 32px 0 16px;
+    color: #fff;
+    text-align: center;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 23px;
+    font-family: juanalight, serif;
+}
+.mds-work-coming-soon-text {
+    color: #FFF;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    font-family: 'Muli';
+}
+@media (max-width:767px){
+  .mds-work-conter {
+    font-size: 20px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+}
+.mds-work-coming-soon-text {
+    font-size: 12px;
+    margin-bottom: 8px;
+    line-height: 11px;
+}
 }
 div#sale-faqs {
     display: none;
+}
+body.pys_product .ss__theme.ss__recommendation--carousel.ss__recommendation--pdp-upsell.pdp_upsell_container .ss__carousel__recommendation .swiper-container-pointer-events {
+    pointer-events: unset;
+}
+
+@media (max-width: 767px) {
+    body  .ss__theme .ss__swatches .list_product-colors .color-option span::after{
+    box-shadow:0 0 0 0.20rem rgba(255, 255, 255, 1) inset;
+    }
 }
