@@ -17,6 +17,7 @@
                     <img class="mobile_collection_image" src="{{ block.settings.mobile_image | img_url: 'master' }}" alt="{{ block.settings.alt_text }}"
                   >
                   </a>
+                  
                 </div>
                 <div class="mds-collection-grid-content">
                   <h2>{{ block.settings.heading }}</h2>
@@ -210,7 +211,7 @@
         <h2>{{ section.settings.section_heading }}</h2>
       {% endif %}
       {% if section.settings.homecount_timer %}
-       <div class="mds-work-conter"><span id="c_days"></span>日と <span id="c_hrs"></span>時間: <span id="c_mins"></span>分: <span id="c_sec"></span>秒 
+       <div class="mds-work-conter"><span id="c_days"></span>D: <span id="c_hrs"></span>H: <span id="c_mins"></span>M: <span id="c_sec"></span>S 
 
        </div>
         {% endif %}
@@ -393,28 +394,41 @@
       }
     }
   </script>
-  
-<script>
-
+  <script>
 var timer;
-var Cdate = "{{ settings.timer }}";
-var compareDate = new Date(Cdate);
-timer = setInterval(function() {
-  timeBetweenDates(compareDate);
-}, 1000);
+var Cdate = "{{ settings.timer }}"; // Ensure this is in ISO format: "YYYY-MM-DDTHH:MM:SS"
+var timezone = '{{ settings.timezone_select }}';
+
+var initialDate = new Date(Cdate);
+
+// Function to convert date to UTC based on timezone offset
+function convertToUTC(date, offset) {
+  var localDate = new Date(date);
+  var utcDate = new Date(localDate.getTime() + (localDate.getTimezoneOffset() * 60000) + (offset * 3600000));
+  return utcDate;
+}
+
+function updateTimer() {
+  var timezoneOffset = parseFloat(timezone);
+  if (isNaN(timezoneOffset)) {
+    alert("Please enter a valid timezone offset.");
+    return;
+  }
+  var compareDate = convertToUTC(initialDate, timezoneOffset);
+  if (timer) clearInterval(timer); // Clear any existing timer
+  timer = setInterval(function() {
+    timeBetweenDates(compareDate);
+  }, 1000);
+}
 
 function timeBetweenDates(toDate) {
-  var dateEntered = toDate;
   var now = new Date();
-  var difference = dateEntered.getTime() - now.getTime();
+  var difference = toDate.getTime() - now.getTime();
 
   if (difference <= 0) {
-
     // Timer done
     clearInterval(timer);
-  
   } else {
-    
     var seconds = Math.floor(difference / 1000);
     var minutes = Math.floor(seconds / 60);
     var hours = Math.floor(minutes / 60);
@@ -425,16 +439,15 @@ function timeBetweenDates(toDate) {
     seconds %= 60;
 
     document.getElementById('c_days').textContent = days;
-    // console.log(hours);
-    // console.log(minutes);
-    // console.log(seconds);
     document.getElementById('c_hrs').textContent = hours;
     document.getElementById('c_mins').textContent = minutes;
     document.getElementById('c_sec').textContent = seconds;
-    }
+  }
 }
 
-  
+// Initialize the timer with the default value in the input field
+updateTimer();
+
 </script>
 </section>
 {% schema %}
